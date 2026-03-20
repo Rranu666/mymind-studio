@@ -3403,14 +3403,22 @@ calcROI();
 
 /* ══ SITE AUDIT ══ */
 async function runAudit(){
-  const url=document.getElementById('auditUrl').value.trim();
+  let url=document.getElementById('auditUrl').value.trim();
   if(!url)return;
-  document.getElementById('auditLoading').classList.add('show');
+  /* Auto-add https:// if missing */
+  if(!/^https?:\/\//i.test(url)) url='https://'+url;
+  document.getElementById('auditUrl').value=url;
+  /* Reset loading state */
+  const loadEl=document.getElementById('auditLoading');
+  loadEl.innerHTML='<div class="audit-spinner"></div><div>Running your audit — checking performance, SEO &amp; accessibility…</div>';
+  loadEl.classList.add('show');
   document.getElementById('auditResults').classList.remove('show');
   document.getElementById('auditRunBtn').disabled=true;
   try{
-    const api=`https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=mobile&key=AIzaSyBx3_Cg5pNKBnT9H9Jw5xqS4C8JGSLNz0o`;
+    /* No API key needed — Google PageSpeed free tier: 25k req/day */
+    const api=`https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=mobile&category=performance&category=seo&category=accessibility`;
     const res=await fetch(api);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const data=await res.json();
     const cats=data.lighthouseResult&&data.lighthouseResult.categories;
     if(!cats)throw new Error('No data');
@@ -3436,7 +3444,8 @@ async function runAudit(){
     document.getElementById('auditResults').classList.add('show');
     trackEvent('audit_run','tools','audit_complete');
   }catch(e){
-    document.getElementById('auditLoading').innerHTML='<p style="color:var(--muted)">Could not reach the PageSpeed API. Please try a different URL or check your connection. <a href="https://pagespeed.web.dev" target="_blank" style="color:var(--lime)">Try Google PageSpeed directly →</a></p>';
+    document.getElementById('auditLoading').innerHTML=
+      '<p style="color:var(--muted);font-size:.85rem;line-height:1.7">⚠️ Could not analyse that URL. Make sure the site is publicly accessible and try again.<br><a href="https://pagespeed.web.dev" target="_blank" style="color:var(--lime)">Try Google PageSpeed directly →</a></p>';
   }
   document.getElementById('auditRunBtn').disabled=false;
 }
