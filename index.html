@@ -101,8 +101,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .hero-content{position:relative;z-index:5;max-width:720px}
 h1{font-size:clamp(46px,7vw,92px);font-weight:900;line-height:.97;letter-spacing:-.03em;margin-bottom:0}
 .h1-lime{color:var(--lime)}
-.hero-sub{font-size:clamp(15px,1.7vw,19px);color:var(--muted);line-height:1.7;max-width:560px;font-weight:400;margin-top:22px;margin-bottom:30px}
+.hero-eyebrow{display:inline-block;background:rgba(170,255,0,.1);border:1px solid rgba(170,255,0,.25);color:var(--lime);font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;border-radius:100px;padding:5px 14px;margin-bottom:18px}
+.hero-sub{font-size:clamp(15px,1.7vw,19px);color:var(--muted);line-height:1.7;max-width:560px;font-weight:400;margin-top:16px;margin-bottom:22px}
 .hero-sub em{color:var(--text);font-style:normal;font-weight:600}
+.hero-pitch{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px 22px;margin-bottom:26px;max-width:580px}
+.hero-pitch-intro{font-size:.88rem;color:var(--muted);line-height:1.65;margin-bottom:16px}
+.hero-pitch-intro em{color:var(--lime);font-style:normal;font-weight:700}
+.hero-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.hero-col-title{font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);margin-bottom:8px}
+.hero-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.hero-list li{font-size:.8rem;color:var(--muted);line-height:1.5;padding-left:14px;position:relative}
+.hero-list li::before{content:'→';position:absolute;left:0;color:var(--lime);font-size:.75rem}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px}
+.hero-badge{font-size:.73rem;font-weight:700;color:var(--lime);background:rgba(170,255,0,.07);border:1px solid rgba(170,255,0,.2);border-radius:100px;padding:4px 12px}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
 .btn-lime{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--lime);color:#000;font-family:var(--f);font-size:.82rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:none;cursor:pointer;border-radius:100px;transition:all .2s;white-space:nowrap}
 .btn-lime:hover{background:var(--lime2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(170,255,0,.2)}
@@ -1001,6 +1012,8 @@ button, a, select, input, textarea, .est-opt, .tool-tab, .ai-chip, .faq-item {
   #hero { padding: 80px 16px 50px !important; }
   h1 { font-size: clamp(32px, 9vw, 52px) !important; }
   .hero-sub { font-size: .9rem; }
+  .hero-cols { grid-template-columns: 1fr; gap: 12px; }
+  .hero-pitch { padding: 16px; }
   .hero-actions { flex-direction: column; gap: 10px; }
   .btn-lime, .btn-ghost { width: 100%; justify-content: center; font-size: .78rem; padding: 14px 20px; }
   .video-btn { width: 100%; justify-content: center; }
@@ -1449,8 +1462,37 @@ button, a, select, input, textarea, .est-opt, .tool-tab, .ai-chip, .faq-item {
   <div class="blob-wrap"><div class="blob"></div></div>
 
   <div class="hero-content reveal-l">
-    <h1>Your App Lives<br>in <span class="h1-lime">6 Weeks.</span><br>Guaranteed.</h1>
-    <p class="hero-sub">Stop wasting money on DIY platforms. We build your <em>exact vision</em> — custom-coded, fully owned by you — on time, within budget, with a <em>money-back guarantee</em> if we miss the deadline.</p>
+    <div class="hero-eyebrow">Stop Using DIY Website &amp; App Builders!</div>
+    <h1>They Could Be<br><span class="h1-lime">Costing You</span><br>Money.</h1>
+    <p class="hero-sub">Hidden costs, limited features, and zero flexibility are quietly slowing your business down. It's time to upgrade.</p>
+
+    <div class="hero-pitch">
+      <p class="hero-pitch-intro">Bring your vision to life with <em>My MindStudio</em> — your personal creative lab for powerful digital solutions tailored to your business goals.</p>
+      <div class="hero-cols">
+        <div class="hero-col">
+          <div class="hero-col-title">Why Custom?</div>
+          <ul class="hero-list">
+            <li>Launch faster with a streamlined process</li>
+            <li>Scale smarter — built for growth</li>
+            <li>Turn ideas into live, functional products</li>
+          </ul>
+        </div>
+        <div class="hero-col">
+          <div class="hero-col-title">What You Get</div>
+          <ul class="hero-list">
+            <li>Custom websites &amp; mobile apps from scratch</li>
+            <li>Delivery within 1–6 weeks*</li>
+            <li>No templates — only high-performance solutions</li>
+          </ul>
+        </div>
+      </div>
+      <div class="hero-badges">
+        <span class="hero-badge">✔ No limitations</span>
+        <span class="hero-badge">✔ No hidden costs</span>
+        <span class="hero-badge">✔ 100% ownership</span>
+      </div>
+    </div>
+
     <div class="hero-actions">
       <button class="btn-lime" onclick="goTo('contact')">Book Free Strategy Call →</button>
       <button class="video-btn" onclick="openVideo()">
@@ -1461,7 +1503,7 @@ button, a, select, input, textarea, .est-opt, .tool-tab, .ai-chip, .faq-item {
     </div>
     <div class="slots-bar">
       <div class="slots-dot"></div>
-      <div class="slots-text"><strong id="slotsNum">3 spots</strong> left for April — slots fill fast</div>
+      <div class="slots-text"><strong>On-Time Delivery or Your Money Back</strong> — Guaranteed. <span style="font-size:.78rem;opacity:.7">*Timeline varies by scope.</span></div>
     </div>
   </div>
 
