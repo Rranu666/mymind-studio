@@ -1,0 +1,104 @@
+[
+  {
+    "id": "custom-app-dev",
+    "icon": "💻",
+    "title": "Custom App & Website Development",
+    "tagline": "Your exact vision, built from scratch.",
+    "description": "We build web apps, mobile apps, SaaS platforms, marketplaces, dashboards, booking systems, and websites — all fully custom, fully owned by you.",
+    "featured": true,
+    "features": [
+      "Web apps & SaaS platforms",
+      "iOS & Android mobile apps",
+      "E-commerce & marketplaces",
+      "Booking & scheduling systems",
+      "Admin dashboards & portals",
+      "Landing pages & brochure sites",
+      "API development & integrations",
+      "Legacy system migration"
+    ],
+    "tags": ["React", "Next.js", "React Native", "Flutter", "Node.js", "Python"],
+    "startingFrom": "3,500",
+    "currency": "$",
+    "deliveryWeeks": "2–16"
+  },
+  {
+    "id": "ai-chatbots",
+    "icon": "🤖",
+    "title": "AI Integration & Chatbots",
+    "tagline": "Automate. Engage. Convert 24/7.",
+    "description": "WhatsApp bots, AI assistants, OpenAI/Claude/Gemini API integration, and full business workflow automation that actually replaces manual work.",
+    "featured": false,
+    "features": [
+      "WhatsApp Business API bots",
+      "AI-powered customer support",
+      "OpenAI & Claude API integration",
+      "CRM & email automation",
+      "Lead qualification bots",
+      "Internal AI tools & copilots"
+    ],
+    "tags": ["OpenAI API", "Claude API", "WhatsApp API", "Make", "Zapier"],
+    "startingFrom": "1,800",
+    "currency": "$",
+    "deliveryWeeks": "2–6"
+  },
+  {
+    "id": "seo-marketing",
+    "icon": "📈",
+    "title": "SEO & Digital Marketing",
+    "tagline": "Get found. Get clicked. Get customers.",
+    "description": "Technical SEO, keyword strategy, content marketing, link building, and Google Ads — executed by specialists who also understand your product.",
+    "featured": false,
+    "features": [
+      "Technical SEO audit & fixes",
+      "Keyword research & strategy",
+      "Content marketing & blog",
+      "Link building campaigns",
+      "Google Ads management",
+      "SEO-optimised landing pages"
+    ],
+    "tags": ["Technical SEO", "Content", "Google Ads", "Analytics"],
+    "startingFrom": "800",
+    "currency": "$",
+    "deliveryWeeks": "Ongoing"
+  },
+  {
+    "id": "business-automation",
+    "icon": "⚙️",
+    "title": "Business Automation",
+    "tagline": "Eliminate the manual. Unlock the scalable.",
+    "description": "We map your manual workflows and replace them with automated systems — saving your team 10–40 hours per week from day one.",
+    "featured": false,
+    "features": [
+      "Workflow analysis & mapping",
+      "CRM automation (HubSpot, Salesforce)",
+      "Email sequence automation",
+      "Make & Zapier integrations",
+      "Custom automation scripts",
+      "Reporting & dashboard automation"
+    ],
+    "tags": ["Make", "Zapier", "HubSpot", "Node.js", "Python"],
+    "startingFrom": "1,200",
+    "currency": "$",
+    "deliveryWeeks": "2–8"
+  },
+  {
+    "id": "go-to-market",
+    "icon": "🚀",
+    "title": "Go-to-Market Strategy",
+    "tagline": "Launch loud. Acquire your first users.",
+    "description": "We don't just build and disappear. We help you plan and execute a go-to-market strategy — from positioning and pricing to the first 100 customers.",
+    "featured": false,
+    "features": [
+      "Product positioning & messaging",
+      "Launch strategy & planning",
+      "First user acquisition playbook",
+      "Landing page optimisation",
+      "Analytics & tracking setup",
+      "Growth experiment framework"
+    ],
+    "tags": ["Strategy", "Growth", "Positioning", "Analytics"],
+    "startingFrom": "2,000",
+    "currency": "$",
+    "deliveryWeeks": "2–4"
+  }
+]

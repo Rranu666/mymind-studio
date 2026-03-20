@@ -1,0 +1,42 @@
+[
+  {
+    "id": "different-from-diy",
+    "question": "How is MyMind Studio different from DIY platforms like Webflow or Bubble?",
+    "answer": "We build custom solutions from scratch — you own the code, there are no subscriptions, no tokens, and no lock-in. With DIY platforms, you're renting space on their infrastructure and limited to their feature set. With us, you own everything and can hire any developer to work on it after we're done."
+  },
+  {
+    "id": "how-long",
+    "question": "How long does a typical project take?",
+    "answer": "Most websites go live in 2–4 weeks. Custom apps typically take 6–16 weeks depending on complexity. MVP builds are usually 4–8 weeks. We agree on the exact timeline upfront before any work begins, and we have a money-back guarantee if we miss a deadline we've committed to."
+  },
+  {
+    "id": "free-consultation",
+    "question": "What does the free consultation include?",
+    "answer": "A 30-minute call where we listen to your vision, ask the right questions, and come back within 24 hours with a full roadmap including scope, timeline, and cost — at no charge and with zero obligation."
+  },
+  {
+    "id": "how-pricing-works",
+    "question": "How does your pricing work? Any hidden fees?",
+    "answer": "We offer two models: (1) Fixed Bid — you get a full cost upfront before any work begins, paid in milestone installments as we hit agreed checkpoints. (2) Dedicated Team — from $4,000/month for a committed developer. There are no hidden fees, no hourly overruns, and no surprises."
+  },
+  {
+    "id": "code-ownership",
+    "question": "Who owns the code you write?",
+    "answer": "You do. 100%. Upon final payment, all custom code, designs, and intellectual property transfer to you. You can take the code to any developer in the world. There's no lock-in, no licensing, and no ongoing dependency on us (though we're happy to provide ongoing support if you want it)."
+  },
+  {
+    "id": "tech-stack",
+    "question": "What technology do you use?",
+    "answer": "We choose the best technology for your specific project, not the most trendy. Our typical stack: React / Next.js for web apps, React Native or Flutter for mobile, Node.js or Python for backends, PostgreSQL or MongoDB for databases, and AWS / GCP / Vercel for hosting. We'll always explain why we recommend specific technologies."
+  },
+  {
+    "id": "support-after-launch",
+    "question": "What happens after launch?",
+    "answer": "We provide a minimum 30-day post-launch support period at no extra cost, covering bug fixes and minor adjustments. We also offer optional ongoing retainer support, monitoring, and feature development. Most clients continue working with us after launch because the relationship works well."
+  },
+  {
+    "id": "outside-india",
+    "question": "I'm based outside India — does that matter?",
+    "answer": "Not at all. 80% of our clients are in the USA, UK, Australia, and Canada. We work across all timezones, with flexible overlap hours. We use async communication (Slack, Notion, Loom) for day-to-day work and scheduled video calls for milestones and reviews."
+  }
+]

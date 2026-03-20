@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Page Not Found | MyMind Studio</title>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#5c6272;--blob:#0b0c10;--lime:#aaff00;--lime2:#88cc00;
+  --text:#ffffff;--muted:#a8b0c2;--muted2:#6e7585;
+  --border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.06);
+  --f:'Barlow',sans-serif;
+}
+html,body{height:100%}
+body{font-family:var(--f);background:var(--bg);color:var(--text);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;text-align:center;overflow:hidden;position:relative}
+
+/* Rings background */
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(170,255,0,0.06);pointer-events:none}
+.r1{width:400px;height:400px;animation:ring-pulse 4s infinite}
+.r2{width:650px;height:650px;animation:ring-pulse 4s infinite .8s}
+.r3{width:900px;height:900px;animation:ring-pulse 4s infinite 1.6s}
+@keyframes ring-pulse{0%,100%{opacity:.4}50%{opacity:.1}}
+
+.content{position:relative;z-index:5;max-width:540px}
+
+.logo-pill{display:inline-block;background:rgba(255,255,255,.12);border:1px solid var(--border);border-radius:100px;padding:8px 20px;font-size:.8rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:36px;text-decoration:none;color:var(--text);transition:background .2s}
+.logo-pill:hover{background:rgba(255,255,255,.2)}
+
+.num{font-size:clamp(80px,18vw,160px);font-weight:900;letter-spacing:-.06em;line-height:1;color:var(--lime);opacity:.15;margin-bottom:-16px;user-select:none}
+h1{font-size:clamp(28px,4.5vw,46px);font-weight:900;letter-spacing:-.03em;line-height:1.06;margin-bottom:14px}
+h1 span{color:var(--lime)}
+p{font-size:.96rem;color:var(--muted);line-height:1.7;max-width:420px;margin:0 auto 36px}
+
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-lime{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--lime);color:#000;font-family:var(--f);font-size:.82rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:none;cursor:pointer;border-radius:100px;transition:all .2s;text-decoration:none}
+.btn-lime:hover{background:var(--lime2);transform:translateY(-2px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:transparent;color:var(--text);font-family:var(--f);font-size:.82rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--border);cursor:pointer;border-radius:100px;transition:all .2s;text-decoration:none}
+.btn-ghost:hover{border-color:var(--lime);color:var(--lime);transform:translateY(-2px)}
+
+.links{margin-top:40px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.links a{font-size:.78rem;color:var(--muted2);text-decoration:none;transition:color .2s}
+.links a:hover{color:var(--lime)}
+
+@media(max-width:480px){
+  .btns{flex-direction:column;align-items:center}
+  .btn-lime,.btn-ghost{width:100%;justify-content:center}
+  .r2,.r3{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="ring r1"></div>
+<div class="ring r2"></div>
+<div class="ring r3"></div>
+
+<div class="content">
+  <a class="logo-pill" href="/">MyMind Studio</a>
+
+  <div class="num">404</div>
+  <h1>This page took a <span>wrong turn</span></h1>
+  <p>The page you're looking for doesn't exist, was moved, or maybe it's still in the backlog. Either way — we can get you back on track.</p>
+
+  <div class="btns">
+    <a class="btn-lime" href="/">Back to Home →</a>
+    <a class="btn-ghost" href="/#contact">Talk to Us</a>
+  </div>
+
+  <div class="links">
+    <a href="/#services">Services</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/#tools">Free Tools</a>
+    <a href="/blog">Blog</a>
+    <a href="mailto:hello@mymindstudio.ai">Email Us</a>
+  </div>
+</div>
+
+</body>
+</html>

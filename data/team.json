@@ -1,0 +1,74 @@
+[
+  {
+    "id": "arjun-kumar",
+    "name": "Arjun Kumar",
+    "role": "Founder & Lead Engineer",
+    "initials": "AK",
+    "avatarColor": "#aaff00",
+    "experience": "8+ years building SaaS platforms, mobile apps, and custom web applications. Previously senior engineer at two VC-backed startups.",
+    "skills": ["React", "Next.js", "Node.js", "PostgreSQL", "AWS"],
+    "availability": "Available",
+    "linkedin": "#",
+    "github": "#"
+  },
+  {
+    "id": "priya-mehta",
+    "name": "Priya Mehta",
+    "role": "AI & Automation Lead",
+    "initials": "PM",
+    "avatarColor": "#a78bfa",
+    "experience": "6 years specialising in AI integrations, chatbot architecture, and business automation. Built WhatsApp bots with 500k+ monthly users.",
+    "skills": ["Python", "OpenAI API", "LangChain", "Make", "Zapier"],
+    "availability": "Available",
+    "linkedin": "#",
+    "github": "#"
+  },
+  {
+    "id": "divya-narayan",
+    "name": "Divya Narayan",
+    "role": "UI/UX Designer",
+    "initials": "DN",
+    "avatarColor": "#60a5fa",
+    "experience": "7 years designing digital products across healthcare, fintech, and edtech. Figma expert with a strong focus on accessibility and conversion.",
+    "skills": ["Figma", "Design Systems", "Prototyping", "UX Research"],
+    "availability": "Available",
+    "linkedin": "#",
+    "github": "#"
+  },
+  {
+    "id": "rahul-khanna",
+    "name": "Rahul Khanna",
+    "role": "Mobile & Backend Engineer",
+    "initials": "RK",
+    "avatarColor": "#fbbf24",
+    "experience": "5 years shipping iOS and Android apps with React Native and Flutter. Strong in API design and performance optimisation.",
+    "skills": ["React Native", "Flutter", "Firebase", "GraphQL"],
+    "availability": "Available",
+    "linkedin": "#",
+    "github": "#"
+  },
+  {
+    "id": "sunita-lal",
+    "name": "Sunita Lal",
+    "role": "SEO & Growth Specialist",
+    "initials": "SL",
+    "avatarColor": "#34d399",
+    "experience": "6 years in technical SEO, content strategy, and growth marketing. Has moved 40+ sites from page 3 to top-5 rankings.",
+    "skills": ["Technical SEO", "Content Strategy", "Google Ads", "Analytics"],
+    "availability": "Available",
+    "linkedin": "#",
+    "github": "#"
+  },
+  {
+    "id": "vikram-seth",
+    "name": "Vikram Seth",
+    "role": "DevOps & Cloud Engineer",
+    "initials": "VS",
+    "avatarColor": "#f87171",
+    "experience": "7 years managing cloud infrastructure on AWS and GCP. Expert in CI/CD pipelines, Kubernetes, and zero-downtime deployments.",
+    "skills": ["AWS", "GCP", "Docker", "Kubernetes", "Terraform"],
+    "availability": "Available",
+    "linkedin": "#",
+    "github": "#"
+  }
+]

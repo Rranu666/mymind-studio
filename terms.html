@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Terms of Service | MyMind Studio</title>
+<meta name="description" content="MyMind Studio's terms of service — the rules and conditions that govern our services and your use of mymindstudio.ai."/>
+<link rel="canonical" href="https://mymindstudio.ai/terms"/>
+<meta name="robots" content="noindex, follow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap&font-display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#5c6272;--blob:#0b0c10;--lime:#aaff00;--lime2:#88cc00;
+  --card2:rgba(20,22,30,0.78);
+  --text:#ffffff;--muted:#a8b0c2;--muted2:#6e7585;
+  --border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.06);
+  --lime-border:rgba(170,255,0,0.25);--lime-bg:rgba(170,255,0,0.08);
+  --f:'Barlow',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.4);border-radius:2px}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(80,86,100,0.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)}
+.nav-logo{background:rgba(255,255,255,.12);border:1px solid var(--border);color:var(--text);font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:8px 18px;border-radius:100px;text-decoration:none;transition:all .2s}
+.nav-logo:hover{background:rgba(255,255,255,.2)}
+.nav-pills{display:flex;align-items:center;gap:5px}
+.np{font-size:.73rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:8px 16px;border-radius:100px;text-decoration:none;color:rgba(255,255,255,.6);transition:all .2s;font-family:var(--f)}
+.np:hover{background:#0d0e12;color:var(--text)}
+.nav-cta{display:inline-flex;align-items:center;padding:9px 20px;background:var(--lime);color:#000;font-family:var(--f);font-size:.73rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:none;cursor:pointer;border-radius:100px;transition:all .2s;text-decoration:none}
+.nav-cta:hover{background:var(--lime2)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:20px;height:1.5px;background:var(--text);transition:all .3s;border-radius:2px}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mob-menu{display:none;position:fixed;inset:0;background:rgba(10,12,18,.97);z-index:199;flex-direction:column;align-items:center;justify-content:center;gap:2.2rem}
+.mob-menu.open{display:flex}
+.mob-menu a{font-size:1.9rem;font-weight:900;color:var(--text);text-decoration:none;text-transform:uppercase;transition:color .2s}
+.mob-menu a:hover{color:var(--lime)}
+@media(max-width:768px){.nav-pills{display:none}.hamburger{display:flex}}
+
+.page-header{padding:130px 40px 60px;background:rgba(0,0,0,.18);border-bottom:1px solid var(--border2)}
+.page-header-inner{max-width:800px;margin:0 auto}
+.chip{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:.8rem;display:block}
+.page-header h1{font-size:clamp(32px,4.5vw,54px);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:12px}
+.page-header .updated{font-size:.8rem;color:var(--muted2);margin-top:8px}
+
+.doc-wrap{max-width:800px;margin:0 auto;padding:60px 40px 100px}
+.doc-section{margin-bottom:48px}
+.doc-section h2{font-size:1.2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:16px;color:var(--text);padding-bottom:10px;border-bottom:1px solid var(--border2)}
+.doc-section h3{font-size:.96rem;font-weight:700;margin-bottom:10px;margin-top:20px;color:var(--text)}
+.doc-section p{font-size:.88rem;color:var(--muted);line-height:1.75;margin-bottom:12px}
+.doc-section ul,.doc-section ol{font-size:.88rem;color:var(--muted);line-height:1.75;padding-left:20px;margin-bottom:12px}
+.doc-section li{margin-bottom:5px}
+.doc-section a{color:var(--lime);text-decoration:none}
+.doc-section a:hover{text-decoration:underline}
+.highlight-box{background:var(--card2);border:1px solid var(--lime-border);border-radius:14px;padding:22px 26px;margin:20px 0;border-left:3px solid var(--lime)}
+.highlight-box p{color:var(--text);margin:0;font-size:.86rem;line-height:1.7}
+
+footer{background:var(--bg);border-top:1px solid var(--border2);padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:.72rem;color:var(--muted2)}
+.flegal{display:flex;gap:1.5rem}
+.flegal a{font-size:.72rem;color:var(--muted2);text-decoration:none;transition:color .2s}
+.flegal a:hover{color:var(--text)}
+@media(max-width:768px){
+  .page-header{padding:120px 24px 40px}
+  .doc-wrap{padding:40px 24px 80px}
+  footer{padding:24px;flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<div class="mob-menu" id="mobMenu">
+  <a href="/" onclick="cm()">Home</a>
+  <a href="/#why" onclick="cm()">Why Us</a>
+  <a href="/#services" onclick="cm()">Services</a>
+  <a href="/#pricing" onclick="cm()">Pricing</a>
+  <a href="/#contact" onclick="cm()">Let's Talk</a>
+</div>
+
+<nav>
+  <a class="nav-logo" href="/">MyMind Studio</a>
+  <div class="nav-pills">
+    <a class="np" href="/#why">Why Us</a>
+    <a class="np" href="/#process">Process</a>
+    <a class="np" href="/#services">Services</a>
+    <a class="np" href="/#pricing">Pricing</a>
+    <a class="np" href="/blog">Blog</a>
+    <a class="np" href="/#contact">Contact</a>
+  </div>
+  <a class="nav-cta" href="/#contact">Free Consultation →</a>
+  <button class="hamburger" id="ham" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <span class="chip">Legal</span>
+    <h1>Terms of Service</h1>
+    <p class="updated">Last updated: 1 January 2025</p>
+  </div>
+</div>
+
+<div class="doc-wrap">
+
+  <div class="highlight-box">
+    <p><strong>Plain-English summary:</strong> By using our website or hiring us, you agree to these terms. We deliver what we agree to in writing, you pay on the agreed milestones, you own all code we write for you, and we keep your information confidential. Disputes are resolved under Indian law.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>1. Agreement to Terms</h2>
+    <p>By accessing or using the website at <a href="https://mymindstudio.ai">mymindstudio.ai</a> (the "Site") or engaging MyMind Studio Pvt Ltd ("Company", "we", "our", "us") for any services, you agree to be bound by these Terms of Service ("Terms"). If you do not agree, please do not use the Site or our services.</p>
+    <p>These Terms apply to all visitors, clients, and anyone else who accesses our Site or services.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>2. Services</h2>
+    <p>MyMind Studio provides custom app and website development, AI integration, SEO, digital marketing, and business automation services. Specific deliverables, timelines, pricing, and payment terms for any engagement are agreed in a separate Statement of Work (SOW) or project proposal, which forms part of the contract between you and us.</p>
+    <p>The interactive tools on our website (cost estimator, ROI calculator, site audit tool, tech stack quiz) are provided for informational purposes only. Results are estimates and do not constitute binding quotes or guarantees.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>3. Free Consultation</h2>
+    <p>Our free 30-minute consultation and subsequent roadmap document are provided at no charge and with no obligation. Engaging in a consultation does not create a contract for services. A contract is only formed when both parties have signed or otherwise confirmed a written Statement of Work or project agreement.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>4. Payment Terms</h2>
+    <ul>
+      <li>All fees are set out in the project SOW or proposal.</li>
+      <li>Payments are structured as milestone-based installments as agreed in writing.</li>
+      <li>Invoices are due within 7 days of issue unless otherwise agreed.</li>
+      <li>Late payments may accrue interest at 2% per month on the overdue amount.</li>
+      <li>We reserve the right to pause work if invoices remain unpaid beyond 14 days.</li>
+      <li>All prices are exclusive of taxes. You are responsible for any applicable taxes in your jurisdiction.</li>
+    </ul>
+  </div>
+
+  <div class="doc-section">
+    <h2>5. Intellectual Property &amp; Code Ownership</h2>
+    <h3>5.1 Your ownership</h3>
+    <p>Upon receipt of full payment for a project, all custom code, designs, and deliverables created specifically for you become your property. You are granted a full, perpetual, royalty-free licence to use, modify, and distribute those deliverables.</p>
+    <h3>5.2 Our retained rights</h3>
+    <p>We retain the right to:</p>
+    <ul>
+      <li>Use open-source libraries and third-party components subject to their own licences.</li>
+      <li>Reference the project in our portfolio (unless you request confidentiality in writing).</li>
+      <li>Retain and reuse general methodologies, frameworks, and know-how that are not specific to your project.</li>
+    </ul>
+    <h3>5.3 Site content</h3>
+    <p>All content on the Site (text, graphics, logos, case studies) is owned by or licensed to MyMind Studio and may not be reproduced without written permission.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>6. Confidentiality</h2>
+    <p>Both parties agree to keep confidential any non-public information shared in connection with a project. We will not share your project details, business data, or proprietary information with third parties without your consent, except as required by law or to perform the services (e.g., using a subcontractor under a confidentiality obligation).</p>
+    <p>If you require a formal Non-Disclosure Agreement (NDA), please request one before sharing sensitive information.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>7. Client Responsibilities</h2>
+    <p>To ensure successful project delivery, you agree to:</p>
+    <ul>
+      <li>Provide accurate and complete information, assets, and content required for the project.</li>
+      <li>Make decisions and provide feedback within agreed timeframes. Delays on your side may affect delivery timelines.</li>
+      <li>Ensure you have the right to use any content (images, text, logos) you provide to us.</li>
+      <li>Pay invoices on the agreed schedule.</li>
+    </ul>
+  </div>
+
+  <div class="doc-section">
+    <h2>8. Limitation of Liability</h2>
+    <p>To the maximum extent permitted by applicable law:</p>
+    <ul>
+      <li>Our total liability for any claim arising out of or related to our services shall not exceed the total fees paid by you in the 12 months preceding the claim.</li>
+      <li>We shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, data, or goodwill.</li>
+      <li>We are not responsible for third-party services, APIs, or platforms (e.g., AWS, Stripe, WhatsApp) that are outside our control.</li>
+    </ul>
+  </div>
+
+  <div class="doc-section">
+    <h2>9. Warranties &amp; Disclaimers</h2>
+    <p>We warrant that services will be performed with reasonable skill and care, and that deliverables will materially conform to the agreed specification at the time of delivery.</p>
+    <p>The Site and its tools are provided "as is" without warranties of any kind, express or implied. We do not warrant that the Site will be error-free, uninterrupted, or free of viruses.</p>
+    <p>Estimates provided by our online tools (cost estimator, ROI calculator) are indicative only and not binding.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>10. Termination</h2>
+    <p>Either party may terminate a project agreement by giving 14 days' written notice. Upon termination:</p>
+    <ul>
+      <li>You will pay for all work completed and expenses incurred up to the termination date.</li>
+      <li>We will deliver all completed work and transfer any relevant files or access credentials.</li>
+      <li>Neither party will be entitled to further payments beyond what is owed for work done.</li>
+    </ul>
+    <p>We may suspend or terminate access to the Site immediately if you breach these Terms.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>11. Acceptable Use</h2>
+    <p>You agree not to:</p>
+    <ul>
+      <li>Use the Site in any way that violates applicable laws or regulations.</li>
+      <li>Attempt to gain unauthorised access to any part of the Site or our systems.</li>
+      <li>Use automated tools to scrape, crawl, or extract content from the Site.</li>
+      <li>Transmit any malware, spam, or harmful content.</li>
+      <li>Misrepresent your identity or affiliation.</li>
+    </ul>
+  </div>
+
+  <div class="doc-section">
+    <h2>12. Third-Party Links</h2>
+    <p>Our Site may contain links to third-party websites (e.g., social media, WhatsApp, Calendly). These links are provided for convenience only. We have no control over third-party sites and are not responsible for their content or privacy practices.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>13. Governing Law &amp; Dispute Resolution</h2>
+    <p>These Terms and any contract for services are governed by the laws of India. Any disputes shall first be attempted to be resolved through good-faith negotiation. If negotiation fails, disputes shall be submitted to arbitration in accordance with the Arbitration and Conciliation Act, 1996 (India), with the seat of arbitration in Bengaluru, Karnataka, India.</p>
+    <p>Nothing in this clause prevents either party from seeking urgent injunctive relief from a court of competent jurisdiction.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>14. Changes to These Terms</h2>
+    <p>We reserve the right to update these Terms at any time. The "Last updated" date at the top will reflect changes. Changes do not apply retroactively to active project agreements. Continued use of the Site after changes constitutes acceptance of the updated Terms.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>15. Contact</h2>
+    <p>For any questions about these Terms:</p>
+    <ul>
+      <li>Email: <a href="mailto:hello@mymindstudio.ai">hello@mymindstudio.ai</a></li>
+      <li>Website: <a href="https://mymindstudio.ai">mymindstudio.ai</a></li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p class="footer-copy">© 2025 MyMind Studio Pvt Ltd · All rights reserved</p>
+  <div class="flegal">
+    <a href="/privacy-policy">Privacy Policy</a>
+    <a href="/terms">Terms of Service</a>
+    <a href="/">Home</a>
+  </div>
+</footer>
+
+<script>
+function toggleMenu(){
+  document.getElementById('ham').classList.toggle('open');
+  document.getElementById('mobMenu').classList.toggle('open');
+}
+function cm(){
+  document.getElementById('ham').classList.remove('open');
+  document.getElementById('mobMenu').classList.remove('open');
+}
+</script>
+</body>
+</html>

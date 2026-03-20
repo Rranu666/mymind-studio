@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Privacy Policy | MyMind Studio</title>
+<meta name="description" content="MyMind Studio's privacy policy — how we collect, use, and protect your personal information."/>
+<link rel="canonical" href="https://mymindstudio.ai/privacy-policy"/>
+<meta name="robots" content="noindex, follow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap&font-display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#5c6272;--blob:#0b0c10;--lime:#aaff00;--lime2:#88cc00;
+  --card2:rgba(20,22,30,0.78);
+  --text:#ffffff;--muted:#a8b0c2;--muted2:#6e7585;
+  --border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.06);
+  --lime-border:rgba(170,255,0,0.25);--lime-bg:rgba(170,255,0,0.08);
+  --f:'Barlow',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.4);border-radius:2px}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(80,86,100,0.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)}
+.nav-logo{background:rgba(255,255,255,.12);border:1px solid var(--border);color:var(--text);font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:8px 18px;border-radius:100px;text-decoration:none;transition:all .2s}
+.nav-logo:hover{background:rgba(255,255,255,.2)}
+.nav-pills{display:flex;align-items:center;gap:5px}
+.np{font-size:.73rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:8px 16px;border-radius:100px;text-decoration:none;color:rgba(255,255,255,.6);transition:all .2s;font-family:var(--f)}
+.np:hover{background:#0d0e12;color:var(--text)}
+.nav-cta{display:inline-flex;align-items:center;padding:9px 20px;background:var(--lime);color:#000;font-family:var(--f);font-size:.73rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:none;cursor:pointer;border-radius:100px;transition:all .2s;text-decoration:none}
+.nav-cta:hover{background:var(--lime2)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:20px;height:1.5px;background:var(--text);transition:all .3s;border-radius:2px}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mob-menu{display:none;position:fixed;inset:0;background:rgba(10,12,18,.97);z-index:199;flex-direction:column;align-items:center;justify-content:center;gap:2.2rem}
+.mob-menu.open{display:flex}
+.mob-menu a{font-size:1.9rem;font-weight:900;color:var(--text);text-decoration:none;text-transform:uppercase;transition:color .2s}
+.mob-menu a:hover{color:var(--lime)}
+@media(max-width:768px){.nav-pills{display:none}.hamburger{display:flex}}
+
+.page-header{padding:130px 40px 60px;background:rgba(0,0,0,.18);border-bottom:1px solid var(--border2)}
+.page-header-inner{max-width:800px;margin:0 auto}
+.chip{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:.8rem;display:block}
+.page-header h1{font-size:clamp(32px,4.5vw,54px);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin-bottom:12px}
+.page-header .updated{font-size:.8rem;color:var(--muted2);margin-top:8px}
+
+.doc-wrap{max-width:800px;margin:0 auto;padding:60px 40px 100px}
+.doc-section{margin-bottom:48px}
+.doc-section h2{font-size:1.2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:16px;color:var(--text);padding-bottom:10px;border-bottom:1px solid var(--border2)}
+.doc-section h3{font-size:.96rem;font-weight:700;margin-bottom:10px;margin-top:20px;color:var(--text)}
+.doc-section p{font-size:.88rem;color:var(--muted);line-height:1.75;margin-bottom:12px}
+.doc-section ul,.doc-section ol{font-size:.88rem;color:var(--muted);line-height:1.75;padding-left:20px;margin-bottom:12px}
+.doc-section li{margin-bottom:5px}
+.doc-section a{color:var(--lime);text-decoration:none}
+.doc-section a:hover{text-decoration:underline}
+.highlight-box{background:var(--card2);border:1px solid var(--lime-border);border-radius:14px;padding:22px 26px;margin:20px 0;border-left:3px solid var(--lime)}
+.highlight-box p{color:var(--text);margin:0;font-size:.86rem;line-height:1.7}
+
+footer{background:var(--bg);border-top:1px solid var(--border2);padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:.72rem;color:var(--muted2)}
+.flegal{display:flex;gap:1.5rem}
+.flegal a{font-size:.72rem;color:var(--muted2);text-decoration:none;transition:color .2s}
+.flegal a:hover{color:var(--text)}
+@media(max-width:768px){
+  .page-header{padding:120px 24px 40px}
+  .doc-wrap{padding:40px 24px 80px}
+  footer{padding:24px;flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<div class="mob-menu" id="mobMenu">
+  <a href="/" onclick="cm()">Home</a>
+  <a href="/#why" onclick="cm()">Why Us</a>
+  <a href="/#services" onclick="cm()">Services</a>
+  <a href="/#pricing" onclick="cm()">Pricing</a>
+  <a href="/#contact" onclick="cm()">Let's Talk</a>
+</div>
+
+<nav>
+  <a class="nav-logo" href="/">MyMind Studio</a>
+  <div class="nav-pills">
+    <a class="np" href="/#why">Why Us</a>
+    <a class="np" href="/#process">Process</a>
+    <a class="np" href="/#services">Services</a>
+    <a class="np" href="/#pricing">Pricing</a>
+    <a class="np" href="/blog">Blog</a>
+    <a class="np" href="/#contact">Contact</a>
+  </div>
+  <a class="nav-cta" href="/#contact">Free Consultation →</a>
+  <button class="hamburger" id="ham" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <span class="chip">Legal</span>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: 1 January 2025</p>
+  </div>
+</div>
+
+<div class="doc-wrap">
+
+  <div class="highlight-box">
+    <p><strong>Plain-English summary:</strong> We only collect information you give us or that we need to run the website. We don't sell your data. We use standard analytics tools to improve the site. You can ask us to delete your data at any time.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>1. Who We Are</h2>
+    <p>MyMind Studio Pvt Ltd ("MyMind Studio", "we", "our", or "us") operates the website <a href="https://mymindstudio.ai">mymindstudio.ai</a>. We are a custom app and website development agency registered in India, serving clients globally.</p>
+    <p>For privacy-related questions, contact us at: <a href="mailto:hello@mymindstudio.ai">hello@mymindstudio.ai</a></p>
+  </div>
+
+  <div class="doc-section">
+    <h2>2. Information We Collect</h2>
+    <h3>2.1 Information you provide directly</h3>
+    <ul>
+      <li><strong>Contact form submissions:</strong> name, email address, company name, project description, and budget information.</li>
+      <li><strong>Newsletter sign-ups:</strong> email address only.</li>
+      <li><strong>Tool usage:</strong> inputs you enter into our calculators (ROI calculator, cost estimator, audit tool). These are processed locally in your browser and are not stored on our servers.</li>
+      <li><strong>WhatsApp enquiries:</strong> information shared via WhatsApp chat, subject to WhatsApp's own privacy policy.</li>
+    </ul>
+    <h3>2.2 Information collected automatically</h3>
+    <ul>
+      <li><strong>Analytics:</strong> We use Google Analytics 4 and Microsoft Clarity to collect anonymised usage data including pages visited, session duration, device type, and general geographic location (country/city level).</li>
+      <li><strong>Cookies:</strong> We use essential cookies (required for the site to function) and analytics cookies (to understand how visitors use our site). You can decline analytics cookies without affecting site functionality.</li>
+      <li><strong>UTM parameters:</strong> If you arrive via a marketing link, we may read UTM parameters from the URL to personalise the page and measure campaign performance.</li>
+    </ul>
+  </div>
+
+  <div class="doc-section">
+    <h2>3. How We Use Your Information</h2>
+    <ul>
+      <li>To respond to enquiries and provide the free consultation you requested.</li>
+      <li>To send project proposals, roadmaps, and invoices to existing clients.</li>
+      <li>To send the newsletter (if you subscribed). You can unsubscribe at any time via the link in each email.</li>
+      <li>To improve our website based on analytics data.</li>
+      <li>To measure the effectiveness of our marketing campaigns.</li>
+      <li>To comply with legal obligations.</li>
+    </ul>
+    <p>We do not use your data for automated decision-making or profiling that produces legal effects.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>4. Legal Basis for Processing (GDPR / UK GDPR)</h2>
+    <p>For visitors in the European Economic Area, United Kingdom, or other jurisdictions with similar laws:</p>
+    <ul>
+      <li><strong>Contract:</strong> Processing necessary to fulfil a contract with you (e.g., delivering a project).</li>
+      <li><strong>Legitimate interests:</strong> Analytics and site improvement, where this does not override your rights.</li>
+      <li><strong>Consent:</strong> Newsletter subscriptions and non-essential cookies.</li>
+      <li><strong>Legal obligation:</strong> Where required by law.</li>
+    </ul>
+  </div>
+
+  <div class="doc-section">
+    <h2>5. Data Sharing</h2>
+    <p>We do not sell, rent, or trade your personal data. We share data with:</p>
+    <ul>
+      <li><strong>Google LLC</strong> — for Google Analytics 4 and Google Tag Manager. Data may be transferred to the US under Google's standard contractual clauses.</li>
+      <li><strong>Microsoft Corporation</strong> — for Microsoft Clarity (heatmaps and session recordings). Clarity anonymises session recordings; no personally identifiable information is captured in recordings.</li>
+      <li><strong>Email service providers</strong> — to send newsletters and transactional emails.</li>
+      <li><strong>Payment processors</strong> — if you make a payment, your payment data is handled directly by a PCI-compliant payment processor; we do not store card details.</li>
+    </ul>
+  </div>
+
+  <div class="doc-section">
+    <h2>6. Cookies</h2>
+    <p>We use the following types of cookies:</p>
+    <ul>
+      <li><strong>Essential cookies:</strong> Required for navigation and security. Cannot be disabled.</li>
+      <li><strong>Analytics cookies:</strong> Google Analytics and Microsoft Clarity. You may decline these via the cookie banner when you first visit.</li>
+    </ul>
+    <p>Most browsers allow you to control cookies through their settings. Disabling analytics cookies will not affect your ability to use the site.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>7. Data Retention</h2>
+    <ul>
+      <li><strong>Contact form data:</strong> Retained for up to 3 years from last contact, or until you request deletion.</li>
+      <li><strong>Newsletter:</strong> Retained until you unsubscribe.</li>
+      <li><strong>Analytics data:</strong> Retained per the default retention periods of Google Analytics (14 months) and Microsoft Clarity (90 days).</li>
+      <li><strong>Client project data:</strong> Retained for the duration of the contract plus 5 years for legal and accounting purposes.</li>
+    </ul>
+  </div>
+
+  <div class="doc-section">
+    <h2>8. Your Rights</h2>
+    <p>Depending on your location, you may have the right to:</p>
+    <ul>
+      <li><strong>Access</strong> the personal data we hold about you.</li>
+      <li><strong>Correct</strong> inaccurate data.</li>
+      <li><strong>Delete</strong> your data ("right to be forgotten").</li>
+      <li><strong>Restrict</strong> or object to processing.</li>
+      <li><strong>Data portability</strong> — receive your data in a structured format.</li>
+      <li><strong>Withdraw consent</strong> at any time (without affecting lawfulness of prior processing).</li>
+    </ul>
+    <p>To exercise any of these rights, email us at <a href="mailto:hello@mymindstudio.ai">hello@mymindstudio.ai</a>. We will respond within 30 days.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>9. International Transfers</h2>
+    <p>Your data may be processed in countries outside your own, including India and the United States. Where required, we ensure appropriate safeguards are in place (e.g., standard contractual clauses) to protect your data.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>10. Children's Privacy</h2>
+    <p>Our services are not directed at children under 16. We do not knowingly collect personal data from children. If you believe a child has provided us with personal data, please contact us and we will delete it promptly.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>11. Security</h2>
+    <p>We implement appropriate technical and organisational measures to protect your data, including HTTPS encryption, access controls, and regular security reviews. No method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>12. Changes to This Policy</h2>
+    <p>We may update this policy from time to time. The "Last updated" date at the top of this page will reflect any changes. We encourage you to review this page periodically. Continued use of our website after changes constitutes acceptance of the updated policy.</p>
+  </div>
+
+  <div class="doc-section">
+    <h2>13. Contact Us</h2>
+    <p>For any privacy-related questions or requests:</p>
+    <ul>
+      <li>Email: <a href="mailto:hello@mymindstudio.ai">hello@mymindstudio.ai</a></li>
+      <li>Website: <a href="https://mymindstudio.ai">mymindstudio.ai</a></li>
+    </ul>
+    <p>You also have the right to lodge a complaint with your local data protection authority if you believe we have not handled your data in accordance with applicable law.</p>
+  </div>
+
+</div>
+
+<footer>
+  <p class="footer-copy">© 2025 MyMind Studio Pvt Ltd · All rights reserved</p>
+  <div class="flegal">
+    <a href="/privacy-policy">Privacy Policy</a>
+    <a href="/terms">Terms of Service</a>
+    <a href="/">Home</a>
+  </div>
+</footer>
+
+<script>
+function toggleMenu(){
+  document.getElementById('ham').classList.toggle('open');
+  document.getElementById('mobMenu').classList.toggle('open');
+}
+function cm(){
+  document.getElementById('ham').classList.remove('open');
+  document.getElementById('mobMenu').classList.remove('open');
+}
+</script>
+</body>
+</html>

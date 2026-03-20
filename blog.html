@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Blog | MyMind Studio — App & Website Development Insights</title>
+<meta name="description" content="Practical articles on app development, website builds, AI automation, and digital strategy from the team at MyMind Studio."/>
+<link rel="canonical" href="https://mymindstudio.ai/blog"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://mymindstudio.ai/blog"/>
+<meta property="og:title" content="Blog | MyMind Studio"/>
+<meta property="og:description" content="Practical articles on app development, website builds, AI automation, and digital strategy."/>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap&font-display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#5c6272;--blob:#0b0c10;--lime:#aaff00;--lime2:#88cc00;
+  --card:rgba(14,16,22,0.82);--card2:rgba(20,22,30,0.78);--card3:rgba(8,10,16,0.9);
+  --text:#ffffff;--muted:#a8b0c2;--muted2:#6e7585;
+  --border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.06);
+  --lime-border:rgba(170,255,0,0.25);--lime-bg:rgba(170,255,0,0.08);
+  --f:'Barlow',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.5}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.4);border-radius:2px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(80,86,100,0.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2);transition:background .3s}
+.nav-logo{background:rgba(255,255,255,.12);border:1px solid var(--border);color:var(--text);font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:8px 18px;border-radius:100px;text-decoration:none;transition:all .2s}
+.nav-logo:hover{background:rgba(255,255,255,.2)}
+.nav-pills{display:flex;align-items:center;gap:5px}
+.np{font-size:.73rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:8px 16px;border-radius:100px;text-decoration:none;color:rgba(255,255,255,.6);background:transparent;border:none;cursor:pointer;transition:all .2s;font-family:var(--f)}
+.np.active,.np:hover{background:#0d0e12;color:var(--text)}
+.nav-cta{display:inline-flex;align-items:center;padding:9px 20px;background:var(--lime);color:#000;font-family:var(--f);font-size:.73rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:none;cursor:pointer;border-radius:100px;transition:all .2s;text-decoration:none}
+.nav-cta:hover{background:var(--lime2)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:20px;height:1.5px;background:var(--text);transition:all .3s;border-radius:2px}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mob-menu{display:none;position:fixed;inset:0;background:rgba(10,12,18,.97);z-index:199;flex-direction:column;align-items:center;justify-content:center;gap:2.2rem}
+.mob-menu.open{display:flex}
+.mob-menu a{font-size:1.9rem;font-weight:900;color:var(--text);text-decoration:none;text-transform:uppercase;transition:color .2s}
+.mob-menu a:hover{color:var(--lime)}
+@media(max-width:768px){.nav-pills{display:none}.hamburger{display:flex}}
+
+/* HERO */
+.blog-hero{padding:140px 40px 80px;background:rgba(0,0,0,.18);position:relative;overflow:hidden}
+.blog-hero::before{content:'';position:absolute;top:-100px;right:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(170,255,0,.06),transparent 70%);pointer-events:none}
+.blog-hero-inner{max-width:1100px;margin:0 auto}
+.chip{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:.8rem;display:block}
+.blog-hero h1{font-size:clamp(36px,5vw,72px);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:16px}
+.blog-hero h1 span{color:var(--lime)}
+.blog-hero p{font-size:1rem;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:32px}
+
+/* FILTER TABS */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap}
+.filter-btn{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 18px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:var(--f);transition:all .2s}
+.filter-btn.active,.filter-btn:hover{background:var(--lime);color:#000;border-color:var(--lime)}
+
+/* GRID */
+.blog-grid-wrap{max-width:1100px;margin:0 auto;padding:60px 40px 100px}
+.blog-featured{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;margin-bottom:20px}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.blog-card{background:var(--card2);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all .3s;cursor:pointer;text-decoration:none;display:flex;flex-direction:column}
+.blog-card:hover{border-color:rgba(170,255,0,.3);transform:translateY(-4px)}
+.blog-card.featured{grid-column:auto}
+.blog-thumb{height:200px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden}
+.blog-thumb-feat{height:260px}
+.blog-body{padding:22px 24px;flex:1;display:flex;flex-direction:column}
+.blog-cat{font-size:.6rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px;display:inline-block;padding:3px 10px;border-radius:100px}
+.cat-dev{background:rgba(170,255,0,.1);color:var(--lime);border:1px solid rgba(170,255,0,.2)}
+.cat-ai{background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.2)}
+.cat-design{background:rgba(96,165,250,.1);color:#60a5fa;border:1px solid rgba(96,165,250,.2)}
+.cat-business{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.2)}
+.cat-seo{background:rgba(52,211,153,.1);color:#34d399;border:1px solid rgba(52,211,153,.2)}
+.blog-title{font-size:1rem;font-weight:800;letter-spacing:-.02em;line-height:1.3;margin-bottom:10px;color:var(--text)}
+.blog-title-feat{font-size:1.3rem}
+.blog-excerpt{font-size:.8rem;color:var(--muted);line-height:1.65;flex:1;margin-bottom:16px}
+.blog-meta{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border2)}
+.blog-author{display:flex;align-items:center;gap:8px}
+.blog-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.66rem;font-weight:800;color:#000;flex-shrink:0}
+.blog-av-name{font-size:.76rem;font-weight:600;color:var(--text)}
+.blog-date{font-size:.7rem;color:var(--muted2)}
+.blog-read{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--lime);display:flex;align-items:center;gap:4px;transition:gap .2s}
+.blog-card:hover .blog-read{gap:8px}
+
+/* PAGINATION */
+.pagination{display:flex;gap:6px;justify-content:center;padding:20px 0 60px;max-width:1100px;margin:0 auto;padding-left:40px;padding-right:40px}
+.page-btn{width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--f);font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.page-btn.active,.page-btn:hover{background:var(--lime);color:#000;border-color:var(--lime)}
+
+/* NEWSLETTER */
+.newsletter{background:rgba(0,0,0,.2);border-top:1px solid var(--border2);padding:60px 40px}
+.newsletter-inner{max-width:640px;margin:0 auto;text-align:center}
+.newsletter h2{font-size:clamp(24px,3.5vw,38px);font-weight:900;letter-spacing:-.03em;margin-bottom:12px}
+.newsletter h2 span{color:var(--lime)}
+.newsletter p{font-size:.9rem;color:var(--muted);line-height:1.65;margin-bottom:28px}
+.nl-form{display:flex;gap:10px;max-width:440px;margin:0 auto}
+.nl-input{flex:1;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-family:var(--f);font-size:.88rem;outline:none;transition:border-color .2s}
+.nl-input:focus{border-color:var(--lime)}
+.nl-input::placeholder{color:var(--muted2)}
+.nl-submit{background:var(--lime);color:#000;border:none;border-radius:10px;padding:12px 22px;font-family:var(--f);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap}
+.nl-submit:hover{background:var(--lime2)}
+.nl-note{font-size:.7rem;color:var(--muted2);margin-top:10px}
+
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--border2);padding:60px 40px 30px;position:relative;overflow:hidden}
+.footer-top{position:relative;z-index:1;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-logo-pill{display:inline-block;background:rgba(255,255,255,.12);border:1px solid var(--border);border-radius:100px;padding:9px 20px;font-size:.82rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.footer-brand p{font-size:.82rem;color:var(--muted);line-height:1.7;max-width:260px;margin-bottom:16px}
+.socials{display:flex;gap:8px}
+.soc{width:34px;height:34px;border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.82rem;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--muted)}
+.soc:hover{border-color:var(--lime);color:var(--lime)}
+.ftitle{font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;font-weight:800;margin-bottom:1.2rem}
+.flinks{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.flinks a{font-size:.82rem;color:var(--muted);text-decoration:none;transition:color .2s}
+.flinks a:hover{color:var(--lime)}
+.flinks a.lime{color:var(--lime)}
+.footer-bottom{position:relative;z-index:1;border-top:1px solid var(--border2);padding-top:1.3rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem}
+.footer-copy{font-size:.72rem;color:var(--muted2)}
+.flegal{display:flex;gap:1.5rem}
+.flegal a{font-size:.72rem;color:var(--muted2);text-decoration:none;transition:color .2s}
+.flegal a:hover{color:var(--text)}
+@media(max-width:900px){
+  .blog-featured{grid-template-columns:1fr}
+  .blog-grid{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .blog-grid-wrap{padding:40px 24px 80px}
+  .blog-hero{padding:120px 24px 60px}
+  .newsletter{padding:40px 24px}
+  .nl-form{flex-direction:column}
+  .nl-submit{width:100%}
+}
+@media(max-width:600px){
+  .blog-grid{grid-template-columns:1fr}
+  .filter-row{gap:6px}
+  .filter-btn{font-size:.66rem;padding:7px 13px}
+  footer{padding:40px 24px 24px}
+  .footer-top{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- MOB MENU -->
+<div class="mob-menu" id="mobMenu">
+  <a href="/" onclick="cm()">Home</a>
+  <a href="/#why" onclick="cm()">Why Us</a>
+  <a href="/#process" onclick="cm()">Process</a>
+  <a href="/#services" onclick="cm()">Services</a>
+  <a href="/#pricing" onclick="cm()">Pricing</a>
+  <a href="/#contact" onclick="cm()">Let's Talk</a>
+</div>
+
+<nav>
+  <a class="nav-logo" href="/">MyMind Studio</a>
+  <div class="nav-pills">
+    <a class="np" href="/#why">Why Us</a>
+    <a class="np" href="/#process">Process</a>
+    <a class="np" href="/#services">Services</a>
+    <a class="np" href="/#pricing">Pricing</a>
+    <a class="np active" href="/blog">Blog</a>
+    <a class="np" href="/#contact">Contact</a>
+  </div>
+  <a class="nav-cta" href="/#contact">Free Consultation →</a>
+  <button class="hamburger" id="ham" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<div class="blog-hero">
+  <div class="blog-hero-inner">
+    <span class="chip">Insights &amp; Resources</span>
+    <h1>The <span>Build</span> Blog</h1>
+    <p>Practical articles on app development, AI automation, website strategy, and what it actually takes to launch a digital product in 2025.</p>
+    <div class="filter-row" id="filters">
+      <button class="filter-btn active" data-cat="all" onclick="filterPosts(this,'all')">All Posts</button>
+      <button class="filter-btn" data-cat="dev" onclick="filterPosts(this,'dev')">Development</button>
+      <button class="filter-btn" data-cat="ai" onclick="filterPosts(this,'ai')">AI &amp; Automation</button>
+      <button class="filter-btn" data-cat="design" onclick="filterPosts(this,'design')">Design</button>
+      <button class="filter-btn" data-cat="business" onclick="filterPosts(this,'business')">Business</button>
+      <button class="filter-btn" data-cat="seo" onclick="filterPosts(this,'seo')">SEO</button>
+    </div>
+  </div>
+</div>
+
+<!-- BLOG GRID -->
+<div class="blog-grid-wrap">
+
+  <!-- Featured row -->
+  <div class="blog-featured" id="featured-row">
+    <a class="blog-card" href="#" data-cat="dev">
+      <div class="blog-thumb blog-thumb-feat" style="background:linear-gradient(135deg,#0b0c10,#1a1c24)">🚀</div>
+      <div class="blog-body">
+        <span class="blog-cat cat-dev">Development</span>
+        <h2 class="blog-title blog-title-feat">How We Build a Full SaaS App in 8 Weeks: Our Exact Process</h2>
+        <p class="blog-excerpt">From the first consultation call to live launch — a detailed walkthrough of how our team scopes, plans, builds, and ships a production-ready SaaS platform for a real client.</p>
+        <div class="blog-meta">
+          <div class="blog-author">
+            <div class="blog-av" style="background:var(--lime)">AK</div>
+            <div>
+              <div class="blog-av-name">Arjun Kumar</div>
+              <div class="blog-date">12 Feb 2025 · 8 min read</div>
+            </div>
+          </div>
+          <span class="blog-read">Read →</span>
+        </div>
+      </div>
+    </a>
+    <a class="blog-card" href="#" data-cat="ai">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#0f1018,#1e1030)">🤖</div>
+      <div class="blog-body">
+        <span class="blog-cat cat-ai">AI &amp; Automation</span>
+        <h2 class="blog-title">WhatsApp Bots That Actually Convert: What We Learned Building 30+</h2>
+        <p class="blog-excerpt">Most WhatsApp bots feel robotic and lose users in 2 messages. Here's the conversation design framework we use to build bots with 60%+ completion rates.</p>
+        <div class="blog-meta">
+          <div class="blog-author">
+            <div class="blog-av" style="background:#a78bfa">PM</div>
+            <div>
+              <div class="blog-av-name">Priya Mehta</div>
+              <div class="blog-date">5 Feb 2025 · 6 min read</div>
+            </div>
+          </div>
+          <span class="blog-read">Read →</span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Main grid -->
+  <div class="blog-grid" id="blog-grid">
+
+    <a class="blog-card" href="#" data-cat="business">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#0c1008,#1a200e)">📊</div>
+      <div class="blog-body">
+        <span class="blog-cat cat-business">Business</span>
+        <h2 class="blog-title">ROI of Custom Dev vs No-Code: An Honest Comparison for 2025</h2>
+        <p class="blog-excerpt">We ran the numbers across 40 client projects. When does Webflow beat Next.js? When does it cost you $50k more in the long run?</p>
+        <div class="blog-meta">
+          <div class="blog-author">
+            <div class="blog-av" style="background:#fbbf24">RK</div>
+            <div>
+              <div class="blog-av-name">Rahul K.</div>
+              <div class="blog-date">28 Jan 2025 · 7 min read</div>
+            </div>
+          </div>
+          <span class="blog-read">Read →</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="blog-card" href="#" data-cat="dev">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#080c18,#0f1a2e)">⚡</div>
+      <div class="blog-body">
+        <span class="blog-cat cat-dev">Development</span>
+        <h2 class="blog-title">Next.js 15 vs Remix: Which Should You Use for Your SaaS in 2025?</h2>
+        <p class="blog-excerpt">We've built production apps in both. Here's our honest breakdown of performance, DX, deployment, and when each framework is the right call.</p>
+        <div class="blog-meta">
+          <div class="blog-author">
+            <div class="blog-av" style="background:var(--lime)">AK</div>
+            <div>
+              <div class="blog-av-name">Arjun Kumar</div>
+              <div class="blog-date">21 Jan 2025 · 9 min read</div>
+            </div>
+          </div>
+          <span class="blog-read">Read →</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="blog-card" href="#" data-cat="seo">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#081810,#0e2018)">🔍</div>
+      <div class="blog-body">
+        <span class="blog-cat cat-seo">SEO</span>
+        <h2 class="blog-title">Why Your SaaS Landing Page Isn't Ranking (And the Fix)</h2>
+        <p class="blog-excerpt">The 7 technical SEO mistakes we see on almost every SaaS landing page, and the exact changes we make that move pages from page 5 to page 1.</p>
+        <div class="blog-meta">
+          <div class="blog-author">
+            <div class="blog-av" style="background:#34d399">SL</div>
+            <div>
+              <div class="blog-av-name">Sunita L.</div>
+              <div class="blog-date">14 Jan 2025 · 5 min read</div>
+            </div>
+          </div>
+          <span class="blog-read">Read →</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="blog-card" href="#" data-cat="design">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#100810,#1e0e20)">🎨</div>
+      <div class="blog-body">
+        <span class="blog-cat cat-design">Design</span>
+        <h2 class="blog-title">The Anatomy of a High-Converting App Onboarding Flow</h2>
+        <p class="blog-excerpt">We've A/B tested onboarding flows across 15 apps. These are the UX patterns that consistently raise activation rates by 30% or more.</p>
+        <div class="blog-meta">
+          <div class="blog-author">
+            <div class="blog-av" style="background:#60a5fa">DN</div>
+            <div>
+              <div class="blog-av-name">Divya N.</div>
+              <div class="blog-date">7 Jan 2025 · 6 min read</div>
+            </div>
+          </div>
+          <span class="blog-read">Read →</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="blog-card" href="#" data-cat="ai">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#080810,#10101e)">🧠</div>
+      <div class="blog-body">
+        <span class="blog-cat cat-ai">AI &amp; Automation</span>
+        <h2 class="blog-title">Integrating Claude API Into a SaaS Product: A Step-by-Step Guide</h2>
+        <p class="blog-excerpt">How we integrated Anthropic's Claude into a client's CRM tool — complete with prompt engineering, cost control, and fallback handling.</p>
+        <div class="blog-meta">
+          <div class="blog-author">
+            <div class="blog-av" style="background:#a78bfa">PM</div>
+            <div>
+              <div class="blog-av-name">Priya Mehta</div>
+              <div class="blog-date">31 Dec 2024 · 10 min read</div>
+            </div>
+          </div>
+          <span class="blog-read">Read →</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="blog-card" href="#" data-cat="business">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#100c08,#201808)">💼</div>
+      <div class="blog-body">
+        <span class="blog-cat cat-business">Business</span>
+        <h2 class="blog-title">How to Write a Tech Brief That Gets You Accurate Quotes</h2>
+        <p class="blog-excerpt">Most clients get wildly different quotes because their brief is vague. Here's a template we use with new clients that eliminates ambiguity on both sides.</p>
+        <div class="blog-meta">
+          <div class="blog-author">
+            <div class="blog-av" style="background:#fbbf24">RK</div>
+            <div>
+              <div class="blog-av-name">Rahul K.</div>
+              <div class="blog-date">18 Dec 2024 · 5 min read</div>
+            </div>
+          </div>
+          <span class="blog-read">Read →</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="blog-card" href="#" data-cat="dev">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#040810,#081020)">📱</div>
+      <div class="blog-body">
+        <span class="blog-cat cat-dev">Development</span>
+        <h2 class="blog-title">React Native vs Flutter in 2025: The Truth After Building Both</h2>
+        <p class="blog-excerpt">We've shipped 12 React Native apps and 8 Flutter apps. Here's the honest truth about performance, ecosystem maturity, and team DX for each.</p>
+        <div class="blog-meta">
+          <div class="blog-author">
+            <div class="blog-av" style="background:var(--lime)">AK</div>
+            <div>
+              <div class="blog-av-name">Arjun Kumar</div>
+              <div class="blog-date">10 Dec 2024 · 8 min read</div>
+            </div>
+          </div>
+          <span class="blog-read">Read →</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="blog-card" href="#" data-cat="seo">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#041010,#081818)">📈</div>
+      <div class="blog-body">
+        <span class="blog-cat cat-seo">SEO</span>
+        <h2 class="blog-title">Core Web Vitals in 2025: What Actually Moves the Needle for Rankings</h2>
+        <p class="blog-excerpt">After auditing 60+ sites, we know which CWV improvements actually affect search rankings and which are just vanity metrics. Here's what matters.</p>
+        <div class="blog-meta">
+          <div class="blog-author">
+            <div class="blog-av" style="background:#34d399">SL</div>
+            <div>
+              <div class="blog-av-name">Sunita L.</div>
+              <div class="blog-date">2 Dec 2024 · 6 min read</div>
+            </div>
+          </div>
+          <span class="blog-read">Read →</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="blog-card" href="#" data-cat="design">
+      <div class="blog-thumb" style="background:linear-gradient(135deg,#0c0810,#180e1c)">✨</div>
+      <div class="blog-body">
+        <span class="blog-cat cat-design">Design</span>
+        <h2 class="blog-title">Dark Mode Done Right: Design Principles We Use on Every Project</h2>
+        <p class="blog-excerpt">Dark mode isn't just inverting colours. These are the contrast ratios, colour token systems, and component patterns we use to make dark UIs look premium.</p>
+        <div class="blog-meta">
+          <div class="blog-author">
+            <div class="blog-av" style="background:#60a5fa">DN</div>
+            <div>
+              <div class="blog-av-name">Divya N.</div>
+              <div class="blog-date">25 Nov 2024 · 7 min read</div>
+            </div>
+          </div>
+          <span class="blog-read">Read →</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- PAGINATION -->
+<div class="pagination">
+  <button class="page-btn active">1</button>
+  <button class="page-btn">2</button>
+  <button class="page-btn">3</button>
+  <button class="page-btn">→</button>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <div class="newsletter-inner">
+    <span class="chip">Stay Updated</span>
+    <h2>Get the <span>best articles</span> in your inbox</h2>
+    <p>No spam. Just one email per week with our best articles on development, AI, and building digital products.</p>
+    <form class="nl-form" name="newsletter" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onsubmit="nlSubmit(event)">
+      <input type="hidden" name="form-name" value="newsletter"/>
+      <input class="nl-input" type="email" name="email" placeholder="your@email.com" id="nlEmail"/>
+      <button type="submit" class="nl-submit">Subscribe →</button>
+    </form>
+    <p class="nl-note" id="nlMsg">Join 1,200+ founders, developers, and product managers.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo-pill">MyMind Studio</div>
+      <p>Custom app &amp; website development that actually delivers. We listen, plan, build with precision, and launch with you.</p>
+      <div class="socials">
+        <a class="soc" href="https://twitter.com/mymindstudio" title="Twitter / X">𝕏</a>
+        <a class="soc" href="https://github.com/mymindstudio" title="GitHub">⌥</a>
+        <a class="soc" href="https://linkedin.com/company/mymindstudio" title="LinkedIn">in</a>
+        <a class="soc" href="https://wa.me/919999999999" title="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div>
+      <div class="ftitle">Services</div>
+      <ul class="flinks">
+        <li><a href="/#services">Custom App Dev</a></li>
+        <li><a href="/#services">Website Development</a></li>
+        <li><a href="/#services">AI Chatbots</a></li>
+        <li><a href="/#services">SEO &amp; Marketing</a></li>
+        <li><a href="/#services">Go-to-Market</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="ftitle">Company</div>
+      <ul class="flinks">
+        <li><a href="/#why">Why Us</a></li>
+        <li><a href="/#process">Our Process</a></li>
+        <li><a href="/#industries">Industries</a></li>
+        <li><a href="/#testimonials">Case Studies</a></li>
+        <li><a href="/blog" class="lime">Blog</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="ftitle">Start Here</div>
+      <ul class="flinks">
+        <li><a href="/#contact" class="lime">Free Consultation ↗</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="mailto:hello@mymindstudio.ai">hello@mymindstudio.ai</a></li>
+        <li><a href="https://wa.me/919999999999" target="_blank">WhatsApp Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 MyMind Studio Pvt Ltd · mymindstudio.ai · All rights reserved</p>
+    <div class="flegal">
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleMenu(){
+  document.getElementById('ham').classList.toggle('open');
+  document.getElementById('mobMenu').classList.toggle('open');
+}
+function cm(){
+  document.getElementById('ham').classList.remove('open');
+  document.getElementById('mobMenu').classList.remove('open');
+}
+
+function filterPosts(btn, cat){
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = document.querySelectorAll('#blog-grid .blog-card, #featured-row .blog-card');
+  if(cat === 'all'){
+    cards.forEach(c => c.style.display = '');
+    document.getElementById('featured-row').style.display = '';
+  } else {
+    document.getElementById('featured-row').style.display = 'none';
+    cards.forEach(c => {
+      c.style.display = c.dataset.cat === cat ? '' : 'none';
+    });
+    document.getElementById('featured-row').querySelectorAll('.blog-card').forEach(c => {
+      if(c.dataset.cat === cat) {
+        c.style.display = '';
+        c.closest('#featured-row') && (document.getElementById('featured-row').style.display = '');
+      }
+    });
+  }
+}
+
+function nlSubmit(e){
+  if(e) e.preventDefault();
+  const email = document.getElementById('nlEmail').value;
+  if(!email || !email.includes('@')){ return; }
+  const form = e && e.target ? e.target : document.querySelector('[name="newsletter"]');
+  fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData(form)).toString()}).catch(()=>{});
+  document.getElementById('nlMsg').textContent = '✓ You\'re subscribed! First issue arrives Monday.';
+  document.getElementById('nlMsg').style.color = 'var(--lime)';
+  document.getElementById('nlEmail').value = '';
+}
+</script>
+</body>
+</html>

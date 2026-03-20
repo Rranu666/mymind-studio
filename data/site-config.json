@@ -1,0 +1,44 @@
+{
+  "siteName": "MyMind Studio",
+  "legalName": "MyMind Studio Pvt Ltd",
+  "domain": "mymindstudio.ai",
+  "email": "hello@mymindstudio.ai",
+  "whatsapp": "919999999999",
+  "whatsappDisplay": "+91 99999 99999",
+  "address": {
+    "city": "Bengaluru",
+    "state": "Karnataka",
+    "country": "India"
+  },
+  "social": {
+    "twitter": "https://twitter.com/mymindstudio",
+    "github": "https://github.com/mymindstudio",
+    "linkedin": "https://linkedin.com/company/mymindstudio",
+    "instagram": "https://instagram.com/mymindstudio"
+  },
+  "slotsAvailable": 3,
+  "slotsMonth": "April",
+  "ratingValue": "4.9",
+  "reviewCount": "12",
+  "stats": {
+    "projectsDelivered": "120+",
+    "countries": "20+",
+    "clientRetention": "98%",
+    "avgDelivery": "6 wks"
+  },
+  "nav": [
+    { "label": "Why Us",  "href": "/#why" },
+    { "label": "Process", "href": "/#process" },
+    { "label": "Services","href": "/#services" },
+    { "label": "Pricing", "href": "/#pricing" },
+    { "label": "Blog",    "href": "/blog" },
+    { "label": "Contact", "href": "/#contact" }
+  ],
+  "pages": [
+    { "path": "/",               "file": "index.html",          "title": "Home" },
+    { "path": "/blog",           "file": "blog.html",           "title": "Blog" },
+    { "path": "/privacy-policy", "file": "privacy-policy.html", "title": "Privacy Policy" },
+    { "path": "/terms",          "file": "terms.html",          "title": "Terms of Service" },
+    { "path": "/how-it-works",   "file": "explainer-video.html","title": "How It Works" }
+  ]
+}

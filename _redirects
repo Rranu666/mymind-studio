@@ -1,0 +1,11 @@
+# Clean URLs — these shadow the netlify.toml redirects as a fallback
+/blog             /blog.html              200
+/privacy-policy   /privacy-policy.html    200
+/terms            /terms.html             200
+/how-it-works     /explainer-video.html   200
+
+# Legacy / marketing paths
+/consultation     /#contact               302
+/free-call        /#contact               302
+/tools            /#tools                 302
+/pricing          /#pricing               302
