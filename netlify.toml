@@ -5,6 +5,11 @@
 # These let /blog work instead of /blog.html on the live site
 
 [[redirects]]
+  from = "/admin"
+  to   = "/admin/index.html"
+  status = 200
+
+[[redirects]]
   from = "/blog"
   to   = "/blog.html"
   status = 200

@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>MyMind Studio — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0f14;--surface:#161b27;--surface2:#1e2538;
+  --border:rgba(255,255,255,.08);--text:#e8eaf0;--text2:#8b92a5;
+  --accent:#aaff00;--indigo:#6366f1;--red:#ef4444;--yellow:#f59e0b;--green:#22c55e;
+  --sidebar-w:240px;--topbar-h:64px;
+  --radius:12px;--transition:.2s ease;
+}
+.light{
+  --bg:#f0f2f7;--surface:#ffffff;--surface2:#f4f6fa;
+  --border:rgba(0,0,0,.08);--text:#1a1d2e;--text2:#6b7280;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background var(--transition),color var(--transition)}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+input,select,textarea{font-family:inherit}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
+.login-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px 40px;width:420px;max-width:95vw}
+.login-logo{text-align:center;margin-bottom:32px}
+.login-logo h1{font-size:24px;font-weight:700;color:var(--accent)}
+.login-logo p{color:var(--text2);font-size:14px;margin-top:4px}
+.login-box h2{font-size:22px;font-weight:600;margin-bottom:8px}
+.login-box .sub{color:var(--text2);font-size:14px;margin-bottom:28px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:13px;font-weight:500;color:var(--text2);margin-bottom:6px}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);font-size:14px;outline:none;transition:border var(--transition)}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent)}
+.form-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;font-size:13px}
+.form-row label{display:flex;align-items:center;gap:8px;color:var(--text2);cursor:pointer}
+.form-row a{color:var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:500;border:none;transition:all var(--transition)}
+.btn-primary{background:var(--accent);color:#000;font-weight:600}
+.btn-primary:hover{opacity:.85}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{opacity:.85}
+.btn-full{width:100%;justify-content:center;padding:13px}
+.login-error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:16px;display:none}
+
+/* LAYOUT */
+#app{display:none;min-height:100vh}
+#sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;transition:width var(--transition)}
+#sidebar.collapsed{width:64px}
+#sidebar.collapsed .nav-label,.sidebar-section-label,.user-name,.user-role{display:none}
+#sidebar.collapsed .nav-item{justify-content:center;padding:10px}
+#sidebar.collapsed .sidebar-logo span{display:none}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:20px 16px;font-size:16px;font-weight:700;color:var(--accent);border-bottom:1px solid var(--border);min-height:64px}
+.sidebar-logo svg{flex-shrink:0}
+.sidebar-nav{flex:1;overflow-y:auto;padding:12px 8px}
+.sidebar-section-label{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;padding:14px 8px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:all var(--transition);white-space:nowrap;color:var(--text2);font-size:14px;font-weight:500;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:rgba(170,255,0,.1);color:var(--accent);border-left:3px solid var(--accent)}
+.nav-icon{width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px}
+.sidebar-footer{border-top:1px solid var(--border);padding:12px 8px}
+.sidebar-user{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#000;flex-shrink:0}
+.user-name{font-size:13px;font-weight:600}
+.user-role{font-size:11px;color:var(--text2)}
+.collapse-btn{position:absolute;top:50%;right:-14px;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:all var(--transition);color:var(--text)}
+.collapse-btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+
+/* TOPBAR */
+#topbar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--topbar-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;z-index:99;transition:left var(--transition)}
+.sidebar.collapsed~#topbar,body.collapsed #topbar{left:64px}
+#page-title{font-size:18px;font-weight:600;flex:0 0 auto}
+.topbar-search{flex:1;max-width:360px;position:relative}
+.topbar-search input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 14px 8px 38px;font-size:14px;color:var(--text);outline:none;transition:border var(--transition)}
+.topbar-search input:focus{border-color:var(--accent)}
+.topbar-search .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text2);font-size:14px}
+.topbar-actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+.icon-btn{width:38px;height:38px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2);transition:all var(--transition);position:relative}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent)}
+.notif-badge{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid var(--surface)}
+.dropdown{position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;min-width:260px;box-shadow:0 8px 32px rgba(0,0,0,.3);z-index:200;display:none;overflow:hidden}
+.dropdown.open{display:block}
+.notif-header{padding:14px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600}
+.notif-item{padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background var(--transition)}
+.notif-item:hover{background:var(--surface2)}
+.notif-item:last-child{border-bottom:none}
+.notif-title{font-size:13px;font-weight:500}
+.notif-time{font-size:11px;color:var(--text2);margin-top:2px}
+.dd-item{display:flex;align-items:center;gap:10px;padding:11px 16px;font-size:14px;cursor:pointer;transition:background var(--transition)}
+.dd-item:hover{background:var(--surface2)}
+.dd-sep{height:1px;background:var(--border);margin:4px 0}
+
+/* MAIN */
+#main{margin-left:var(--sidebar-w);margin-top:var(--topbar-h);padding:28px;min-height:calc(100vh - var(--topbar-h));transition:margin-left var(--transition)}
+.section{display:none}
+.section.active{display:block}
+
+/* CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color var(--transition)}
+.stat-card:hover{border-color:var(--accent)}
+.stat-label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;font-weight:500}
+.stat-value{font-size:28px;font-weight:700;margin:8px 0 4px}
+.stat-change{font-size:12px;color:var(--green)}
+.stat-change.neg{color:var(--red)}
+.charts-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:24px}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.chart-card h3{font-size:15px;font-weight:600;margin-bottom:16px}
+.chart-wrap{position:relative;height:220px}
+
+/* TABLES */
+.table-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px}
+.table-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+.table-header h3{font-size:15px;font-weight:600}
+.table-actions{display:flex;gap:8px;align-items:center}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border)}
+td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-green{background:rgba(34,197,94,.15);color:var(--green)}
+.badge-red{background:rgba(239,68,68,.15);color:var(--red)}
+.badge-yellow{background:rgba(245,158,11,.15);color:var(--yellow)}
+.badge-blue{background:rgba(99,102,241,.15);color:var(--indigo)}
+.badge-gray{background:rgba(139,146,165,.15);color:var(--text2)}
+.action-btns{display:flex;gap:6px}
+.act-btn{width:30px;height:30px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;transition:all var(--transition);color:var(--text2)}
+.act-btn:hover{border-color:var(--accent);color:var(--accent)}
+.act-btn.danger:hover{border-color:var(--red);color:var(--red)}
+
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--surface2);border-radius:10px;padding:4px;margin-bottom:20px;border:1px solid var(--border);width:fit-content}
+.tab{padding:7px 16px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;color:var(--text2);transition:all var(--transition);border:none;background:none}
+.tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:600px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.modal-lg{width:860px}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:1}
+.modal-header h3{font-size:17px;font-weight:600}
+.modal-close{width:32px;height:32px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--text2);line-height:1}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-body{padding:24px}
+.modal-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 24px;border-top:1px solid var(--border)}
+
+/* TOAST */
+#toast-container{position:fixed;bottom:24px;right:24px;z-index:1000;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-size:14px;box-shadow:0 4px 20px rgba(0,0,0,.3);animation:toastIn .3s ease;display:flex;align-items:center;gap:10px;min-width:260px}
+.toast.success{border-left:3px solid var(--green)}
+.toast.error{border-left:3px solid var(--red)}
+.toast.info{border-left:3px solid var(--indigo)}
+@keyframes toastIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* MISC */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.page-header h2{font-size:20px;font-weight:600}
+.search-filter{display:flex;gap:10px;align-items:center;margin-bottom:16px}
+.search-filter input{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:14px;color:var(--text);outline:none;flex:1;max-width:300px}
+.search-filter input:focus{border-color:var(--accent)}
+.avatar-sm{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#000;flex-shrink:0}
+.toggle{width:40px;height:22px;background:var(--border);border-radius:11px;position:relative;cursor:pointer;transition:background var(--transition);border:none;flex-shrink:0}
+.toggle.on{background:var(--accent)}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform var(--transition)}
+.toggle.on::after{transform:translateX(18px);background:#000}
+.seo-ring{width:100px;height:100px;position:relative}
+.seo-ring svg{transform:rotate(-90deg)}
+.seo-ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:20px;font-weight:700}
+.char-counter{font-size:11px;color:var(--text2);text-align:right;margin-top:3px}
+.char-counter.warn{color:var(--yellow)}
+.char-counter.over{color:var(--red)}
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;padding:16px}
+.media-item{aspect-ratio:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition);font-size:32px;gap:6px;position:relative}
+.media-item:hover,.media-item.selected{border-color:var(--accent)}
+.media-item.selected{background:rgba(170,255,0,.06)}
+.media-name{font-size:10px;color:var(--text2);text-align:center;padding:0 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:40px;text-align:center;cursor:pointer;transition:all var(--transition);margin-bottom:16px}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--accent);background:rgba(170,255,0,.04)}
+.upload-icon{font-size:40px;margin-bottom:12px}
+.upload-text{font-size:15px;font-weight:500;margin-bottom:4px}
+.upload-sub{font-size:13px;color:var(--text2)}
+.lang-table td,.lang-table th{padding:10px 14px}
+.trans-key{font-family:monospace;font-size:12px;color:var(--text2)}
+.activity-feed{display:flex;flex-direction:column;gap:0}
+.activity-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.activity-item:last-child{border-bottom:none}
+.activity-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px}
+.activity-text{font-size:14px;line-height:1.5}
+.activity-time{font-size:12px;color:var(--text2);margin-top:2px}
+.quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.quick-action{display:flex;align-items:center;gap:8px;padding:10px 18px;background:var(--surface);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;transition:all var(--transition);color:var(--text2)}
+.quick-action:hover{border-color:var(--accent);color:var(--accent)}
+.settings-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.settings-section h3{font-size:15px;font-weight:600;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.settings-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group .hint{font-size:11px;color:var(--text2);margin-top:4px}
+.input-with-btn{display:flex;gap:8px}
+.input-with-btn input{flex:1}
+.color-preview{width:38px;height:38px;border-radius:6px;border:1px solid var(--border);flex-shrink:0}
+.integration-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.integration-info{display:flex;align-items:center;gap:12px}
+.integration-icon{width:40px;height:40px;border-radius:8px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:20px}
+.integration-name{font-size:14px;font-weight:500}
+.integration-desc{font-size:12px;color:var(--text2);margin-top:2px}
+.campaign-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.popup-editor{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.date-selector{display:flex;gap:6px;margin-bottom:20px}
+.date-btn{padding:6px 14px;border-radius:6px;font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;transition:all var(--transition)}
+.date-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
+.full-chart-wrap{height:280px;position:relative}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.masked-input{position:relative}
+.masked-input input{padding-right:44px}
+.masked-input .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text2);cursor:pointer;font-size:16px}
+@media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr)}.charts-grid{grid-template-columns:1fr}.settings-row{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}}
+@media(max-width:700px){#sidebar{width:64px}.nav-label,.sidebar-section-label,.user-name,.user-role{display:none}.nav-item{justify-content:center;padding:10px}.sidebar-logo span{display:none}#topbar,#main{left:64px;margin-left:64px}.stats-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+<div class="login-box">
+  <div class="login-logo"><h1>MyMind Studio</h1><p>Admin Dashboard</p></div>
+  <h2>Welcome back</h2>
+  <p class="sub">Sign in to your admin account</p>
+  <div class="login-error" id="login-error">Invalid email or password. Please try again.</div>
+  <div class="form-group"><label>Email address</label><input type="email" id="login-email" placeholder="admin@gmail.com" value="admin@gmail.com"></div>
+  <div class="form-group"><label>Password</label><input type="password" id="login-password" placeholder="••••••••" value="123"></div>
+  <div class="form-row">
+    <label><input type="checkbox" id="remember-me"> Remember me</label>
+    <a href="#">Forgot password?</a>
+  </div>
+  <button class="btn btn-primary btn-full" onclick="doLogin()">Sign In</button>
+</div>
+</div>
+
+<!-- APP -->
+<div id="app">
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="sidebar-logo">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#aaff00" opacity=".15"/><circle cx="12" cy="12" r="5" fill="#aaff00"/></svg>
+    <span>MyMind Studio</span>
+  </div>
+  <button class="collapse-btn" onclick="toggleSidebar()" id="collapse-btn">&#8249;</button>
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Main</div>
+    <button class="nav-item active" data-section="overview" onclick="navigate(this)"><span class="nav-icon">📊</span><span class="nav-label">Overview</span></button>
+    <button class="nav-item" data-section="users" onclick="navigate(this)"><span class="nav-icon">👥</span><span class="nav-label">Users</span></button>
+    <button class="nav-item" data-section="pages" onclick="navigate(this)"><span class="nav-icon">📄</span><span class="nav-label">Pages</span></button>
+    <div class="sidebar-section-label">Marketing</div>
+    <button class="nav-item" data-section="seo" onclick="navigate(this)"><span class="nav-icon">🔍</span><span class="nav-label">SEO</span></button>
+    <button class="nav-item" data-section="marketing" onclick="navigate(this)"><span class="nav-icon">📢</span><span class="nav-label">Marketing</span></button>
+    <button class="nav-item" data-section="analytics" onclick="navigate(this)"><span class="nav-icon">📈</span><span class="nav-label">Analytics</span></button>
+    <div class="sidebar-section-label">Content</div>
+    <button class="nav-item" data-section="media" onclick="navigate(this)"><span class="nav-icon">🖼️</span><span class="nav-label">Media</span></button>
+    <button class="nav-item" data-section="languages" onclick="navigate(this)"><span class="nav-icon">🌐</span><span class="nav-label">Languages</span></button>
+    <div class="sidebar-section-label">System</div>
+    <button class="nav-item" data-section="settings" onclick="navigate(this)"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></button>
+    <button class="nav-item" data-section="activity" onclick="navigate(this)"><span class="nav-icon">📋</span><span class="nav-label">Activity Log</span></button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="user-avatar" id="sidebar-avatar">A</div>
+      <div>
+        <div class="user-name" id="sidebar-name">Admin</div>
+        <div class="user-role" id="sidebar-role">Administrator</div>
+      </div>
+    </div>
+    <button class="nav-item" style="color:var(--red);margin-top:4px" onclick="doLogout()"><span class="nav-icon">🚪</span><span class="nav-label">Logout</span></button>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div id="page-title">Overview</div>
+  <div class="topbar-search" style="margin-left:24px">
+    <span class="search-icon">🔍</span>
+    <input type="text" placeholder="Search anything..." id="global-search">
+  </div>
+  <div class="topbar-actions">
+    <div style="position:relative">
+      <div class="icon-btn" onclick="toggleDropdown('notif-dd')">🔔<span class="notif-badge"></span></div>
+      <div class="dropdown" id="notif-dd">
+        <div class="notif-header">Notifications</div>
+        <div class="notif-item"><div class="notif-title">New user registered: John Doe</div><div class="notif-time">2 min ago</div></div>
+        <div class="notif-item"><div class="notif-title">Contact form submission received</div><div class="notif-time">15 min ago</div></div>
+        <div class="notif-item"><div class="notif-title">SEO score improved to 84/100</div><div class="notif-time">1 hr ago</div></div>
+        <div class="notif-item"><div class="notif-title">Campaign "Spring Launch" started</div><div class="notif-time">3 hrs ago</div></div>
+        <div class="notif-item"><div class="notif-title">Backup created successfully</div><div class="notif-time">Yesterday</div></div>
+      </div>
+    </div>
+    <div class="icon-btn" onclick="toggleDarkMode()" id="theme-btn" title="Toggle theme">🌙</div>
+    <div style="position:relative">
+      <div class="user-avatar" style="cursor:pointer" onclick="toggleDropdown('user-dd')" id="topbar-avatar">A</div>
+      <div class="dropdown" id="user-dd">
+        <div style="padding:14px 16px;border-bottom:1px solid var(--border)">
+          <div style="font-size:14px;font-weight:600" id="dd-user-name">Admin User</div>
+          <div style="font-size:12px;color:var(--text2)" id="dd-user-email">admin@gmail.com</div>
+        </div>
+        <div class="dd-item" onclick="navigate(document.querySelector('[data-section=settings]'))">⚙️ Settings</div>
+        <div class="dd-sep"></div>
+        <div class="dd-item" style="color:var(--red)" onclick="doLogout()">🚪 Logout</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+
+<!-- OVERVIEW SECTION -->
+<div class="section active" id="section-overview">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-value">128</div><div class="stat-change">▲ +12% this month</div></div>
+    <div class="stat-card"><div class="stat-label">Page Views</div><div class="stat-value">24,580</div><div class="stat-change">▲ +8.3% this week</div></div>
+    <div class="stat-card"><div class="stat-label">Conversions</div><div class="stat-value">42</div><div class="stat-change">▲ +5.1% this week</div></div>
+    <div class="stat-card"><div class="stat-label">SEO Score</div><div class="stat-value">84/100</div><div class="stat-change">▲ +2% vs last month</div></div>
+  </div>
+  <div class="quick-actions">
+    <div class="quick-action" onclick="navigate(document.querySelector('[data-section=users]'))">👥 Add User</div>
+    <div class="quick-action" onclick="navigate(document.querySelector('[data-section=pages]'))">📄 New Page</div>
+    <div class="quick-action" onclick="navigate(document.querySelector('[data-section=media]'))">🖼️ Upload Media</div>
+    <div class="quick-action" onclick="navigate(document.querySelector('[data-section=seo]'))">🔍 SEO Settings</div>
+    <div class="quick-action" onclick="navigate(document.querySelector('[data-section=marketing]'))">📢 New Campaign</div>
+  </div>
+  <div class="charts-grid">
+    <div class="chart-card"><h3>Traffic (Last 7 Days)</h3><div class="chart-wrap"><canvas id="trafficChart"></canvas></div></div>
+    <div class="chart-card"><h3>Device Breakdown</h3><div class="chart-wrap"><canvas id="deviceChart"></canvas></div></div>
+  </div>
+  <div class="charts-grid" style="grid-template-columns:1fr 1fr">
+    <div class="chart-card"><h3>Top Pages</h3><div class="chart-wrap"><canvas id="topPagesChart"></canvas></div></div>
+    <div class="chart-card">
+      <h3>Recent Activity</h3>
+      <div class="activity-feed" id="overview-activity"></div>
+    </div>
+  </div>
+</div>
+
+<!-- USERS SECTION -->
+<div class="section" id="section-users">
+  <div class="page-header">
+    <h2>User Management</h2>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-secondary" onclick="exportUsersCSV()">⬇ Export CSV</button>
+      <button class="btn btn-primary" onclick="openModal('add-user-modal')">+ Add User</button>
+    </div>
+  </div>
+  <div class="search-filter">
+    <input type="text" placeholder="Search by name or email..." id="user-search" oninput="renderUsersTable()">
+    <div class="tabs" style="margin-bottom:0">
+      <button class="tab active" data-role="all" onclick="filterUserRole(this)">All</button>
+      <button class="tab" data-role="admin" onclick="filterUserRole(this)">Admin</button>
+      <button class="tab" data-role="editor" onclick="filterUserRole(this)">Editor</button>
+      <button class="tab" data-role="manager" onclick="filterUserRole(this)">Manager</button>
+    </div>
+  </div>
+  <div class="table-card">
+    <table id="users-table">
+      <thead><tr><th>User</th><th>Email</th><th>Role</th><th>Status</th><th>Last Active</th><th>Actions</th></tr></thead>
+      <tbody id="users-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PAGES SECTION -->
+<div class="section" id="section-pages">
+  <div class="page-header">
+    <h2>Page Management</h2>
+    <button class="btn btn-primary" onclick="openModal('create-page-modal')">+ Create New Page</button>
+  </div>
+  <div class="table-card">
+    <table>
+      <thead><tr><th>Page</th><th>URL Slug</th><th>Status</th><th>Last Edited</th><th>Actions</th></tr></thead>
+      <tbody id="pages-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SEO SECTION -->
+<div class="section" id="section-seo">
+  <div class="page-header"><h2>SEO Management</h2><button class="btn btn-primary" onclick="saveSEO()">💾 Save All</button></div>
+  <div style="display:grid;grid-template-columns:1fr 320px;gap:20px;margin-bottom:24px">
+    <div>
+      <div class="settings-section">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">
+          <h3 style="border:none;margin:0;padding:0">Page SEO Settings</h3>
+          <select id="seo-page-select" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-size:13px;outline:none" onchange="loadPageSEO()">
+            <option value="home">Home</option><option value="blog">Blog</option><option value="privacy">Privacy Policy</option><option value="terms">Terms</option><option value="explainer">Explainer Video</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div class="form-group"><label>Meta Title <span class="char-counter" id="mt-counter">0/60</span></label><input type="text" id="seo-meta-title" maxlength="70" oninput="updateCounter(this,'mt-counter',60)" placeholder="Page title for search engines"></div>
+          <div class="form-group"><label>Focus Keyword</label><input type="text" id="seo-focus-kw" placeholder="Primary keyword"></div>
+        </div>
+        <div class="form-group"><label>Meta Description <span class="char-counter" id="md-counter">0/160</span></label><textarea id="seo-meta-desc" rows="3" maxlength="180" oninput="updateCounter(this,'md-counter',160)" placeholder="Describe the page for search engines..."></textarea></div>
+        <div class="settings-row">
+          <div class="form-group"><label>URL Slug</label><input type="text" id="seo-slug" placeholder="/page-url"></div>
+          <div class="form-group"><label>Canonical URL</label><input type="text" id="seo-canonical" placeholder="https://..."></div>
+        </div>
+        <div class="settings-row">
+          <div class="form-group"><label>OG Title</label><input type="text" id="seo-og-title" placeholder="Open Graph title"></div>
+          <div class="form-group"><label>OG Description</label><input type="text" id="seo-og-desc" placeholder="Open Graph description"></div>
+        </div>
+        <div class="settings-row">
+          <div class="form-group"><label>OG Image URL</label><input type="text" id="seo-og-image" placeholder="https://..."></div>
+          <div class="form-group"><label>Robots</label><select id="seo-robots" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);outline:none"><option value="index,follow">index, follow</option><option value="noindex,nofollow">noindex, nofollow</option><option value="noindex,follow">noindex, follow</option></select></div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h3>Global Analytics</h3>
+        <div class="settings-row">
+          <div class="form-group"><label>Google Analytics ID</label><input type="text" id="ga-id" placeholder="G-XXXXXXXXXX"></div>
+          <div class="form-group"><label>Facebook Pixel ID</label><input type="text" id="fb-pixel" placeholder="XXXXXXXXXXXXXXX"></div>
+        </div>
+        <div class="form-group"><label>Google Search Console Verification</label><input type="text" id="gsc-verify" placeholder="Verification meta tag content"></div>
+      </div>
+      <div class="settings-section">
+        <h3>Robots.txt</h3>
+        <textarea id="robots-txt" rows="8" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text);font-family:monospace;font-size:13px;outline:none">User-agent: *
+Allow: /
+Disallow: /admin/
+Sitemap: https://mymindstudio.com/sitemap.xml</textarea>
+      </div>
+    </div>
+    <div>
+      <div class="settings-section" style="text-align:center">
+        <h3>SEO Score</h3>
+        <div class="seo-ring" style="margin:0 auto 12px">
+          <svg width="100" height="100"><circle cx="50" cy="50" r="42" fill="none" stroke="var(--border)" stroke-width="8"/><circle cx="50" cy="50" r="42" fill="none" stroke="var(--accent)" stroke-width="8" stroke-dasharray="264" id="seo-ring-circle" stroke-linecap="round"/></svg>
+          <div class="seo-ring-text"><span id="seo-score-val">0</span><span style="font-size:11px;color:var(--text2)">/100</span></div>
+        </div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Fill in SEO fields to improve score</p>
+        <div id="seo-hints" style="text-align:left;font-size:12px;color:var(--text2)"></div>
+      </div>
+      <div class="settings-section">
+        <h3>Sitemap</h3>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:12px">URLs in sitemap:</div>
+        <div style="font-size:13px;display:flex;flex-direction:column;gap:6px;margin-bottom:16px">
+          <div style="color:var(--text2)">/ (Home)</div>
+          <div style="color:var(--text2)">/blog</div>
+          <div style="color:var(--text2)">/privacy-policy</div>
+          <div style="color:var(--text2)">/terms</div>
+          <div style="color:var(--text2)">/how-it-works</div>
+        </div>
+        <button class="btn btn-secondary" style="width:100%" onclick="downloadSitemap()">⬇ Download sitemap.xml</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MARKETING SECTION -->
+<div class="section" id="section-marketing">
+  <div class="page-header"><h2>Marketing Tools</h2></div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab(this,'mkt')">Campaigns</button>
+    <button class="tab" onclick="switchTab(this,'mkt')">Forms</button>
+    <button class="tab" onclick="switchTab(this,'mkt')">Popups</button>
+    <button class="tab" onclick="switchTab(this,'mkt')">Social</button>
+    <button class="tab" onclick="switchTab(this,'mkt')">Integrations</button>
+  </div>
+  <div class="tab-content active" id="mkt-tab-0">
+    <div class="page-header" style="margin-bottom:16px"><h2 style="font-size:16px">Campaigns</h2><button class="btn btn-primary" onclick="openModal('create-campaign-modal')">+ New Campaign</button></div>
+    <div id="campaigns-list"></div>
+  </div>
+  <div class="tab-content" id="mkt-tab-1">
+    <div class="table-card">
+      <div class="table-header"><h3>Netlify Forms</h3></div>
+      <table><thead><tr><th>Form Name</th><th>Submissions</th><th>Last Submission</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Contact Form</td><td>47</td><td>2 hours ago</td><td><span class="badge badge-green">Active</span></td></tr>
+        <tr><td>Newsletter Signup</td><td>183</td><td>30 min ago</td><td><span class="badge badge-green">Active</span></td></tr>
+        <tr><td>Exit Intent Popup</td><td>22</td><td>1 day ago</td><td><span class="badge badge-yellow">Paused</span></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div class="tab-content" id="mkt-tab-2">
+    <div class="popup-editor">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <h3 style="font-size:15px;font-weight:600">Exit Intent Popup</h3>
+        <button class="toggle on" id="popup-toggle" onclick="this.classList.toggle('on')"></button>
+      </div>
+      <div class="form-group"><label>Headline</label><input type="text" id="popup-headline" value="Wait! Before you go..."></div>
+      <div class="form-group"><label>Offer Text</label><textarea id="popup-offer" rows="3">Get 20% off your first month when you sign up today. Limited time offer!</textarea></div>
+      <div class="form-group"><label>CTA Button Text</label><input type="text" id="popup-cta" value="Claim My Discount"></div>
+      <button class="btn btn-primary" onclick="savePopup()">Save Popup</button>
+    </div>
+  </div>
+  <div class="tab-content" id="mkt-tab-3">
+    <div class="settings-section">
+      <h3>Social Media Links</h3>
+      <div class="settings-row">
+        <div class="form-group"><label>Twitter / X</label><input type="url" id="social-twitter" placeholder="https://twitter.com/..."></div>
+        <div class="form-group"><label>LinkedIn</label><input type="url" id="social-linkedin" placeholder="https://linkedin.com/..."></div>
+      </div>
+      <div class="settings-row">
+        <div class="form-group"><label>Instagram</label><input type="url" id="social-instagram" placeholder="https://instagram.com/..."></div>
+        <div class="form-group"><label>WhatsApp</label><input type="tel" id="social-whatsapp" placeholder="+1234567890"></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveSocial()">Save Social Links</button>
+    </div>
+  </div>
+  <div class="tab-content" id="mkt-tab-4">
+    <div id="integrations-list"></div>
+  </div>
+</div>
+
+<!-- ANALYTICS SECTION -->
+<div class="section" id="section-analytics">
+  <div class="page-header">
+    <h2>Analytics</h2>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-secondary" onclick="downloadPDF()">⬇ PDF Report</button>
+      <button class="btn btn-secondary" onclick="downloadAnalyticsCSV()">⬇ CSV</button>
+    </div>
+  </div>
+  <div class="date-selector">
+    <button class="date-btn active" onclick="setDateRange(this,7)">7 Days</button>
+    <button class="date-btn" onclick="setDateRange(this,30)">30 Days</button>
+    <button class="date-btn" onclick="setDateRange(this,90)">90 Days</button>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">Visitors</div><div class="stat-value" id="a-visitors">18,420</div><div class="stat-change">▲ +11%</div></div>
+    <div class="stat-card"><div class="stat-label">Bounce Rate</div><div class="stat-value" id="a-bounce">42.3%</div><div class="stat-change neg">▼ -2.1%</div></div>
+    <div class="stat-card"><div class="stat-label">Avg Session</div><div class="stat-value" id="a-session">3m 12s</div><div class="stat-change">▲ +0:18</div></div>
+    <div class="stat-card"><div class="stat-label">Conversions</div><div class="stat-value" id="a-conv">42</div><div class="stat-change">▲ +5.1%</div></div>
+  </div>
+  <div class="chart-card" style="margin-bottom:24px"><h3 id="analytics-chart-title">Traffic (Last 7 Days)</h3><div class="full-chart-wrap"><canvas id="analyticsChart"></canvas></div></div>
+  <div class="two-col">
+    <div class="chart-card"><h3>Traffic Sources</h3><div style="height:240px;position:relative"><canvas id="sourcesChart"></canvas></div></div>
+    <div class="chart-card">
+      <h3>Top 5 Countries</h3>
+      <table style="margin-top:8px"><thead><tr><th>Country</th><th>Visitors</th><th>%</th></tr></thead>
+      <tbody>
+        <tr><td>🇺🇸 United States</td><td>7,240</td><td>39.3%</td></tr>
+        <tr><td>🇬🇧 United Kingdom</td><td>2,180</td><td>11.8%</td></tr>
+        <tr><td>🇮🇳 India</td><td>1,940</td><td>10.5%</td></tr>
+        <tr><td>🇨🇦 Canada</td><td>1,450</td><td>7.9%</td></tr>
+        <tr><td>🇦🇺 Australia</td><td>1,120</td><td>6.1%</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+  <div class="table-card">
+    <div class="table-header"><h3>Top 5 Pages</h3></div>
+    <table><thead><tr><th>Page</th><th>Views</th><th>Avg Time</th><th>Bounce</th></tr></thead>
+    <tbody>
+      <tr><td>/ (Home)</td><td>9,840</td><td>4m 22s</td><td>38%</td></tr>
+      <tr><td>/blog</td><td>4,210</td><td>5m 10s</td><td>31%</td></tr>
+      <tr><td>/how-it-works</td><td>3,180</td><td>3m 45s</td><td>44%</td></tr>
+      <tr><td>/privacy-policy</td><td>890</td><td>1m 30s</td><td>72%</td></tr>
+      <tr><td>/terms</td><td>460</td><td>1m 12s</td><td>78%</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- MEDIA SECTION -->
+<div class="section" id="section-media">
+  <div class="page-header"><h2>Media Library</h2>
+    <div style="display:flex;gap:10px">
+      <div class="tabs" style="margin-bottom:0">
+        <button class="tab active" data-mtype="all" onclick="filterMedia(this)">All</button>
+        <button class="tab" data-mtype="image" onclick="filterMedia(this)">Images</button>
+        <button class="tab" data-mtype="video" onclick="filterMedia(this)">Videos</button>
+        <button class="tab" data-mtype="doc" onclick="filterMedia(this)">Documents</button>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 280px;gap:20px">
+    <div>
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleFileDrop(event)">
+        <div class="upload-icon">📁</div>
+        <div class="upload-text">Drag & drop files here</div>
+        <div class="upload-sub">or click to browse — Images, Videos, Documents</div>
+        <input type="file" id="file-input" multiple accept="image/*,video/*,.pdf,.doc,.docx" style="display:none" onchange="handleFileUpload(event)">
+      </div>
+      <div class="media-grid" id="media-grid"></div>
+    </div>
+    <div id="media-info-panel" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;height:fit-content;display:none">
+      <div style="font-size:40px;text-align:center;margin-bottom:12px" id="mi-icon"></div>
+      <div style="font-size:14px;font-weight:600;margin-bottom:4px;word-break:break-all" id="mi-name"></div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px" id="mi-type"></div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:16px" id="mi-date"></div>
+      <div class="form-group"><label>Rename</label><div class="input-with-btn"><input type="text" id="mi-rename-input"><button class="btn btn-secondary" onclick="renameMedia()">✔</button></div></div>
+      <div class="form-group"><label>URL</label><div class="input-with-btn"><input type="text" id="mi-url" readonly><button class="btn btn-secondary" onclick="copyMediaURL()">📋</button></div></div>
+      <button class="btn btn-danger" style="width:100%;margin-top:8px" onclick="deleteSelectedMedia()">🗑 Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- LANGUAGES SECTION -->
+<div class="section" id="section-languages">
+  <div class="page-header"><h2>Languages</h2><button class="btn btn-primary" onclick="openModal('add-lang-modal')">+ Add Language</button></div>
+  <div class="table-card" style="margin-bottom:24px">
+    <table>
+      <thead><tr><th>Language</th><th>Code</th><th>Direction</th><th>Default</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="lang-tbody"></tbody>
+    </table>
+  </div>
+  <div class="settings-section">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <h3 style="border:none;margin:0;padding:0">Translation Editor</h3>
+      <div style="display:flex;gap:10px;align-items:center">
+        <select id="trans-lang-select" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-size:13px;outline:none" onchange="renderTranslations()">
+          <option value="hi">Hindi</option><option value="es">Spanish</option>
+        </select>
+        <button class="btn btn-secondary" onclick="autoTranslate()">✨ Auto-translate</button>
+        <button class="btn btn-primary" onclick="saveTranslations()">💾 Save</button>
+      </div>
+    </div>
+    <table class="lang-table" style="width:100%">
+      <thead><tr><th>Key</th><th>English</th><th>Translation</th></tr></thead>
+      <tbody id="trans-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SETTINGS SECTION -->
+<div class="section" id="section-settings">
+  <div class="page-header"><h2>Settings</h2></div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab(this,'settings')">General</button>
+    <button class="tab" onclick="switchTab(this,'settings')">Branding</button>
+    <button class="tab" onclick="switchTab(this,'settings')">Security</button>
+    <button class="tab" onclick="switchTab(this,'settings')">API Keys</button>
+    <button class="tab" onclick="switchTab(this,'settings')">Backup</button>
+  </div>
+  <div class="tab-content active" id="settings-tab-0">
+    <div class="settings-section">
+      <h3>General Information</h3>
+      <div class="settings-row">
+        <div class="form-group"><label>Site Name</label><input type="text" id="s-site-name" value="MyMind Studio"></div>
+        <div class="form-group"><label>Tagline</label><input type="text" id="s-tagline" value="Capture &amp; Recall Anything"></div>
+      </div>
+      <div class="settings-row">
+        <div class="form-group"><label>Contact Email</label><input type="email" id="s-email" value="hello@mymindstudio.com"></div>
+        <div class="form-group"><label>Phone</label><input type="tel" id="s-phone" value="+1 (555) 123-4567"></div>
+      </div>
+      <div class="settings-row">
+        <div class="form-group"><label>WhatsApp Number</label><input type="tel" id="s-whatsapp" value="+15551234567"></div>
+        <div class="form-group"><label>Timezone</label><select id="s-timezone" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);outline:none"><option>UTC-8 (Pacific)</option><option>UTC-5 (Eastern)</option><option selected>UTC+0 (London)</option><option>UTC+5:30 (India)</option></select></div>
+      </div>
+      <div class="form-group"><label>Address</label><textarea id="s-address" rows="2">123 Studio Lane, San Francisco, CA 94105</textarea></div>
+      <button class="btn btn-primary" onclick="saveGeneralSettings()">Save General Settings</button>
+    </div>
+  </div>
+  <div class="tab-content" id="settings-tab-1">
+    <div class="settings-section">
+      <h3>Branding</h3>
+      <div class="settings-row">
+        <div class="form-group"><label>Primary Color</label><div class="input-with-btn"><input type="text" id="s-primary-color" value="#aaff00"><input type="color" id="s-color-picker" value="#aaff00" style="width:38px;height:38px;border-radius:6px;border:1px solid var(--border);cursor:pointer;padding:2px" onchange="document.getElementById('s-primary-color').value=this.value"></div></div>
+        <div class="form-group"><label>Font Family</label><select id="s-font" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);outline:none"><option>Inter</option><option>Roboto</option><option>Poppins</option><option>Nunito</option><option>DM Sans</option></select></div>
+      </div>
+      <div class="settings-row">
+        <div class="form-group"><label>Logo URL</label><input type="url" id="s-logo" placeholder="https://..."></div>
+        <div class="form-group"><label>Favicon URL</label><input type="url" id="s-favicon" placeholder="https://..."></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveBranding()">Save Branding</button>
+    </div>
+  </div>
+  <div class="tab-content" id="settings-tab-2">
+    <div class="settings-section">
+      <h3>Security Settings</h3>
+      <h4 style="font-size:14px;margin-bottom:14px;color:var(--text2)">Change Password</h4>
+      <div class="form-group"><label>Current Password</label><input type="password" id="s-cur-pass" placeholder="••••••••"></div>
+      <div class="form-group"><label>New Password</label><input type="password" id="s-new-pass" placeholder="••••••••"></div>
+      <div class="form-group"><label>Confirm New Password</label><input type="password" id="s-confirm-pass" placeholder="••••••••"></div>
+      <button class="btn btn-primary" onclick="changePassword()" style="margin-bottom:24px">Change Password</button>
+      <div style="height:1px;background:var(--border);margin-bottom:20px"></div>
+      <div class="settings-row">
+        <div class="form-group"><label>Session Timeout</label><select id="s-timeout" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);outline:none"><option>30 minutes</option><option selected>1 hour</option><option>4 hours</option><option>24 hours</option></select></div>
+        <div class="form-group"><label>Login Attempt Limit</label><select id="s-login-limit" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);outline:none"><option>3 attempts</option><option selected>5 attempts</option><option>10 attempts</option></select></div>
+      </div>
+      <div class="form-group" style="display:flex;align-items:center;justify-content:space-between">
+        <div><label>Two-Factor Authentication</label><p class="hint">Require 2FA for all admin users</p></div>
+        <button class="toggle" id="2fa-toggle" onclick="this.classList.toggle('on')"></button>
+      </div>
+      <button class="btn btn-primary" onclick="saveSecuritySettings()">Save Security Settings</button>
+    </div>
+  </div>
+  <div class="tab-content" id="settings-tab-3">
+    <div class="settings-section">
+      <h3>API Keys & Integrations</h3>
+      <div class="form-group"><label>Google Analytics 4 ID</label><div class="masked-input"><input type="password" id="api-ga4" value="G-XXXXXXXXXX"><button class="eye-btn" onclick="toggleMask(this)">👁</button></div></div>
+      <div class="form-group"><label>Facebook Pixel ID</label><div class="masked-input"><input type="password" id="api-fb" value="123456789012345"><button class="eye-btn" onclick="toggleMask(this)">👁</button></div></div>
+      <div class="form-group"><label>Hotjar ID</label><div class="masked-input"><input type="password" id="api-hotjar" value="3456789"><button class="eye-btn" onclick="toggleMask(this)">👁</button></div></div>
+      <div class="form-group"><label>reCAPTCHA Site Key</label><div class="masked-input"><input type="password" id="api-recaptcha-site" value="6Le-XXXXXXXXXXXXXXXXXXXXXXXXX"><button class="eye-btn" onclick="toggleMask(this)">👁</button></div></div>
+      <div class="form-group"><label>reCAPTCHA Secret Key</label><div class="masked-input"><input type="password" id="api-recaptcha-secret" value="6Le-XXXXXXXXXXXXXXXXXXXXXXXXX"><button class="eye-btn" onclick="toggleMask(this)">👁</button></div></div>
+      <button class="btn btn-primary" onclick="saveAPIKeys()">Save API Keys</button>
+    </div>
+  </div>
+  <div class="tab-content" id="settings-tab-4">
+    <div class="settings-section">
+      <h3>Backup & Restore</h3>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:20px">Create a full backup of all dashboard data stored in localStorage, or restore from a previous backup file.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+        <button class="btn btn-primary" onclick="createBackup()">📦 Create Backup</button>
+        <label class="btn btn-secondary" style="cursor:pointer">📂 Restore Backup<input type="file" accept=".json" style="display:none" onchange="restoreBackup(event)"></label>
+      </div>
+      <div style="height:1px;background:var(--border);margin-bottom:20px"></div>
+      <h4 style="font-size:14px;font-weight:600;color:var(--red);margin-bottom:10px">Danger Zone</h4>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Reset all settings and data to factory defaults. This cannot be undone.</p>
+      <button class="btn btn-danger" onclick="resetToDefaults()">⚠️ Reset to Defaults</button>
+    </div>
+  </div>
+</div>
+
+<!-- ACTIVITY LOG SECTION -->
+<div class="section" id="section-activity">
+  <div class="page-header"><h2>Activity Log</h2><button class="btn btn-secondary" onclick="exportActivityCSV()">⬇ Export CSV</button></div>
+  <div class="search-filter" style="margin-bottom:16px">
+    <select id="activity-user-filter" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-size:14px;outline:none" onchange="renderActivityLog()">
+      <option value="">All Users</option>
+      <option value="admin@gmail.com">Admin</option>
+      <option value="editor@gmail.com">Sarah Chen</option>
+      <option value="manager@gmail.com">Mike Ross</option>
+    </select>
+    <input type="date" id="activity-date-from" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-size:14px;outline:none" onchange="renderActivityLog()">
+    <input type="date" id="activity-date-to" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-size:14px;outline:none" onchange="renderActivityLog()">
+  </div>
+  <div class="table-card">
+    <table>
+      <thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>IP Address</th><th>Details</th></tr></thead>
+      <tbody id="activity-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+</div><!-- end main -->
+</div><!-- end app -->
+
+<!-- MODALS -->
+<!-- Add User Modal -->
+<div class="modal-overlay" id="add-user-modal">
+  <div class="modal">
+    <div class="modal-header"><h3>Add New User</h3><button class="modal-close" onclick="closeModal('add-user-modal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Full Name</label><input type="text" id="new-user-name" placeholder="John Doe"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="new-user-email" placeholder="john@example.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="new-user-password" placeholder="••••••••"></div>
+      <div class="form-group"><label>Role</label><select id="new-user-role" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);outline:none"><option value="editor">Editor</option><option value="manager">Manager</option><option value="admin">Admin</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('add-user-modal')">Cancel</button><button class="btn btn-primary" onclick="addUser()">Add User</button></div>
+  </div>
+</div>
+
+<!-- Edit User Modal -->
+<div class="modal-overlay" id="edit-user-modal">
+  <div class="modal">
+    <div class="modal-header"><h3>Edit User</h3><button class="modal-close" onclick="closeModal('edit-user-modal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-user-id">
+      <div class="form-group"><label>Full Name</label><input type="text" id="edit-user-name"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="edit-user-email"></div>
+      <div class="form-group"><label>Role</label><select id="edit-user-role" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);outline:none"><option value="editor">Editor</option><option value="manager">Manager</option><option value="admin">Admin</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('edit-user-modal')">Cancel</button><button class="btn btn-primary" onclick="saveEditUser()">Save Changes</button></div>
+  </div>
+</div>
+
+<!-- Create Page Modal -->
+<div class="modal-overlay" id="create-page-modal">
+  <div class="modal">
+    <div class="modal-header"><h3>Create New Page</h3><button class="modal-close" onclick="closeModal('create-page-modal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Page Title</label><input type="text" id="new-page-title" placeholder="About Us"></div>
+      <div class="form-group"><label>URL Slug</label><input type="text" id="new-page-slug" placeholder="/about-us"></div>
+      <div class="form-group"><label>Status</label><select id="new-page-status" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);outline:none"><option value="draft">Draft</option><option value="published">Published</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('create-page-modal')">Cancel</button><button class="btn btn-primary" onclick="createPage()">Create Page</button></div>
+  </div>
+</div>
+
+<!-- Edit Page Modal -->
+<div class="modal-overlay" id="edit-page-modal">
+  <div class="modal modal-lg">
+    <div class="modal-header"><h3 id="edit-page-modal-title">Edit Page</h3><button class="modal-close" onclick="closeModal('edit-page-modal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-page-id">
+      <div class="tabs" style="margin-bottom:20px">
+        <button class="tab active" onclick="switchTab(this,'page-edit')">Content</button>
+        <button class="tab" onclick="switchTab(this,'page-edit')">SEO</button>
+        <button class="tab" onclick="switchTab(this,'page-edit')">Settings</button>
+      </div>
+      <div class="tab-content active" id="page-edit-tab-0">
+        <div class="form-group"><label>Hero Headline</label><input type="text" id="pe-hero-headline" placeholder="Main headline..."></div>
+        <div class="form-group"><label>Hero Subtext</label><textarea id="pe-hero-subtext" rows="3" placeholder="Supporting text..."></textarea></div>
+        <div class="form-group"><label>CTA Button Text</label><input type="text" id="pe-cta-text" placeholder="Get Started"></div>
+        <div class="form-group"><label>Body Content</label><textarea id="pe-body-content" rows="6" placeholder="Main body content..."></textarea></div>
+      </div>
+      <div class="tab-content" id="page-edit-tab-1">
+        <div class="form-group"><label>Meta Title</label><input type="text" id="pe-meta-title" placeholder="SEO page title"></div>
+        <div class="form-group"><label>Meta Description</label><textarea id="pe-meta-desc" rows="3" placeholder="SEO description"></textarea></div>
+        <div class="form-group"><label>OG Image URL</label><input type="text" id="pe-og-image" placeholder="https://..."></div>
+      </div>
+      <div class="tab-content" id="page-edit-tab-2">
+        <div class="form-group"><label>URL Slug</label><input type="text" id="pe-slug"></div>
+        <div class="form-group"><label>Visibility</label><select id="pe-visibility" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);outline:none"><option value="public">Public</option><option value="private">Private</option></select></div>
+        <div class="form-group"><label>Custom CSS</label><textarea id="pe-custom-css" rows="5" placeholder="/* Custom CSS for this page */" style="font-family:monospace;font-size:13px"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('edit-page-modal')">Cancel</button><button class="btn btn-primary" onclick="savePageEdit()">Save Changes</button></div>
+  </div>
+</div>
+
+<!-- Create Campaign Modal -->
+<div class="modal-overlay" id="create-campaign-modal">
+  <div class="modal">
+    <div class="modal-header"><h3>New Campaign</h3><button class="modal-close" onclick="closeModal('create-campaign-modal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Campaign Name</label><input type="text" id="new-camp-name" placeholder="Spring Launch 2025"></div>
+      <div class="form-group"><label>Type</label><select id="new-camp-type" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);outline:none"><option>Email</option><option>Social</option><option>PPC</option><option>Content</option></select></div>
+      <div class="form-group"><label>Start Date</label><input type="date" id="new-camp-start"></div>
+      <div class="form-group"><label>Budget</label><input type="text" id="new-camp-budget" placeholder="$500"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('create-campaign-modal')">Cancel</button><button class="btn btn-primary" onclick="createCampaign()">Create Campaign</button></div>
+  </div>
+</div>
+
+<!-- Add Language Modal -->
+<div class="modal-overlay" id="add-lang-modal">
+  <div class="modal">
+    <div class="modal-header"><h3>Add Language</h3><button class="modal-close" onclick="closeModal('add-lang-modal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Language Name</label><input type="text" id="new-lang-name" placeholder="French"></div>
+      <div class="form-group"><label>Language Code</label><input type="text" id="new-lang-code" placeholder="fr" maxlength="5"></div>
+      <div class="form-group"><label>Flag Emoji</label><input type="text" id="new-lang-flag" placeholder="🇫🇷" maxlength="4"></div>
+      <div class="form-group"><label>Text Direction</label><select id="new-lang-dir" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);outline:none"><option value="ltr">LTR (Left to Right)</option><option value="rtl">RTL (Right to Left)</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('add-lang-modal')">Cancel</button><button class="btn btn-primary" onclick="addLanguage()">Add Language</button></div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<script>
+// ============================================================
+// DATA & INITIALIZATION
+// ============================================================
+const DEFAULT_USERS = [
+  {id:1,name:'Admin User',email:'admin@gmail.com',password:'123',role:'admin',status:'active',lastActive:'Just now',avatar:'A'},
+  {id:2,name:'Sarah Chen',email:'editor@gmail.com',password:'123',role:'editor',status:'active',lastActive:'5 min ago',avatar:'S'},
+  {id:3,name:'Mike Ross',email:'manager@gmail.com',password:'123',role:'manager',status:'active',lastActive:'1 hr ago',avatar:'M'},
+  {id:4,name:'Emily Davis',email:'emily@example.com',password:'pass123',role:'editor',status:'active',lastActive:'2 hrs ago',avatar:'E'},
+  {id:5,name:'Tom Wilson',email:'tom@example.com',password:'pass123',role:'manager',status:'banned',lastActive:'3 days ago',avatar:'T'},
+  {id:6,name:'Lisa Park',email:'lisa@example.com',password:'pass123',role:'editor',status:'active',lastActive:'Yesterday',avatar:'L'}
+];
+const DEFAULT_PAGES = [
+  {id:'home',icon:'🏠',title:'Home',slug:'/',status:'published',lastEdited:'2025-03-15',heroHeadline:'Think Faster. Remember Everything.',heroSubtext:'MyMind Studio is your AI-powered second brain.',ctaText:'Start Free Trial',bodyContent:'Welcome to MyMind Studio — the most powerful knowledge management tool.',metaTitle:'MyMind Studio — AI Knowledge Management',metaDesc:'Capture, organize, and recall anything with AI.',ogImage:'',visibility:'public',customCSS:''},
+  {id:'blog',icon:'📝',title:'Blog',slug:'/blog',status:'published',lastEdited:'2025-03-14',heroHeadline:'The MyMind Blog',heroSubtext:'Tips, tricks and insights.',ctaText:'Read Latest',bodyContent:'Explore our blog for productivity tips and AI insights.',metaTitle:'Blog — MyMind Studio',metaDesc:'Read the latest from MyMind Studio.',ogImage:'',visibility:'public',customCSS:''},
+  {id:'privacy',icon:'🔒',title:'Privacy Policy',slug:'/privacy-policy',status:'published',lastEdited:'2025-02-01',heroHeadline:'Privacy Policy',heroSubtext:'Your privacy matters to us.',ctaText:'',bodyContent:'We are committed to protecting your personal data.',metaTitle:'Privacy Policy — MyMind Studio',metaDesc:'Learn how we protect your data.',ogImage:'',visibility:'public',customCSS:''},
+  {id:'terms',icon:'📜',title:'Terms of Service',slug:'/terms',status:'published',lastEdited:'2025-02-01',heroHeadline:'Terms of Service',heroSubtext:'Please read these terms carefully.',ctaText:'',bodyContent:'By using MyMind Studio you agree to these terms.',metaTitle:'Terms — MyMind Studio',metaDesc:'Terms of service for MyMind Studio.',ogImage:'',visibility:'public',customCSS:''},
+  {id:'404',icon:'❌',title:'404 Page',slug:'/404',status:'published',lastEdited:'2025-01-20',heroHeadline:'Page Not Found',heroSubtext:'Looks like this page went missing.',ctaText:'Go Home',bodyContent:'',metaTitle:'404 — MyMind Studio',metaDesc:'Page not found.',ogImage:'',visibility:'public',customCSS:''},
+  {id:'explainer',icon:'🎬',title:'Explainer Video',slug:'/how-it-works',status:'published',lastEdited:'2025-03-10',heroHeadline:'See How It Works',heroSubtext:'Watch our 2-minute explainer.',ctaText:'Watch Now',bodyContent:'See how MyMind Studio transforms your workflow.',metaTitle:'How It Works — MyMind Studio',metaDesc:'Watch how MyMind Studio works.',ogImage:'',visibility:'public',customCSS:''}
+];
+const DEFAULT_MEDIA = [
+  {id:'m1',name:'hero-bg.jpg',type:'image',icon:'🖼️',url:'#hero-bg',date:'2025-03-10'},
+  {id:'m2',name:'logo.svg',type:'image',icon:'🖼️',url:'#logo',date:'2025-03-09'},
+  {id:'m3',name:'demo-video.mp4',type:'video',icon:'🎬',url:'#demo-video',date:'2025-03-08'},
+  {id:'m4',name:'product-deck.pdf',type:'doc',icon:'📄',url:'#product-deck',date:'2025-03-07'},
+  {id:'m5',name:'team-photo.jpg',type:'image',icon:'🖼️',url:'#team-photo',date:'2025-03-06'},
+  {id:'m6',name:'case-study.docx',type:'doc',icon:'📄',url:'#case-study',date:'2025-03-05'}
+];
+const DEFAULT_LANGUAGES = [
+  {id:'en',name:'English',code:'en',flag:'🇬🇧',dir:'ltr',enabled:true,isDefault:true},
+  {id:'hi',name:'Hindi',code:'hi',flag:'🇮🇳',dir:'ltr',enabled:true,isDefault:false},
+  {id:'es',name:'Spanish',code:'es',flag:'🇪🇸',dir:'ltr',enabled:true,isDefault:false}
+];
+const DEFAULT_TRANSLATIONS = {
+  nav_home:'Home',nav_blog:'Blog',nav_features:'Features',nav_pricing:'Pricing',nav_about:'About',
+  nav_contact:'Contact',nav_login:'Login',nav_signup:'Sign Up',
+  hero_headline:'Think Faster. Remember Everything.',
+  hero_subtext:'Your AI-powered second brain.',
+  cta_primary:'Start Free Trial',cta_secondary:'See How It Works',cta_learn_more:'Learn More',
+  features_title:'Why MyMind Studio?',features_subtitle:'Built for deep thinkers and fast movers.',
+  pricing_title:'Simple, Transparent Pricing',
+  footer_tagline:'The smartest way to capture your thoughts.',
+  footer_copyright:'© 2025 MyMind Studio. All rights reserved.',
+  btn_save:'Save',btn_cancel:'Cancel',btn_delete:'Delete',btn_edit:'Edit',
+  msg_success:'Changes saved successfully!',msg_error:'Something went wrong.'
+};
+const DEFAULT_CAMPAIGNS = [
+  {id:1,name:'Spring Launch 2025',type:'Email',status:'active',startDate:'2025-03-01',budget:'$1,200'},
+  {id:2,name:'SEO Boost Q1',type:'Content',status:'active',startDate:'2025-01-15',budget:'$500'},
+  {id:3,name:'Facebook Retarget',type:'PPC',status:'paused',startDate:'2025-02-10',budget:'$800'}
+];
+const DEFAULT_ACTIVITY = [
+  {ts:'2025-03-21 10:32',user:'admin@gmail.com',action:'User Login',ip:'192.168.1.1',details:'Successful login'},
+  {ts:'2025-03-21 10:15',user:'editor@gmail.com',action:'Page Updated',ip:'192.168.1.45',details:'Updated Home page hero text'},
+  {ts:'2025-03-21 09:48',user:'manager@gmail.com',action:'Campaign Created',ip:'10.0.0.12',details:'Created Spring Launch 2025'},
+  {ts:'2025-03-21 09:30',user:'admin@gmail.com',action:'User Banned',ip:'192.168.1.1',details:'Banned user tom@example.com'},
+  {ts:'2025-03-20 17:22',user:'editor@gmail.com',action:'Media Upload',ip:'192.168.1.45',details:'Uploaded hero-bg.jpg (2.4MB)'},
+  {ts:'2025-03-20 16:10',user:'admin@gmail.com',action:'SEO Saved',ip:'192.168.1.1',details:'Updated Home page meta tags'},
+  {ts:'2025-03-20 14:55',user:'manager@gmail.com',action:'Settings Saved',ip:'10.0.0.12',details:'Updated social media links'},
+  {ts:'2025-03-20 13:40',user:'admin@gmail.com',action:'Backup Created',ip:'192.168.1.1',details:'Full backup downloaded'},
+  {ts:'2025-03-20 12:30',user:'editor@gmail.com',action:'Page Created',ip:'192.168.1.45',details:'Created new page: About Us'},
+  {ts:'2025-03-20 11:15',user:'admin@gmail.com',action:'User Login',ip:'192.168.1.1',details:'Successful login'},
+  {ts:'2025-03-19 16:44',user:'editor@gmail.com',action:'Language Added',ip:'192.168.1.45',details:'Added French language'},
+  {ts:'2025-03-19 15:30',user:'manager@gmail.com',action:'Campaign Paused',ip:'10.0.0.12',details:'Paused Facebook Retarget campaign'},
+  {ts:'2025-03-19 14:20',user:'admin@gmail.com',action:'User Created',ip:'192.168.1.1',details:'Created user lisa@example.com'},
+  {ts:'2025-03-19 13:05',user:'admin@gmail.com',action:'API Keys Saved',ip:'192.168.1.1',details:'Updated GA4 tracking ID'},
+  {ts:'2025-03-19 11:50',user:'editor@gmail.com',action:'Media Deleted',ip:'192.168.1.45',details:'Deleted old-banner.jpg'},
+  {ts:'2025-03-18 17:30',user:'manager@gmail.com',action:'User Login',ip:'10.0.0.12',details:'Successful login'},
+  {ts:'2025-03-18 16:15',user:'admin@gmail.com',action:'Popup Saved',ip:'192.168.1.1',details:'Updated exit intent popup message'},
+  {ts:'2025-03-18 14:00',user:'editor@gmail.com',action:'Translation Saved',ip:'192.168.1.45',details:'Saved Hindi translations'},
+  {ts:'2025-03-18 12:45',user:'admin@gmail.com',action:'Password Changed',ip:'192.168.1.1',details:'Admin password updated'},
+  {ts:'2025-03-17 10:00',user:'admin@gmail.com',action:'System Init',ip:'192.168.1.1',details:'Dashboard initialized with defaults'}
+];
+const ACCOUNTS = [
+  {email:'admin@gmail.com',password:'123',name:'Admin User',role:'admin'},
+  {email:'editor@gmail.com',password:'123',name:'Sarah Chen',role:'editor'},
+  {email:'manager@gmail.com',password:'123',name:'Mike Ross',role:'manager'}
+];
+
+function initData(){
+  if(!ls('mm_users')) ls('mm_users', JSON.stringify(DEFAULT_USERS));
+  if(!ls('mm_pages')) ls('mm_pages', JSON.stringify(DEFAULT_PAGES));
+  if(!ls('mm_media')) ls('mm_media', JSON.stringify(DEFAULT_MEDIA));
+  if(!ls('mm_languages')) ls('mm_languages', JSON.stringify(DEFAULT_LANGUAGES));
+  if(!ls('mm_translations')) ls('mm_translations', JSON.stringify({hi:{},es:{}}));
+  if(!ls('mm_campaigns')) ls('mm_campaigns', JSON.stringify(DEFAULT_CAMPAIGNS));
+  if(!ls('mm_activity')) ls('mm_activity', JSON.stringify(DEFAULT_ACTIVITY));
+  if(!ls('mm_seo')) ls('mm_seo', JSON.stringify({}));
+  if(!ls('mm_settings')) ls('mm_settings', JSON.stringify({}));
+}
+
+function ls(key,val){
+  if(val===undefined) return localStorage.getItem(key);
+  localStorage.setItem(key,val);
+}
+function lsGet(key){try{return JSON.parse(ls(key))||[]}catch{return []}}
+function lsSet(key,val){ls(key,JSON.stringify(val))}
+
+// ============================================================
+// AUTH
+// ============================================================
+let currentUser = null;
+let userRoleFilter = 'all';
+
+function doLogin(){
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-password').value;
+  const remember = document.getElementById('remember-me').checked;
+  const acc = ACCOUNTS.find(a=>a.email===email && a.password===pass);
+  if(!acc){
+    document.getElementById('login-error').style.display='block';
+    return;
+  }
+  const token = btoa(JSON.stringify({email:acc.email,name:acc.name,role:acc.role,exp:Date.now()+(remember?7*86400000:86400000)}));
+  ls('mm_token',token);
+  currentUser = acc;
+  document.getElementById('login-error').style.display='none';
+  showApp();
+}
+
+function checkAuth(){
+  const tok = ls('mm_token');
+  if(!tok) return false;
+  try{
+    const d = JSON.parse(atob(tok));
+    if(d.exp < Date.now()){ls('mm_token',null);return false;}
+    currentUser = ACCOUNTS.find(a=>a.email===d.email)||{email:d.email,name:d.name,role:d.role};
+    return true;
+  }catch{return false;}
+}
+
+function doLogout(){
+  ls('mm_token',null);
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  currentUser=null;
+}
+
+function showApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  const av = currentUser.name[0].toUpperCase();
+  document.getElementById('sidebar-avatar').textContent=av;
+  document.getElementById('topbar-avatar').textContent=av;
+  document.getElementById('topbar-avatar').style.background = stringToColor(currentUser.name);
+  document.getElementById('sidebar-avatar').style.background = stringToColor(currentUser.name);
+  document.getElementById('sidebar-name').textContent=currentUser.name;
+  document.getElementById('sidebar-role').textContent=currentUser.role.charAt(0).toUpperCase()+currentUser.role.slice(1);
+  document.getElementById('dd-user-name').textContent=currentUser.name;
+  document.getElementById('dd-user-email').textContent=currentUser.email;
+  initDarkMode();
+  renderOverview();
+  renderUsersTable();
+  renderPagesTable();
+  renderCampaigns();
+  renderIntegrations();
+  renderMedia();
+  renderLanguages();
+  renderActivityLog();
+}
+
+function stringToColor(s){
+  let h=0;for(let i=0;i<s.length;i++)h=s.charCodeAt(i)+((h<<5)-h);
+  return `hsl(${h%360},60%,50%)`;
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+const pageTitles={overview:'Overview',users:'User Management',pages:'Page Management',seo:'SEO Management',marketing:'Marketing Tools',analytics:'Analytics',media:'Media Library',languages:'Languages',settings:'Settings',activity:'Activity Log'};
+let sidebarCollapsed=false;
+
+function navigate(el){
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  const sec=el.dataset.section;
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('section-'+sec).classList.add('active');
+  document.getElementById('page-title').textContent=pageTitles[sec]||sec;
+  closeAllDropdowns();
+  if(sec==='analytics') setTimeout(()=>renderAnalyticsCharts(),100);
+  if(sec==='overview') setTimeout(()=>renderOverviewCharts(),100);
+}
+
+function toggleSidebar(){
+  sidebarCollapsed=!sidebarCollapsed;
+  const sb=document.getElementById('sidebar');
+  const tb=document.getElementById('topbar');
+  const mn=document.getElementById('main');
+  const btn=document.getElementById('collapse-btn');
+  if(sidebarCollapsed){
+    sb.style.width='64px';tb.style.left='64px';mn.style.marginLeft='64px';
+    btn.innerHTML='&#8250;';
+  }else{
+    sb.style.width='var(--sidebar-w)';tb.style.left='var(--sidebar-w)';mn.style.marginLeft='var(--sidebar-w)';
+    btn.innerHTML='&#8249;';
+  }
+  document.querySelectorAll('.nav-label,.sidebar-section-label,.user-name,.user-role').forEach(el=>{
+    el.style.display=sidebarCollapsed?'none':'';
+  });
+  document.querySelectorAll('.nav-item').forEach(el=>{
+    el.style.justifyContent=sidebarCollapsed?'center':'';
+    el.style.padding=sidebarCollapsed?'10px':'';
+  });
+  document.querySelector('.sidebar-logo span').style.display=sidebarCollapsed?'none':'';
+}
+
+// ============================================================
+// DARK MODE
+// ============================================================
+function initDarkMode(){
+  const mode=ls('mm_theme')||'dark';
+  if(mode==='light'){document.body.classList.add('light');document.getElementById('theme-btn').textContent='☀️';}
+  else{document.body.classList.remove('light');document.getElementById('theme-btn').textContent='🌙';}
+}
+function toggleDarkMode(){
+  document.body.classList.toggle('light');
+  const isLight=document.body.classList.contains('light');
+  ls('mm_theme',isLight?'light':'dark');
+  document.getElementById('theme-btn').textContent=isLight?'☀️':'🌙';
+}
+
+// ============================================================
+// DROPDOWNS
+// ============================================================
+function toggleDropdown(id){
+  const dd=document.getElementById(id);
+  const wasOpen=dd.classList.contains('open');
+  closeAllDropdowns();
+  if(!wasOpen)dd.classList.add('open');
+}
+function closeAllDropdowns(){document.querySelectorAll('.dropdown').forEach(d=>d.classList.remove('open'));}
+document.addEventListener('click',e=>{if(!e.target.closest('.icon-btn')&&!e.target.closest('.user-avatar')&&!e.target.closest('.dropdown'))closeAllDropdowns();});
+
+// ============================================================
+// MODALS
+// ============================================================
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));});
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg,type='success'){
+  const tc=document.getElementById('toast-container');
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  const icons={success:'✅',error:'❌',info:'ℹ️'};
+  t.innerHTML=`<span>${icons[type]||'✅'}</span><span>${msg}</span>`;
+  tc.appendChild(t);
+  setTimeout(()=>t.remove(),3000);
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function switchTab(btn,prefix){
+  const parent=btn.closest('.tabs');
+  parent.querySelectorAll('.tab').forEach((t,i)=>{
+    t.classList.remove('active');
+    const c=document.getElementById(`${prefix}-tab-${i}`);
+    if(c)c.classList.remove('active');
+  });
+  const idx=Array.from(parent.querySelectorAll('.tab')).indexOf(btn);
+  btn.classList.add('active');
+  const target=document.getElementById(`${prefix}-tab-${idx}`);
+  if(target)target.classList.add('active');
+}
+
+// ============================================================
+// OVERVIEW
+// ============================================================
+let trafficChartInst=null, deviceChartInst=null, topPagesChartInst=null;
+
+function renderOverview(){
+  const activity=lsGet('mm_activity').slice(0,6);
+  const feed=document.getElementById('overview-activity');
+  feed.innerHTML=activity.map(a=>`<div class="activity-item"><div class="activity-dot"></div><div><div class="activity-text">${a.action} — <strong>${a.user.split('@')[0]}</strong></div><div class="activity-time">${a.ts}</div></div></div>`).join('');
+  setTimeout(renderOverviewCharts,100);
+}
+
+function renderOverviewCharts(){
+  const isDark=!document.body.classList.contains('light');
+  const gridColor=isDark?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.06)';
+  const textColor=isDark?'#8b92a5':'#6b7280';
+  const labels=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const data=[1820,2340,1980,2760,3100,2890,3240];
+
+  if(trafficChartInst)trafficChartInst.destroy();
+  const tc=document.getElementById('trafficChart');
+  if(tc)trafficChartInst=new Chart(tc,{type:'line',data:{labels,datasets:[{label:'Visitors',data,borderColor:'#aaff00',backgroundColor:'rgba(170,255,0,0.08)',tension:0.4,fill:true,pointBackgroundColor:'#aaff00',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:gridColor},ticks:{color:textColor}},y:{grid:{color:gridColor},ticks:{color:textColor}}}}});
+
+  if(deviceChartInst)deviceChartInst.destroy();
+  const dc=document.getElementById('deviceChart');
+  if(dc)deviceChartInst=new Chart(dc,{type:'doughnut',data:{labels:['Desktop','Mobile','Tablet'],datasets:[{data:[58,34,8],backgroundColor:['#aaff00','#6366f1','#f59e0b'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:textColor,padding:16}}}}});
+
+  if(topPagesChartInst)topPagesChartInst.destroy();
+  const pc=document.getElementById('topPagesChart');
+  if(pc)topPagesChartInst=new Chart(pc,{type:'bar',data:{labels:['Home','Blog','How It Works','Privacy','Terms'],datasets:[{label:'Views',data:[9840,4210,3180,890,460],backgroundColor:'rgba(99,102,241,0.7)',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:gridColor},ticks:{color:textColor}},y:{grid:{display:false},ticks:{color:textColor}}}}});
+}
+
+// ============================================================
+// USERS
+// ============================================================
+function renderUsersTable(){
+  const search=document.getElementById('user-search').value.toLowerCase();
+  let users=lsGet('mm_users');
+  if(userRoleFilter!=='all') users=users.filter(u=>u.role===userRoleFilter);
+  if(search) users=users.filter(u=>u.name.toLowerCase().includes(search)||u.email.toLowerCase().includes(search));
+  const roleBadge={admin:'badge-blue',editor:'badge-green',manager:'badge-yellow'};
+  document.getElementById('users-tbody').innerHTML=users.map(u=>`
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:10px"><div class="avatar-sm" style="background:${stringToColor(u.name)}">${u.avatar}</div><span>${u.name}</span></div></td>
+      <td>${u.email}</td>
+      <td><span class="badge ${roleBadge[u.role]||'badge-gray'}">${u.role}</span></td>
+      <td><span class="badge ${u.status==='active'?'badge-green':'badge-red'}">${u.status}</span></td>
+      <td>${u.lastActive}</td>
+      <td><div class="action-btns">
+        <button class="act-btn" onclick="editUser(${u.id})" title="Edit">✏️</button>
+        <button class="act-btn" onclick="toggleBanUser(${u.id})" title="${u.status==='active'?'Ban':'Unban'}">${u.status==='active'?'🚫':'✅'}</button>
+        <button class="act-btn danger" onclick="deleteUser(${u.id})" title="Delete">🗑️</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function filterUserRole(btn){
+  document.querySelectorAll('.tab[data-role]').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  userRoleFilter=btn.dataset.role;
+  renderUsersTable();
+}
+
+function addUser(){
+  const name=document.getElementById('new-user-name').value.trim();
+  const email=document.getElementById('new-user-email').value.trim();
+  const password=document.getElementById('new-user-password').value;
+  const role=document.getElementById('new-user-role').value;
+  if(!name||!email||!password){toast('Please fill all fields','error');return;}
+  const users=lsGet('mm_users');
+  if(users.find(u=>u.email===email)){toast('Email already exists','error');return;}
+  users.push({id:Date.now(),name,email,password,role,status:'active',lastActive:'Just now',avatar:name[0].toUpperCase()});
+  lsSet('mm_users',users);
+  closeModal('add-user-modal');
+  ['new-user-name','new-user-email','new-user-password'].forEach(id=>document.getElementById(id).value='');
+  renderUsersTable();
+  toast('User added successfully');
+  logActivity('User Created',`Created user ${email}`);
+}
+
+function editUser(id){
+  const users=lsGet('mm_users');
+  const u=users.find(u=>u.id===id);
+  if(!u)return;
+  document.getElementById('edit-user-id').value=id;
+  document.getElementById('edit-user-name').value=u.name;
+  document.getElementById('edit-user-email').value=u.email;
+  document.getElementById('edit-user-role').value=u.role;
+  openModal('edit-user-modal');
+}
+
+function saveEditUser(){
+  const id=parseInt(document.getElementById('edit-user-id').value);
+  const users=lsGet('mm_users');
+  const idx=users.findIndex(u=>u.id===id);
+  if(idx===-1)return;
+  users[idx].name=document.getElementById('edit-user-name').value.trim();
+  users[idx].email=document.getElementById('edit-user-email').value.trim();
+  users[idx].role=document.getElementById('edit-user-role').value;
+  users[idx].avatar=users[idx].name[0].toUpperCase();
+  lsSet('mm_users',users);
+  closeModal('edit-user-modal');
+  renderUsersTable();
+  toast('User updated');
+  logActivity('User Updated',`Updated user ${users[idx].email}`);
+}
+
+function deleteUser(id){
+  if(!confirm('Are you sure you want to delete this user?'))return;
+  const users=lsGet('mm_users').filter(u=>u.id!==id);
+  lsSet('mm_users',users);
+  renderUsersTable();
+  toast('User deleted','info');
+  logActivity('User Deleted','Deleted a user');
+}
+
+function toggleBanUser(id){
+  const users=lsGet('mm_users');
+  const u=users.find(u=>u.id===id);
+  if(!u)return;
+  const newStatus=u.status==='active'?'banned':'active';
+  if(newStatus==='banned'&&!confirm(`Ban ${u.name}?`))return;
+  u.status=newStatus;
+  lsSet('mm_users',users);
+  renderUsersTable();
+  toast(`User ${newStatus==='banned'?'banned':'unbanned'}`);
+  logActivity(newStatus==='banned'?'User Banned':'User Unbanned',`${u.email} ${newStatus}`);
+}
+
+function exportUsersCSV(){
+  const users=lsGet('mm_users');
+  const rows=[['Name','Email','Role','Status','Last Active'],...users.map(u=>[u.name,u.email,u.role,u.status,u.lastActive])];
+  downloadCSV(rows,'users.csv');
+  toast('CSV downloaded');
+}
+
+// ============================================================
+// PAGES
+// ============================================================
+function renderPagesTable(){
+  const pages=lsGet('mm_pages');
+  document.getElementById('pages-tbody').innerHTML=pages.map(p=>`
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:10px"><span style="font-size:20px">${p.icon}</span><strong>${p.title}</strong></div></td>
+      <td><code style="font-size:12px;color:var(--text2)">${p.slug}</code></td>
+      <td><button class="toggle ${p.status==='published'?'on':''}" onclick="togglePageStatus('${p.id}',this)"></button></td>
+      <td style="color:var(--text2);font-size:13px">${p.lastEdited}</td>
+      <td><div class="action-btns">
+        <button class="act-btn" onclick="editPage('${p.id}')">✏️ Edit Content</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function togglePageStatus(id,btn){
+  const pages=lsGet('mm_pages');
+  const p=pages.find(p=>p.id===id);
+  if(!p)return;
+  p.status=p.status==='published'?'draft':'published';
+  p.lastEdited=new Date().toISOString().split('T')[0];
+  lsSet('mm_pages',pages);
+  btn.classList.toggle('on',p.status==='published');
+  toast(`Page ${p.status==='published'?'published':'unpublished'}`);
+  logActivity('Page Status Changed',`${p.title} set to ${p.status}`);
+}
+
+function editPage(id){
+  const pages=lsGet('mm_pages');
+  const p=pages.find(p=>p.id===id);
+  if(!p)return;
+  document.getElementById('edit-page-id').value=id;
+  document.getElementById('edit-page-modal-title').textContent='Edit: '+p.title;
+  document.getElementById('pe-hero-headline').value=p.heroHeadline||'';
+  document.getElementById('pe-hero-subtext').value=p.heroSubtext||'';
+  document.getElementById('pe-cta-text').value=p.ctaText||'';
+  document.getElementById('pe-body-content').value=p.bodyContent||'';
+  document.getElementById('pe-meta-title').value=p.metaTitle||'';
+  document.getElementById('pe-meta-desc').value=p.metaDesc||'';
+  document.getElementById('pe-og-image').value=p.ogImage||'';
+  document.getElementById('pe-slug').value=p.slug||'';
+  document.getElementById('pe-visibility').value=p.visibility||'public';
+  document.getElementById('pe-custom-css').value=p.customCSS||'';
+  // reset tabs
+  const tabs=document.querySelectorAll('#edit-page-modal .tab');
+  const tcs=document.querySelectorAll('#edit-page-modal .tab-content');
+  tabs.forEach((t,i)=>{t.classList.toggle('active',i===0);});
+  tcs.forEach((c,i)=>{c.classList.toggle('active',i===0);});
+  openModal('edit-page-modal');
+}
+
+function savePageEdit(){
+  const id=document.getElementById('edit-page-id').value;
+  const pages=lsGet('mm_pages');
+  const p=pages.find(p=>p.id===id);
+  if(!p)return;
+  p.heroHeadline=document.getElementById('pe-hero-headline').value;
+  p.heroSubtext=document.getElementById('pe-hero-subtext').value;
+  p.ctaText=document.getElementById('pe-cta-text').value;
+  p.bodyContent=document.getElementById('pe-body-content').value;
+  p.metaTitle=document.getElementById('pe-meta-title').value;
+  p.metaDesc=document.getElementById('pe-meta-desc').value;
+  p.ogImage=document.getElementById('pe-og-image').value;
+  p.slug=document.getElementById('pe-slug').value;
+  p.visibility=document.getElementById('pe-visibility').value;
+  p.customCSS=document.getElementById('pe-custom-css').value;
+  p.lastEdited=new Date().toISOString().split('T')[0];
+  lsSet('mm_pages',pages);
+  closeModal('edit-page-modal');
+  renderPagesTable();
+  toast('Page saved successfully');
+  logActivity('Page Updated',`Updated ${p.title}`);
+}
+
+function createPage(){
+  const title=document.getElementById('new-page-title').value.trim();
+  const slug=document.getElementById('new-page-slug').value.trim();
+  const status=document.getElementById('new-page-status').value;
+  if(!title||!slug){toast('Title and slug are required','error');return;}
+  const pages=lsGet('mm_pages');
+  pages.push({id:'pg_'+Date.now(),icon:'📄',title,slug,status,lastEdited:new Date().toISOString().split('T')[0],heroHeadline:title,heroSubtext:'',ctaText:'',bodyContent:'',metaTitle:title,metaDesc:'',ogImage:'',visibility:'public',customCSS:''});
+  lsSet('mm_pages',pages);
+  closeModal('create-page-modal');
+  renderPagesTable();
+  toast('Page created');
+  logActivity('Page Created',`Created ${title}`);
+}
+
+// ============================================================
+// SEO
+// ============================================================
+function updateCounter(input,counterId,max){
+  const len=input.value.length;
+  const el=document.getElementById(counterId);
+  el.textContent=`${len}/${max}`;
+  el.className='char-counter'+(len>max?'over':len>max*.85?' warn':'');
+  updateSEOScore();
+}
+
+function loadPageSEO(){
+  const page=document.getElementById('seo-page-select').value;
+  const seoData=lsGet('mm_seo');
+  const d=seoData[page]||{};
+  document.getElementById('seo-meta-title').value=d.metaTitle||'';
+  document.getElementById('seo-focus-kw').value=d.focusKw||'';
+  document.getElementById('seo-meta-desc').value=d.metaDesc||'';
+  document.getElementById('seo-slug').value=d.slug||'/';
+  document.getElementById('seo-canonical').value=d.canonical||'';
+  document.getElementById('seo-og-title').value=d.ogTitle||'';
+  document.getElementById('seo-og-desc').value=d.ogDesc||'';
+  document.getElementById('seo-og-image').value=d.ogImage||'';
+  document.getElementById('seo-robots').value=d.robots||'index,follow';
+  updateSEOScore();
+}
+
+function updateSEOScore(){
+  let score=0;
+  const fields=['seo-meta-title','seo-focus-kw','seo-meta-desc','seo-slug','seo-canonical','seo-og-title','seo-og-desc','seo-og-image'];
+  const weights=[25,15,20,10,5,10,5,10];
+  const hints=[];
+  fields.forEach((id,i)=>{
+    const v=document.getElementById(id).value.trim();
+    if(v){score+=weights[i];}
+    else{hints.push(`• Add ${document.querySelector(`[for="${id}"], label`)?.textContent||id}`);}
+  });
+  score=Math.min(100,score);
+  document.getElementById('seo-score-val').textContent=score;
+  const circumference=2*Math.PI*42;
+  const dash=(score/100)*circumference;
+  document.getElementById('seo-ring-circle').setAttribute('stroke-dasharray',`${dash} ${circumference}`);
+  document.getElementById('seo-ring-circle').setAttribute('stroke',score>=70?'#aaff00':score>=40?'#f59e0b':'#ef4444');
+  document.getElementById('seo-hints').innerHTML=hints.slice(0,4).join('<br>');
+}
+
+function saveSEO(){
+  const page=document.getElementById('seo-page-select').value;
+  const seoData=lsGet('mm_seo')||{};
+  if(Array.isArray(seoData)) seoData={};
+  seoData[page]={
+    metaTitle:document.getElementById('seo-meta-title').value,
+    focusKw:document.getElementById('seo-focus-kw').value,
+    metaDesc:document.getElementById('seo-meta-desc').value,
+    slug:document.getElementById('seo-slug').value,
+    canonical:document.getElementById('seo-canonical').value,
+    ogTitle:document.getElementById('seo-og-title').value,
+    ogDesc:document.getElementById('seo-og-desc').value,
+    ogImage:document.getElementById('seo-og-image').value,
+    robots:document.getElementById('seo-robots').value
+  };
+  lsSet('mm_seo',seoData);
+  toast('SEO settings saved');
+  logActivity('SEO Saved',`Updated ${page} SEO`);
+}
+
+function downloadSitemap(){
+  const xml=`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>https://mymindstudio.com/</loc><priority>1.0</priority></url>\n  <url><loc>https://mymindstudio.com/blog</loc><priority>0.8</priority></url>\n  <url><loc>https://mymindstudio.com/privacy-policy</loc><priority>0.3</priority></url>\n  <url><loc>https://mymindstudio.com/terms</loc><priority>0.3</priority></url>\n  <url><loc>https://mymindstudio.com/how-it-works</loc><priority>0.7</priority></url>\n</urlset>`;
+  const blob=new Blob([xml],{type:'text/xml'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sitemap.xml';a.click();
+  toast('Sitemap downloaded');
+}
+
+// ============================================================
+// MARKETING
+// ============================================================
+function renderCampaigns(){
+  const campaigns=lsGet('mm_campaigns');
+  const list=document.getElementById('campaigns-list');
+  if(!list)return;
+  list.innerHTML=campaigns.map(c=>`
+    <div class="campaign-card">
+      <div>
+        <div style="font-size:14px;font-weight:600">${c.name}</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:4px">${c.type} • Started ${c.startDate} • Budget: ${c.budget}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="badge ${c.status==='active'?'badge-green':'badge-yellow'}">${c.status}</span>
+        <button class="act-btn" onclick="toggleCampaign(${c.id})">${c.status==='active'?'⏸':'▶'}</button>
+        <button class="act-btn danger" onclick="deleteCampaign(${c.id})">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function createCampaign(){
+  const name=document.getElementById('new-camp-name').value.trim();
+  const type=document.getElementById('new-camp-type').value;
+  const startDate=document.getElementById('new-camp-start').value||new Date().toISOString().split('T')[0];
+  const budget=document.getElementById('new-camp-budget').value||'$0';
+  if(!name){toast('Campaign name required','error');return;}
+  const campaigns=lsGet('mm_campaigns');
+  campaigns.push({id:Date.now(),name,type,status:'active',startDate,budget});
+  lsSet('mm_campaigns',campaigns);
+  closeModal('create-campaign-modal');
+  renderCampaigns();
+  toast('Campaign created');
+  logActivity('Campaign Created',`Created ${name}`);
+}
+
+function toggleCampaign(id){
+  const campaigns=lsGet('mm_campaigns');
+  const c=campaigns.find(c=>c.id===id);
+  if(!c)return;
+  c.status=c.status==='active'?'paused':'active';
+  lsSet('mm_campaigns',campaigns);
+  renderCampaigns();
+  toast(`Campaign ${c.status}`);
+}
+
+function deleteCampaign(id){
+  if(!confirm('Delete this campaign?'))return;
+  lsSet('mm_campaigns',lsGet('mm_campaigns').filter(c=>c.id!==id));
+  renderCampaigns();
+  toast('Campaign deleted','info');
+}
+
+function renderIntegrations(){
+  const list=document.getElementById('integrations-list');
+  if(!list)return;
+  const integrations=[
+    {id:'ga4',icon:'📊',name:'Google Analytics 4',desc:'Track website traffic and user behavior',on:true},
+    {id:'fb',icon:'📘',name:'Facebook Pixel',desc:'Track conversions from Facebook ads',on:true},
+    {id:'hotjar',icon:'🔥',name:'Hotjar',desc:'Heatmaps and session recordings',on:false},
+    {id:'intercom',icon:'💬',name:'Intercom',desc:'Customer messaging platform',on:false},
+    {id:'mailchimp',icon:'📧',name:'Mailchimp',desc:'Email marketing automation',on:true}
+  ];
+  list.innerHTML=integrations.map(i=>`
+    <div class="integration-card">
+      <div class="integration-info">
+        <div class="integration-icon">${i.icon}</div>
+        <div><div class="integration-name">${i.name}</div><div class="integration-desc">${i.desc}</div></div>
+      </div>
+      <button class="toggle ${i.on?'on':''}" onclick="this.classList.toggle('on');toast('Integration updated')"></button>
+    </div>`).join('');
+}
+
+function savePopup(){
+  const d={headline:document.getElementById('popup-headline').value,offer:document.getElementById('popup-offer').value,cta:document.getElementById('popup-cta').value};
+  ls('mm_popup',JSON.stringify(d));
+  toast('Popup saved');
+  logActivity('Popup Saved','Updated exit intent popup');
+}
+
+function saveSocial(){
+  const d={twitter:document.getElementById('social-twitter').value,linkedin:document.getElementById('social-linkedin').value,instagram:document.getElementById('social-instagram').value,whatsapp:document.getElementById('social-whatsapp').value};
+  ls('mm_social',JSON.stringify(d));
+  toast('Social links saved');
+  logActivity('Social Links Saved','Updated social media URLs');
+}
+
+// ============================================================
+// ANALYTICS
+// ============================================================
+let analyticsChartInst=null, sourcesChartInst=null;
+let currentDateRange=7;
+
+function setDateRange(btn,days){
+  document.querySelectorAll('.date-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentDateRange=days;
+  document.getElementById('analytics-chart-title').textContent=`Traffic (Last ${days} Days)`;
+  const stats={7:{visitors:'18,420',bounce:'42.3%',session:'3m 12s',conv:'42'},30:{visitors:'74,850',bounce:'38.7%',session:'3m 45s',conv:'168'},90:{visitors:'218,300',bounce:'36.2%',session:'4m 02s',conv:'512'}};
+  const s=stats[days]||stats[7];
+  document.getElementById('a-visitors').textContent=s.visitors;
+  document.getElementById('a-bounce').textContent=s.bounce;
+  document.getElementById('a-session').textContent=s.session;
+  document.getElementById('a-conv').textContent=s.conv;
+  renderAnalyticsCharts();
+}
+
+function renderAnalyticsCharts(){
+  const isDark=!document.body.classList.contains('light');
+  const gridColor=isDark?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.06)';
+  const textColor=isDark?'#8b92a5':'#6b7280';
+  const days=currentDateRange;
+  const labels=[];
+  const data=[];
+  for(let i=days-1;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);
+    labels.push(d.toLocaleDateString('en',{month:'short',day:'numeric'}));
+    data.push(Math.floor(500+Math.random()*2000));
+  }
+  if(analyticsChartInst)analyticsChartInst.destroy();
+  const ac=document.getElementById('analyticsChart');
+  if(ac)analyticsChartInst=new Chart(ac,{type:'line',data:{labels,datasets:[{label:'Visitors',data,borderColor:'#aaff00',backgroundColor:'rgba(170,255,0,0.06)',tension:0.4,fill:true,pointRadius:2,pointBackgroundColor:'#aaff00'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:gridColor},ticks:{color:textColor,maxRotation:45}},y:{grid:{color:gridColor},ticks:{color:textColor}}}}});
+
+  if(sourcesChartInst)sourcesChartInst.destroy();
+  const sc=document.getElementById('sourcesChart');
+  if(sc)sourcesChartInst=new Chart(sc,{type:'pie',data:{labels:['Organic','Direct','Social','Referral'],datasets:[{data:[45,28,18,9],backgroundColor:['#aaff00','#6366f1','#f59e0b','#22c55e'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:textColor,padding:14}}}}});
+}
+
+function downloadPDF(){toast('PDF report download started (simulated)','info');}
+function downloadAnalyticsCSV(){
+  const rows=[['Date','Visitors','Bounce Rate','Avg Session'],['2025-03-21','2,840','42.3%','3m 12s'],['2025-03-20','2,690','41.8%','3m 20s'],['2025-03-19','2,540','43.1%','3m 05s']];
+  downloadCSV(rows,'analytics.csv');toast('CSV downloaded');
+}
+
+// ============================================================
+// MEDIA
+// ============================================================
+let selectedMediaId=null;
+let mediaTypeFilter='all';
+
+function renderMedia(){
+  const media=lsGet('mm_media');
+  const grid=document.getElementById('media-grid');
+  const filtered=mediaTypeFilter==='all'?media:media.filter(m=>m.type===mediaTypeFilter);
+  grid.innerHTML=filtered.map(m=>`
+    <div class="media-item${selectedMediaId===m.id?' selected':''}" onclick="selectMedia('${m.id}')">
+      <span>${m.icon}</span>
+      <span class="media-name">${m.name}</span>
+    </div>`).join('');
+}
+
+function filterMedia(btn){
+  document.querySelectorAll('.tab[data-mtype]').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  mediaTypeFilter=btn.dataset.mtype;
+  renderMedia();
+}
+
+function selectMedia(id){
+  selectedMediaId=id;
+  const media=lsGet('mm_media');
+  const m=media.find(m=>m.id===id);
+  if(!m)return;
+  renderMedia();
+  const panel=document.getElementById('media-info-panel');
+  panel.style.display='block';
+  document.getElementById('mi-icon').textContent=m.icon;
+  document.getElementById('mi-name').textContent=m.name;
+  document.getElementById('mi-type').textContent=m.type.toUpperCase();
+  document.getElementById('mi-date').textContent='Uploaded: '+m.date;
+  document.getElementById('mi-rename-input').value=m.name;
+  document.getElementById('mi-url').value=m.url||'#'+m.name.replace(/\s+/g,'-').toLowerCase();
+}
+
+function renameMedia(){
+  if(!selectedMediaId)return;
+  const newName=document.getElementById('mi-rename-input').value.trim();
+  if(!newName)return;
+  const media=lsGet('mm_media');
+  const m=media.find(m=>m.id===selectedMediaId);
+  if(m){m.name=newName;lsSet('mm_media',media);renderMedia();toast('File renamed');}
+}
+
+function copyMediaURL(){
+  const url=document.getElementById('mi-url').value;
+  navigator.clipboard.writeText(url).catch(()=>{});
+  toast('URL copied to clipboard');
+}
+
+function deleteSelectedMedia(){
+  if(!selectedMediaId)return;
+  if(!confirm('Delete this file?'))return;
+  lsSet('mm_media',lsGet('mm_media').filter(m=>m.id!==selectedMediaId));
+  selectedMediaId=null;
+  document.getElementById('media-info-panel').style.display='none';
+  renderMedia();
+  toast('File deleted','info');
+  logActivity('Media Deleted','Deleted a media file');
+}
+
+function handleFileUpload(event){
+  const files=Array.from(event.target.files);
+  files.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const media=lsGet('mm_media');
+      const type=file.type.startsWith('image/')?'image':file.type.startsWith('video/')?'video':'doc';
+      const icon=type==='image'?'🖼️':type==='video'?'🎬':'📄';
+      media.push({id:'m'+Date.now()+Math.random(),name:file.name,type,icon,url:e.target.result.substring(0,100)+'...',date:new Date().toISOString().split('T')[0]});
+      lsSet('mm_media',media);
+      renderMedia();
+      toast(`${file.name} uploaded`);
+      logActivity('Media Upload',`Uploaded ${file.name}`);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function handleFileDrop(event){
+  event.preventDefault();
+  document.getElementById('upload-zone').classList.remove('dragover');
+  const files=Array.from(event.dataTransfer.files);
+  if(files.length){
+    const inp=document.getElementById('file-input');
+    const dt=new DataTransfer();
+    files.forEach(f=>dt.items.add(f));
+    inp.files=dt.files;
+    handleFileUpload({target:inp});
+  }
+}
+
+// ============================================================
+// LANGUAGES
+// ============================================================
+function renderLanguages(){
+  const langs=lsGet('mm_languages');
+  document.getElementById('lang-tbody').innerHTML=langs.map(l=>`
+    <tr>
+      <td>${l.flag} ${l.name}</td>
+      <td><code>${l.code}</code></td>
+      <td>${l.dir.toUpperCase()}</td>
+      <td>${l.isDefault?'<span class="badge badge-green">Default</span>':'<button class="btn btn-secondary" style="font-size:11px;padding:4px 10px" onclick="setDefaultLang(\''+l.id+'\')">Set Default</button>'}</td>
+      <td><button class="toggle ${l.enabled?'on':''}" onclick="toggleLang('${l.id}',this)"></button></td>
+      <td><div class="action-btns">${!l.isDefault?`<button class="act-btn danger" onclick="deleteLang('${l.id}')">🗑️</button>`:''}</div></td>
+    </tr>`).join('');
+  renderTranslations();
+}
+
+function setDefaultLang(id){
+  const langs=lsGet('mm_languages');
+  langs.forEach(l=>l.isDefault=l.id===id);
+  lsSet('mm_languages',langs);
+  renderLanguages();
+  toast('Default language updated');
+}
+
+function toggleLang(id,btn){
+  const langs=lsGet('mm_languages');
+  const l=langs.find(l=>l.id===id);
+  if(!l)return;
+  l.enabled=!l.enabled;
+  lsSet('mm_languages',langs);
+  btn.classList.toggle('on',l.enabled);
+  toast(`Language ${l.enabled?'enabled':'disabled'}`);
+}
+
+function deleteLang(id){
+  if(!confirm('Delete this language?'))return;
+  lsSet('mm_languages',lsGet('mm_languages').filter(l=>l.id!==id));
+  renderLanguages();
+  toast('Language deleted','info');
+}
+
+function addLanguage(){
+  const name=document.getElementById('new-lang-name').value.trim();
+  const code=document.getElementById('new-lang-code').value.trim();
+  const flag=document.getElementById('new-lang-flag').value.trim()||'🌐';
+  const dir=document.getElementById('new-lang-dir').value;
+  if(!name||!code){toast('Name and code required','error');return;}
+  const langs=lsGet('mm_languages');
+  langs.push({id:code,name,code,flag,dir,enabled:true,isDefault:false});
+  lsSet('mm_languages',langs);
+  // add to translations
+  const trans=JSON.parse(ls('mm_translations')||'{}');
+  trans[code]=trans[code]||{};
+  ls('mm_translations',JSON.stringify(trans));
+  closeModal('add-lang-modal');
+  renderLanguages();
+  // Update select
+  const sel=document.getElementById('trans-lang-select');
+  const opt=document.createElement('option');
+  opt.value=code;opt.textContent=name;
+  sel.appendChild(opt);
+  toast('Language added');
+  logActivity('Language Added',`Added ${name} (${code})`);
+}
+
+function renderTranslations(){
+  const langCode=document.getElementById('trans-lang-select').value;
+  const trans=JSON.parse(ls('mm_translations')||'{}');
+  const langTrans=trans[langCode]||{};
+  const tbody=document.getElementById('trans-tbody');
+  tbody.innerHTML=Object.keys(DEFAULT_TRANSLATIONS).map(key=>`
+    <tr>
+      <td class="trans-key">${key}</td>
+      <td style="font-size:13px">${DEFAULT_TRANSLATIONS[key]}</td>
+      <td><input type="text" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-size:13px;outline:none" data-key="${key}" value="${langTrans[key]||''}" placeholder="Enter translation..."></td>
+    </tr>`).join('');
+}
+
+function saveTranslations(){
+  const langCode=document.getElementById('trans-lang-select').value;
+  const trans=JSON.parse(ls('mm_translations')||'{}');
+  trans[langCode]=trans[langCode]||{};
+  document.querySelectorAll('#trans-tbody input[data-key]').forEach(inp=>{
+    if(inp.value.trim())trans[langCode][inp.dataset.key]=inp.value.trim();
+  });
+  ls('mm_translations',JSON.stringify(trans));
+  toast('Translations saved');
+  logActivity('Translation Saved',`Saved ${langCode} translations`);
+}
+
+function autoTranslate(){
+  const langCode=document.getElementById('trans-lang-select').value;
+  const sampleHi={nav_home:'होम',nav_blog:'ब्लॉग',nav_features:'विशेषताएं',nav_pricing:'मूल्य निर्धारण',hero_headline:'तेज़ सोचें। सब कुछ याद रखें।',cta_primary:'मुफ़्त में शुरू करें',btn_save:'सहेजें',btn_cancel:'रद्द करें'};
+  const sampleEs={nav_home:'Inicio',nav_blog:'Blog',nav_features:'Características',nav_pricing:'Precios',hero_headline:'Piensa más rápido. Recuerda todo.',cta_primary:'Comenzar gratis',btn_save:'Guardar',btn_cancel:'Cancelar'};
+  const samples={hi:sampleHi,es:sampleEs};
+  toast('Auto-translating...','info');
+  setTimeout(()=>{
+    const s=samples[langCode]||{};
+    document.querySelectorAll('#trans-tbody input[data-key]').forEach(inp=>{
+      if(s[inp.dataset.key]&&!inp.value)inp.value=s[inp.dataset.key];
+    });
+    toast('Auto-translation complete!');
+  },2000);
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+function saveGeneralSettings(){
+  const s={siteName:document.getElementById('s-site-name').value,tagline:document.getElementById('s-tagline').value,email:document.getElementById('s-email').value,phone:document.getElementById('s-phone').value,whatsapp:document.getElementById('s-whatsapp').value,address:document.getElementById('s-address').value,timezone:document.getElementById('s-timezone').value};
+  const settings=lsGet('mm_settings')||{};
+  lsSet('mm_settings',{...settings,general:s});
+  toast('General settings saved');
+  logActivity('Settings Saved','Updated general settings');
+}
+
+function saveBranding(){
+  const s={primaryColor:document.getElementById('s-primary-color').value,font:document.getElementById('s-font').value,logo:document.getElementById('s-logo').value,favicon:document.getElementById('s-favicon').value};
+  const settings=lsGet('mm_settings')||{};
+  lsSet('mm_settings',{...settings,branding:s});
+  document.documentElement.style.setProperty('--accent',s.primaryColor);
+  toast('Branding saved');
+  logActivity('Branding Saved','Updated branding settings');
+}
+
+function saveSecuritySettings(){
+  toast('Security settings saved');
+  logActivity('Security Settings Saved','Updated security configuration');
+}
+
+function changePassword(){
+  const cur=document.getElementById('s-cur-pass').value;
+  const nw=document.getElementById('s-new-pass').value;
+  const conf=document.getElementById('s-confirm-pass').value;
+  if(!cur||!nw||!conf){toast('All fields required','error');return;}
+  if(nw!==conf){toast('Passwords do not match','error');return;}
+  if(nw.length<6){toast('Password must be at least 6 characters','error');return;}
+  ['s-cur-pass','s-new-pass','s-confirm-pass'].forEach(id=>document.getElementById(id).value='');
+  toast('Password changed successfully');
+  logActivity('Password Changed','Admin password updated');
+}
+
+function saveAPIKeys(){
+  toast('API keys saved');
+  logActivity('API Keys Saved','Updated API key configuration');
+}
+
+function toggleMask(btn){
+  const input=btn.previousElementSibling;
+  input.type=input.type==='password'?'text':'password';
+  btn.textContent=input.type==='password'?'👁':'🙈';
+}
+
+function createBackup(){
+  const backup={mm_users:ls('mm_users'),mm_pages:ls('mm_pages'),mm_media:ls('mm_media'),mm_languages:ls('mm_languages'),mm_translations:ls('mm_translations'),mm_campaigns:ls('mm_campaigns'),mm_activity:ls('mm_activity'),mm_seo:ls('mm_seo'),mm_settings:ls('mm_settings'),mm_popup:ls('mm_popup'),mm_social:ls('mm_social'),timestamp:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`mymind-backup-${Date.now()}.json`;a.click();
+  toast('Backup downloaded');
+  logActivity('Backup Created','Full backup downloaded');
+}
+
+function restoreBackup(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      Object.keys(data).forEach(k=>{if(k!=='timestamp'&&data[k])ls(k,data[k]);});
+      toast('Backup restored — refreshing...');
+      setTimeout(()=>location.reload(),1500);
+    }catch{toast('Invalid backup file','error');}
+  };
+  reader.readAsText(file);
+}
+
+function resetToDefaults(){
+  if(!confirm('This will reset ALL data to defaults. This cannot be undone. Are you sure?'))return;
+  if(!confirm('Are you ABSOLUTELY sure? All your data will be lost.'))return;
+  ['mm_users','mm_pages','mm_media','mm_languages','mm_translations','mm_campaigns','mm_activity','mm_seo','mm_settings','mm_popup','mm_social','mm_token','mm_theme'].forEach(k=>localStorage.removeItem(k));
+  toast('Reset complete — reloading...');
+  setTimeout(()=>location.reload(),1500);
+}
+
+// ============================================================
+// ACTIVITY LOG
+// ============================================================
+function renderActivityLog(){
+  const userFilter=document.getElementById('activity-user-filter').value;
+  const dateFrom=document.getElementById('activity-date-from').value;
+  const dateTo=document.getElementById('activity-date-to').value;
+  let logs=lsGet('mm_activity');
+  if(userFilter) logs=logs.filter(l=>l.user===userFilter);
+  if(dateFrom) logs=logs.filter(l=>l.ts.split(' ')[0]>=dateFrom);
+  if(dateTo) logs=logs.filter(l=>l.ts.split(' ')[0]<=dateTo);
+  document.getElementById('activity-tbody').innerHTML=logs.map(l=>`
+    <tr>
+      <td style="color:var(--text2);font-size:13px">${l.ts}</td>
+      <td>${l.user}</td>
+      <td><span class="badge badge-blue">${l.action}</span></td>
+      <td style="font-family:monospace;font-size:12px">${l.ip}</td>
+      <td style="font-size:13px;color:var(--text2)">${l.details}</td>
+    </tr>`).join('');
+}
+
+function logActivity(action,details){
+  const logs=lsGet('mm_activity');
+  const now=new Date();
+  const ts=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0')+' '+now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+  logs.unshift({ts,user:currentUser?.email||'unknown',action,ip:'192.168.1.1',details});
+  if(logs.length>100)logs.pop();
+  lsSet('mm_activity',logs);
+}
+
+function exportActivityCSV(){
+  const logs=lsGet('mm_activity');
+  const rows=[['Timestamp','User','Action','IP','Details'],...logs.map(l=>[l.ts,l.user,l.action,l.ip,l.details])];
+  downloadCSV(rows,'activity-log.csv');
+  toast('Activity log exported');
+}
+
+// ============================================================
+// UTILITIES
+// ============================================================
+function downloadCSV(rows,filename){
+  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+initData();
+if(checkAuth()){
+  showApp();
+} else {
+  document.getElementById('login-screen').style.display='flex';
+}
+
+// Login on Enter
+document.getElementById('login-password').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('login-email').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+</script>
+</body>
+</html>
