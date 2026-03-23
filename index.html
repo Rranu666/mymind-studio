@@ -1228,6 +1228,12 @@ button, a, select, input, textarea, .est-opt, .tool-tab, .ai-chip, .faq-item {
     white-space: nowrap;
     max-width: calc(100vw - 120px);
   }
+  /* CRITICAL FIX: show hamburger on mobile (768px and below) */
+  .hamburger { display: flex; }
+  /* iOS input zoom fix for tablet range (481px–768px) */
+  select, input, textarea { font-size: 16px !important; }
+  /* Tap target fix: modal close button min 44px */
+  .vid-modal-close { width: 44px; height: 44px; }
 }
 
 /* ── Fix global reach inline grid ── */
@@ -1280,7 +1286,7 @@ button, a, select, input, textarea, .est-opt, .tool-tab, .ai-chip, .faq-item {
   .proc-chip{font-size:.65rem;padding:4px 10px}
   .vid-modal-overlay{padding:12px}
   .vid-modal-box{border-radius:10px}
-  .vid-modal-close{top:8px;right:8px;width:32px;height:32px}
+  .vid-modal-close{top:6px;right:6px;width:44px;height:44px}
 }
 
 </style>
