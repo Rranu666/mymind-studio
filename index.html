@@ -1003,12 +1003,27 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
   .case-metrics{grid-template-columns:repeat(2,1fr)!important}
   /* Case study right-side mock widget: stack below on mobile */
   .testi-case-panel .case-grid > div:last-child{display:none}
-  /* Services scroll: add padding so first card isn't flush to edge */
-  .services-scroll{padding:0 16px 24px;gap:12px}
-  .svc-card{flex:0 0 calc(100vw - 32px)}
-  .services-header{padding:0 16px 28px}
-  /* Services section: remove large top padding */
-  .services{padding-top:50px}
+  /* Services: switch to vertical stack so ALL cards are visible */
+  .services{padding-top:50px;padding-bottom:0}
+  .services-header{padding:0 16px 28px;flex-direction:column;align-items:flex-start;gap:12px}
+  .services-all-link{align-self:flex-start}
+  .services-scroll{
+    flex-direction:column;
+    overflow-x:visible;
+    scroll-snap-type:none;
+    padding:0;
+    border-top:none;
+    gap:1px;
+  }
+  .svc-card{
+    flex:0 0 auto;
+    width:100%;
+    min-height:auto;
+    padding:28px 20px 36px;
+    border-right:none;
+    border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  .svc-card:last-child{border-bottom:none}
 }
 
 @media(max-width:480px){
