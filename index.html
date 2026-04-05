@@ -3569,30 +3569,60 @@ document.querySelectorAll('.testi-case-tab').forEach(tab=>{
 </script>
 
 <!-- ═══════════════ THANK YOU MODAL ═══════════════ -->
-<div id="thankYouOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)">
-  <div id="thankYouBox" style="background:#161820;border-radius:24px;padding:56px 48px;max-width:480px;width:92%;text-align:center;position:relative;border:1px solid rgba(170,255,0,.25);box-shadow:0 40px 100px rgba(0,0,0,.6);transform:scale(.92);transition:transform .35s cubic-bezier(.34,1.56,.64,1)">
-    <button onclick="closeThankYou()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.07);border:none;color:rgba(255,255,255,.5);width:32px;height:32px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.15)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">✕</button>
-    <!-- Animated tick circle -->
-    <div style="width:80px;height:80px;margin:0 auto 24px;position:relative">
-      <svg viewBox="0 0 80 80" style="width:80px;height:80px">
-        <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(170,255,0,.2)" stroke-width="3"/>
-        <circle cx="40" cy="40" r="36" fill="none" stroke="#aaff00" stroke-width="3" stroke-dasharray="226" stroke-dashoffset="226" id="tyCircle" style="transition:stroke-dashoffset .6s ease .1s;transform:rotate(-90deg);transform-origin:50% 50%"/>
+<div id="thankYouOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:20px">
+  <div id="thankYouBox" style="background:linear-gradient(160deg,#1a1c26 0%,#0f1118 100%);border-radius:28px;padding:52px 44px 44px;max-width:500px;width:100%;text-align:center;position:relative;border:1px solid rgba(170,255,0,.3);box-shadow:0 0 0 1px rgba(170,255,0,.06),0 40px 100px rgba(0,0,0,.7);transform:scale(.92);transition:transform .4s cubic-bezier(.34,1.56,.64,1)">
+    <button onclick="closeThankYou()" style="position:absolute;top:18px;right:18px;background:rgba(255,255,255,.07);border:none;color:rgba(255,255,255,.45);width:34px;height:34px;border-radius:50%;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.14)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='rgba(255,255,255,.45)'">✕</button>
+
+    <!-- Animated tick -->
+    <div style="width:88px;height:88px;margin:0 auto 28px;position:relative">
+      <svg viewBox="0 0 88 88" style="width:88px;height:88px">
+        <circle cx="44" cy="44" r="40" fill="rgba(170,255,0,.06)" stroke="rgba(170,255,0,.15)" stroke-width="1.5"/>
+        <circle cx="44" cy="44" r="40" fill="none" stroke="#aaff00" stroke-width="2.5" stroke-dasharray="251" stroke-dashoffset="251" id="tyCircle" style="transition:stroke-dashoffset .7s ease .15s;transform:rotate(-90deg);transform-origin:50% 50%"/>
       </svg>
       <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
-        <svg id="tyTick" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#aaff00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0;transition:opacity .3s ease .5s"><polyline points="4 12 10 18 20 7"/></svg>
+        <svg id="tyTick" viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#aaff00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0;transition:opacity .35s ease .6s"><polyline points="4 12 10 18 20 7"/></svg>
       </div>
     </div>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:#aaff00;margin-bottom:12px">You're all set!</div>
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#fff;margin-bottom:16px">Message received 🎉</div>
-    <p style="font-size:.9rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:28px">We'll review your enquiry and reply to your email within <strong style="color:#fff">24 hours</strong> with a full roadmap, realistic timeline, and exact cost — completely free.</p>
-    <div style="background:rgba(170,255,0,.07);border:1px solid rgba(170,255,0,.2);border-radius:12px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;text-align:left">
-      <span style="font-size:1.4rem">📧</span>
-      <div>
-        <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:2px">Confirmation sent to</div>
-        <div id="tyEmail" style="font-size:.88rem;color:#aaff00;font-weight:600">your email</div>
+
+    <!-- Headline -->
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:900;text-transform:uppercase;letter-spacing:.03em;color:#aaff00;line-height:1;margin-bottom:8px">Thank You!</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#fff;margin-bottom:20px">We've got your message 🚀</div>
+
+    <!-- Message -->
+    <p style="font-size:.92rem;color:rgba(255,255,255,.65);line-height:1.75;margin-bottom:28px;max-width:360px;margin-left:auto;margin-right:auto">
+      You've taken the first step towards turning your idea into reality.<br>
+      Our team will personally review your project and get back to you within <strong style="color:#fff;font-weight:700">24 hours</strong> — with a clear roadmap, timeline &amp; cost. No fluff, no obligation.
+    </p>
+
+    <!-- What happens next -->
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px 24px;margin-bottom:24px;text-align:left">
+      <div style="font-size:.65rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:14px">What happens next</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:flex-start;gap:12px;font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.5">
+          <span style="background:#aaff00;color:#000;font-weight:800;font-size:.6rem;letter-spacing:.06em;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">1</span>
+          We review your project details carefully
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.5">
+          <span style="background:#aaff00;color:#000;font-weight:800;font-size:.6rem;letter-spacing:.06em;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">2</span>
+          You receive a full roadmap, timeline &amp; cost within 24 hrs
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.5">
+          <span style="background:#aaff00;color:#000;font-weight:800;font-size:.6rem;letter-spacing:.06em;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">3</span>
+          We jump on a free 30-min call — only if you're happy to proceed
+        </div>
       </div>
     </div>
-    <button onclick="closeThankYou()" style="background:#aaff00;color:#000;border:none;border-radius:8px;padding:14px 32px;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:all .25s;width:100%" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='#aaff00'">Close</button>
+
+    <!-- Email confirmation -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:28px">
+      <div style="width:6px;height:6px;background:#22c55e;border-radius:50%;animation:pulse-green 2s infinite;flex-shrink:0"></div>
+      <span style="font-size:.75rem;color:rgba(255,255,255,.4)">Sent to <span id="tyEmail" style="color:rgba(255,255,255,.7);font-weight:600">your email</span></span>
+    </div>
+
+    <button onclick="closeThankYou()" style="background:#aaff00;color:#000;border:none;border-radius:8px;padding:15px 32px;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:all .25s;width:100%" onmouseover="this.style.background='#fff';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#aaff00';this.style.transform='none'">Sounds great — I'll wait for your reply</button>
+    <div style="margin-top:12px;font-size:.7rem;color:rgba(255,255,255,.2);letter-spacing:.06em">Zero obligation · 100% confidential · No spam ever</div>
+  </div>
+</div>
   </div>
 </div>
 </body>
