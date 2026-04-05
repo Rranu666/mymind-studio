@@ -1038,6 +1038,74 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
   .mob-menu{padding:80px 28px 32px}
 }
 
+/* ══════════════════════════════════════
+   MOBILE READABILITY & CONTRAST FIXES
+   (iPhone feedback: text too small, grey on dark hard to read, overlap)
+══════════════════════════════════════ */
+@media(max-width:768px){
+
+  /* ── 1. OVERLAP: ensure content doesn't hide behind sticky bottom bar ── */
+  body{padding-bottom:70px}
+  /* Process sticky panel: fully disable sticky on mobile */
+  .process-left{position:relative!important;height:auto!important;top:auto!important}
+
+  /* ── 2. FONT SIZES: minimum readable size for all body text ── */
+  /* Section labels */
+  .sec-label{font-size:.8rem!important}
+  /* Service descriptions */
+  .svc-desc,.svc-name{font-size:.95rem!important}
+  /* Process & why descriptions */
+  .step-desc,.step-title,.why-pillar-desc,.why-pillar-title{font-size:.95rem!important}
+  /* Work cards */
+  .work-card-name{font-size:1rem!important}
+  .work-card-cat{font-size:.78rem!important}
+  .work-card-link{font-size:.78rem!important}
+  /* Testimonials */
+  .testi-quote{font-size:1rem!important;line-height:1.75!important}
+  .testi-name{font-size:.95rem!important}
+  .testi-role{font-size:.8rem!important}
+  /* Pricing */
+  .plan-desc,.plan-features li{font-size:.92rem!important}
+  .plan-price-note{font-size:.78rem!important}
+  /* FAQ */
+  .faq-q{font-size:1rem!important}
+  .faq-a{font-size:.95rem!important}
+  /* Industry tags */
+  .ind-tag{font-size:.82rem!important}
+  /* Footer */
+  .footer-desc{font-size:.9rem!important}
+  /* Hero sub */
+  .hero-sub{font-size:1rem!important}
+  /* Tools & estimator */
+  .tools-sub,.est-result-note{font-size:.9rem!important}
+
+  /* ── 3. CONTRAST: boost all muted / low-opacity text on dark bg ── */
+  /* Replace #8a93a8 muted with a brighter value on mobile */
+  :root{--muted:#b8c2d4;--muted-light:#c0c8d8}
+  /* Boost low-opacity white text that was hard to read */
+  .svc-desc,.step-desc,.why-pillar-desc,.why-intro,
+  .work-card-cat,.testi-role,.plan-desc,.plan-features li,
+  .faq-a,.footer-desc,.hero-sub,.cta-sub,
+  .rwork-sub,.case-card-problem,.case-quote,
+  .tools-sub,.est-result-note{
+    color:rgba(255,255,255,.75)!important
+  }
+  /* Section labels — make lime colour more vivid */
+  .sec-label{color:var(--lime)!important;letter-spacing:.1em}
+  /* Stat descriptions */
+  .stat-desc{color:rgba(255,255,255,.7)!important;font-size:.82rem!important}
+  /* Achieve labels */
+  .achieve-label{color:rgba(255,255,255,.7)!important}
+  /* Case study meta */
+  .case-card-type{font-size:.75rem!important}
+  /* Form placeholders — brighter */
+  .cta-form input::placeholder,.cta-form textarea::placeholder{
+    color:rgba(255,255,255,.5)!important
+  }
+  /* cselect trigger placeholder */
+  .cselect-trigger{color:rgba(255,255,255,.55)!important}
+}
+
 /* ═══ HERO VIDEO BACKGROUND ═══ */
 .hero{position:relative;overflow:hidden}
 .hero-video-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
