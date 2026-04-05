@@ -2752,9 +2752,9 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
     </button>
   </div>
   <div class="cta-form-wrap reveal-right" id="cta-form-anchor">
-    <form class="cta-form" id="ctaForm" method="POST">
-      <input type="hidden" name="_subject" value="New Project Inquiry — MyMind Studio"/>
-      <input type="hidden" name="_captcha" value="false"/>
+    <form class="cta-form" id="ctaForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contact"/>
+      <input type="hidden" name="bot-field" style="display:none"/>
       <input type="hidden" name="_template" value="table"/>
 
       <!-- Step indicator -->
@@ -3122,6 +3122,38 @@ document.addEventListener('click', e=>{
 });
 
 /* ─── Get in touch — scroll to form + open dropdown ─── */
+/* ─── Thank You Modal ─── */
+function showThankYou(email){
+  const overlay=document.getElementById('thankYouOverlay');
+  const box=document.getElementById('thankYouBox');
+  const emailEl=document.getElementById('tyEmail');
+  const circle=document.getElementById('tyCircle');
+  const tick=document.getElementById('tyTick');
+  if(emailEl&&email)emailEl.textContent=email;
+  overlay.style.display='flex';
+  document.body.style.overflow='hidden';
+  // Trigger animations after paint
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      box.style.transform='scale(1)';
+      if(circle)circle.style.strokeDashoffset='0';
+      if(tick)tick.style.opacity='1';
+    });
+  });
+}
+function closeThankYou(){
+  const overlay=document.getElementById('thankYouOverlay');
+  const box=document.getElementById('thankYouBox');
+  box.style.transform='scale(.92)';
+  setTimeout(()=>{
+    overlay.style.display='none';
+    document.body.style.overflow='';
+  },300);
+}
+document.getElementById('thankYouOverlay')?.addEventListener('click',function(e){
+  if(e.target===this)closeThankYou();
+});
+
 function openContactForm(){
   const anchor = document.getElementById('cta-form-anchor');
   const csel   = document.getElementById('cSelectService');
@@ -3238,30 +3270,34 @@ if(ctaForm){
   ctaForm.addEventListener('submit',async(e)=>{
     e.preventDefault();
     const btn=ctaForm.querySelector('[type="submit"]');
+    const origText=btn.textContent;
     btn.textContent='Sending…';btn.disabled=true;
     try{
       const fd=new FormData(ctaForm);
-      const res=await fetch('https://formsubmit.co/ajax/hello@mymindstudio.ai',{
+      const emailVal=ctaForm.querySelector('[name="email"]')?.value||'';
+      const res=await fetch('/',{
         method:'POST',
-        body:fd,
-        headers:{'Accept':'application/json'}
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:new URLSearchParams(fd).toString()
       });
-      const data=await res.json();
-      if(data.success==='true'||data.success===true){
-        // Show success screen
-        ctaForm.innerHTML=`<div style="text-align:center;padding:40px 20px">
-          <div style="font-size:2.5rem;margin-bottom:16px">✅</div>
-          <div style="font-family:var(--fc);font-size:1.6rem;font-weight:900;color:#aaff00;text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px">Message Sent!</div>
-          <p style="color:rgba(255,255,255,.7);font-size:.88rem;line-height:1.65;max-width:340px;margin:0 auto 24px">We've received your enquiry and will reply to your email within 24 hours with a full roadmap, realistic timeline, and exact cost.</p>
-          <div style="font-size:.72rem;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase">📧 Confirmation sent to your email</div>
-        </div>`;
+      if(res.ok){
+        showThankYou(emailVal);
+        ctaForm.reset();
+        // Reset multi-step form back to step 1
+        goFormStep(3,1);
+        document.getElementById('cSelectService')?.classList.remove('open','selected');
+        const valEl=document.querySelector('.cselect-val');
+        if(valEl)valEl.textContent='What are you building? *';
+        const nativeSel=document.getElementById('cSelectServiceNative');
+        if(nativeSel)nativeSel.selectedIndex=0;
+        document.querySelectorAll('.cselect-list li').forEach(li=>li.classList.remove('chosen'));
       } else {
-        btn.textContent='{ Try Again }';btn.disabled=false;
-        alert('Something went wrong. Please email us directly at hello@mymindstudio.ai');
+        btn.textContent=origText;btn.disabled=false;
+        alert('Something went wrong. Please email us at hello@mymindstudio.ai');
       }
     }catch(err){
-      btn.textContent='{ Try Again }';btn.disabled=false;
-      alert('Network error. Please email us directly at hello@mymindstudio.ai');
+      btn.textContent=origText;btn.disabled=false;
+      alert('Network error. Please email us at hello@mymindstudio.ai');
     }
   });
 }
@@ -3516,5 +3552,33 @@ document.querySelectorAll('.testi-case-tab').forEach(tab=>{
   });
 });
 </script>
+
+<!-- ═══════════════ THANK YOU MODAL ═══════════════ -->
+<div id="thankYouOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)">
+  <div id="thankYouBox" style="background:#161820;border-radius:24px;padding:56px 48px;max-width:480px;width:92%;text-align:center;position:relative;border:1px solid rgba(170,255,0,.25);box-shadow:0 40px 100px rgba(0,0,0,.6);transform:scale(.92);transition:transform .35s cubic-bezier(.34,1.56,.64,1)">
+    <button onclick="closeThankYou()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.07);border:none;color:rgba(255,255,255,.5);width:32px;height:32px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.15)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">✕</button>
+    <!-- Animated tick circle -->
+    <div style="width:80px;height:80px;margin:0 auto 24px;position:relative">
+      <svg viewBox="0 0 80 80" style="width:80px;height:80px">
+        <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(170,255,0,.2)" stroke-width="3"/>
+        <circle cx="40" cy="40" r="36" fill="none" stroke="#aaff00" stroke-width="3" stroke-dasharray="226" stroke-dashoffset="226" id="tyCircle" style="transition:stroke-dashoffset .6s ease .1s;transform:rotate(-90deg);transform-origin:50% 50%"/>
+      </svg>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+        <svg id="tyTick" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#aaff00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0;transition:opacity .3s ease .5s"><polyline points="4 12 10 18 20 7"/></svg>
+      </div>
+    </div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:#aaff00;margin-bottom:12px">You're all set!</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#fff;margin-bottom:16px">Message received 🎉</div>
+    <p style="font-size:.9rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:28px">We'll review your enquiry and reply to your email within <strong style="color:#fff">24 hours</strong> with a full roadmap, realistic timeline, and exact cost — completely free.</p>
+    <div style="background:rgba(170,255,0,.07);border:1px solid rgba(170,255,0,.2);border-radius:12px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;text-align:left">
+      <span style="font-size:1.4rem">📧</span>
+      <div>
+        <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:2px">Confirmation sent to</div>
+        <div id="tyEmail" style="font-size:.88rem;color:#aaff00;font-weight:600">your email</div>
+      </div>
+    </div>
+    <button onclick="closeThankYou()" style="background:#aaff00;color:#000;border:none;border-radius:8px;padding:14px 32px;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:all .25s;width:100%" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='#aaff00'">Close</button>
+  </div>
+</div>
 </body>
 </html>
