@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="shortcut icon" href="/favicon.svg"/>
+<link rel="apple-touch-icon" href="/favicon.svg"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>See How It Works | MyMind Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0b0c10;--bg2:#12141a;--bg3:#1a1c24;--lime:#aaff00;--lime2:#88cc00;--text:#fff;--muted:#8a93a8;--muted2:#4a5268;--border:rgba(255,255,255,.08);--f:'Barlow',sans-serif}
+html,body{width:100%;height:100%;background:#000;font-family:var(--f);overflow:hidden;color:var(--text)}
+
+/* STAGE */
+.stage{width:1280px;height:720px;background:var(--bg);position:relative;overflow:hidden;transform-origin:top left}
+.stage::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 30%,rgba(170,255,0,.04),transparent);pointer-events:none;z-index:0}
+
+/* SCENE wrapper — scenes stack, fade in/out */
+.scene{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:1}
+.scene.active{opacity:1;pointer-events:all}
+
+/* ──────────────────────────────────────
+   SCENE 0 — INTRO (0–5s)
+────────────────────────────────────── */
+.s0{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;background:var(--bg);text-align:center}
+.s0-logo{display:flex;align-items:center;gap:12px;margin-bottom:32px;opacity:0;transform:translateY(-10px);transition:all .25s ease .1s}
+.s0-logo.in{opacity:1;transform:translateY(0)}
+.logo-box{width:52px;height:52px;background:var(--lime);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:900;color:#000}
+.logo-name{font-size:1.4rem;font-weight:900;letter-spacing:-.02em;color:var(--text)}
+.s0-headline{font-size:clamp(42px,5vw,68px);font-weight:900;letter-spacing:-.04em;line-height:1;color:var(--text);opacity:0;transform:translateY(10px);transition:all .25s ease .15s}
+.s0-headline.in{opacity:1;transform:translateY(0)}
+.s0-headline span{color:var(--lime)}
+.s0-sub{font-size:1.15rem;color:var(--muted);font-weight:400;margin-top:18px;opacity:0;transition:opacity .25s ease .2s;max-width:560px;line-height:1.6}
+.s0-sub.in{opacity:1}
+.s0-pill{display:inline-flex;align-items:center;gap:8px;margin-top:28px;background:rgba(170,255,0,.08);border:1px solid rgba(170,255,0,.2);border-radius:100px;padding:8px 20px;font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(170,255,0,.8);opacity:0;transition:opacity .25s ease .28s}
+.s0-pill.in{opacity:1}
+.s0-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse-ai 1.8s infinite}
+@keyframes pulse-ai{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+/* Decorative rings */
+.s0-ring{position:absolute;border-radius:50%;border:1px solid rgba(170,255,0,.06);pointer-events:none}
+.r1{width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);animation:ring-pulse 4s infinite}
+.r2{width:750px;height:750px;top:50%;left:50%;transform:translate(-50%,-50%);animation:ring-pulse 4s infinite .8s}
+.r3{width:1000px;height:1000px;top:50%;left:50%;transform:translate(-50%,-50%);animation:ring-pulse 4s infinite 1.6s}
+@keyframes ring-pulse{0%,100%{opacity:.4}50%{opacity:.15}}
+
+/* ──────────────────────────────────────
+   SCENE 1 — CALCULATOR (5–20s)
+────────────────────────────────────── */
+.s1{display:grid;grid-template-columns:1fr 520px;gap:60px;align-items:center;padding:60px 80px}
+.scene-label{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.scene-label::before{content:'';display:block;width:24px;height:2px;background:var(--lime)}
+.scene-title{font-size:clamp(28px,3vw,42px);font-weight:900;letter-spacing:-.03em;line-height:1.08;margin-bottom:14px;color:var(--text)}
+.scene-title span{color:var(--lime)}
+.scene-desc{font-size:.95rem;color:var(--muted);line-height:1.7;font-weight:400;max-width:380px}
+.scene-points{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.scene-points li{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--text);font-weight:500}
+.scene-points li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime);flex-shrink:0}
+
+/* Calculator UI mockup */
+.calc-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.calc-card-title{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:20px}
+.calc-row{margin-bottom:18px}
+.calc-label{font-size:.72rem;color:var(--muted);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.calc-slider-wrap{position:relative}
+.calc-slider{width:100%;height:4px;background:rgba(255,255,255,.08);border-radius:2px;position:relative;cursor:pointer}
+.calc-slider-fill{height:100%;border-radius:2px;background:var(--lime);box-shadow:0 0 8px rgba(170,255,0,.4);transition:width .6s ease}
+.calc-slider-thumb{width:16px;height:16px;border-radius:50%;background:var(--lime);border:2px solid #fff;position:absolute;top:50%;transform:translate(-50%,-50%);transition:left .6s ease;box-shadow:0 0 12px rgba(170,255,0,.5)}
+.calc-val{color:var(--lime);font-weight:800}
+.calc-output{background:rgba(170,255,0,.06);border:1px solid rgba(170,255,0,.2);border-radius:14px;padding:20px;margin-top:20px;text-align:center;position:relative;overflow:hidden}
+.calc-output::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(170,255,0,.04),transparent);pointer-events:none}
+.calc-output-label{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+.calc-output-val{font-size:2.4rem;font-weight:900;color:var(--lime);letter-spacing:-.04em;transition:all .5s ease}
+.calc-output-sub{font-size:.75rem;color:var(--muted);margin-top:4px}
+.calc-output-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(170,255,0,.1);border:1px solid rgba(170,255,0,.2);padding:5px 12px;border-radius:100px;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(170,255,0,.8);margin-top:12px}
+
+/* Cursor */
+.cursor{position:absolute;width:20px;height:20px;z-index:100;pointer-events:none;transition:all .5s cubic-bezier(.34,1.1,.64,1)}
+.cursor svg{filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
+.cursor-click{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;border:2px solid rgba(170,255,0,.6);opacity:0;animation:none}
+.cursor-click.pop{animation:click-pop .4s ease forwards}
+@keyframes click-pop{0%{transform:translate(-50%,-50%) scale(0);opacity:.8}100%{transform:translate(-50%,-50%) scale(1.5);opacity:0}}
+
+/* ──────────────────────────────────────
+   SCENE 2 — FREE TOOLS (20–40s)
+────────────────────────────────────── */
+.s2{display:grid;grid-template-columns:460px 1fr;gap:60px;align-items:center;padding:60px 80px}
+.tools-demo{background:var(--bg2);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.tools-demo-tabs{display:flex;border-bottom:1px solid var(--border);overflow:hidden}
+.td-tab{flex:1;padding:12px 8px;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(200,210,230,.75);text-align:center;cursor:pointer;transition:all .3s;border-right:1px solid var(--border)}
+.td-tab:last-child{border-right:none}
+.td-tab.active{background:rgba(170,255,0,.08);color:var(--lime);border-bottom:2px solid var(--lime)}
+.td-body{padding:24px;min-height:240px}
+.td-panel{display:none}
+.td-panel.active{display:block}
+/* Tool panels content */
+.td-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.td-row-label{font-size:.78rem;color:var(--muted)}
+.td-row-val{font-size:.88rem;font-weight:800;color:var(--text)}
+.td-bar-wrap{width:100%;height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;margin-bottom:12px}
+.td-bar{height:100%;border-radius:3px;transition:width .8s ease}
+.td-result{background:rgba(170,255,0,.06);border:1px solid rgba(170,255,0,.2);border-radius:10px;padding:14px 16px;margin-top:8px;text-align:center}
+.td-result-val{font-size:1.6rem;font-weight:900;letter-spacing:-.03em;color:var(--text)}
+.td-result-sub{font-size:.7rem;color:var(--muted);margin-top:3px}
+/* Score circles */
+.score-circles{display:flex;gap:12px;justify-content:center;margin:10px 0 16px}
+.sc-circle{display:flex;flex-direction:column;align-items:center;gap:6px}
+.sc-donut{width:60px;height:60px;position:relative}
+.sc-donut svg{transform:rotate(-90deg)}
+.sc-donut-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:900;color:var(--text)}
+.sc-lbl{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+/* Highlight ring on active tab */
+.td-tab.active{position:relative}
+.tab-glow{position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--lime);box-shadow:0 0 8px var(--lime)}
+
+/* ──────────────────────────────────────
+   SCENE 3 — ESTIMATOR (40–60s)
+────────────────────────────────────── */
+.s3{display:grid;grid-template-columns:1fr 500px;gap:60px;align-items:center;padding:60px 80px}
+.est-demo{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.est-progress{height:3px;background:rgba(255,255,255,.08);border-radius:3px;margin-bottom:24px;overflow:hidden}
+.est-fill{height:100%;background:var(--lime);box-shadow:0 0 8px rgba(170,255,0,.4);border-radius:3px;transition:width .8s ease}
+.est-step-lbl{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:8px}
+.est-q{font-size:1rem;font-weight:800;letter-spacing:-.01em;margin-bottom:18px;color:var(--text)}
+.est-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.est-opt{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .3s;font-size:.82rem;color:var(--text)}
+.est-opt .opt-icon{font-size:1.1rem;display:block;margin-bottom:5px;color:var(--text)}
+.est-opt .opt-lbl{font-weight:700;font-size:.82rem;color:var(--text)}
+.est-opt .opt-sub{font-size:.68rem;color:rgba(170,180,200,.85);margin-top:2px}
+.est-opt.sel{border-color:var(--lime);background:rgba(170,255,0,.08)}
+.est-result-wrap{display:none;animation:fadeIn .6s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.est-result-wrap.show{display:block}
+.est-result-range{font-size:2.6rem;font-weight:900;letter-spacing:-.05em;color:var(--lime);text-align:center;margin:16px 0 8px;line-height:1}
+.est-result-items{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.est-result-item{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--muted)}
+.est-result-item::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--lime);flex-shrink:0}
+.est-cta{width:100%;padding:12px;background:var(--lime);color:#000;border:none;border-radius:10px;font-family:var(--f);font-size:.8rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:8px}
+.est-cta:hover{background:var(--lime2)}
+
+/* ──────────────────────────────────────
+   SCENE 4 — CLOSING (60–70s)
+────────────────────────────────────── */
+.s4{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:0;background:var(--bg)}
+.s4-eyebrow{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:14px;opacity:0;transition:opacity .2s ease .05s}
+.s4-eyebrow.in{opacity:1}
+.s4-headline{font-size:clamp(36px,5vw,60px);font-weight:900;letter-spacing:-.04em;line-height:1.05;color:var(--text);opacity:0;transform:translateY(8px);transition:all .25s ease .08s}
+.s4-headline.in{opacity:1;transform:translateY(0)}
+.s4-headline span{color:var(--lime)}
+.s4-sub{font-size:1rem;color:var(--muted);max-width:520px;line-height:1.7;margin-top:16px;opacity:0;transition:opacity .2s ease .12s}
+.s4-sub.in{opacity:1}
+.s4-btns{display:flex;gap:14px;margin-top:32px;opacity:0;transition:opacity .2s ease .18s}
+.s4-btns.in{opacity:1}
+.s4-btn-prime{padding:16px 36px;background:var(--lime);color:#000;border:none;border-radius:100px;font-family:var(--f);font-size:.9rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .3s;animation:btn-glow 2.5s infinite 2s}
+@keyframes btn-glow{0%,100%{box-shadow:0 0 0 0 rgba(170,255,0,.4)}50%{box-shadow:0 0 0 12px rgba(170,255,0,0)}}
+.s4-btn-ghost{padding:16px 36px;background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.2);border-radius:100px;font-family:var(--f);font-size:.9rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.s4-url{font-size:.88rem;color:var(--muted);margin-top:28px;opacity:0;transition:opacity .2s ease .26s}
+.s4-url.in{opacity:1}
+.s4-url strong{color:var(--lime)}
+/* Feature chips */
+.s4-features{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:24px;opacity:0;transition:opacity .2s ease .22s}
+.s4-features.in{opacity:1}
+.s4-feat{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:7px 14px;font-size:.72rem;font-weight:600;color:var(--text)}
+.s4-feat-dot{width:5px;height:5px;border-radius:50%;background:var(--lime)}
+
+/* ──────────────────────────────────────
+   PROGRESS BAR + CONTROLS
+────────────────────────────────────── */
+.controls{display:none !important}
+.ctrl-btn{display:none !important}
+.ctrl-btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3)}
+.ctrl-btn.active{background:var(--lime);color:#000;border-color:var(--lime)}
+.progress-track{flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:2px;cursor:pointer;position:relative}
+.progress-fill{height:100%;background:var(--lime);border-radius:2px;transition:width .3s linear;box-shadow:0 0 6px rgba(170,255,0,.4)}
+.time-label{font-size:.72rem;color:var(--muted);font-family:var(--f);min-width:50px;text-align:right}
+.scene-dots{display:none !important}
+.scene-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);transition:all .3s;cursor:pointer}
+.scene-dot.active{background:var(--lime);box-shadow:0 0 6px rgba(170,255,0,.5);width:20px;border-radius:4px}
+.vol-btn{opacity:.5;cursor:pointer;font-size:16px;background:none;border:none;color:#fff}
+
+/* ── Animations ── */
+.fade-up{opacity:0;transform:translateY(10px);transition:opacity .25s ease,transform .25s ease}
+.fade-up.in{opacity:1;transform:translateY(0)}
+.scale-in{opacity:0;transform:scale(.96);transition:opacity .25s ease,transform .25s ease}
+.scale-in.in{opacity:1;transform:scale(1)}
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+
+  <!-- SCENE 0: INTRO -->
+  <div class="scene s0 active" id="scene0">
+    <div class="s0-ring r1"></div>
+    <div class="s0-ring r2"></div>
+    <div class="s0-ring r3"></div>
+    <div class="s0-logo" id="s0logo">
+      <div class="logo-box">M</div>
+      <div class="logo-name">MyMind Studio</div>
+    </div>
+    <h1 class="s0-headline" id="s0head">See How It<br><span>Works</span></h1>
+    <p class="s0-sub" id="s0sub">Plan, calculate, and estimate your project in minutes.<br>No commitment. No credit card. Just clarity.</p>
+    <div class="s0-pill" id="s0pill"><div class="s0-dot"></div>3-minute walkthrough</div>
+  </div>
+
+  <!-- SCENE 1: CALCULATOR -->
+  <div class="scene s1" id="scene1">
+    <!-- Left: copy -->
+    <div>
+      <div class="scene-label fade-up" id="s1l">Step 1 of 3</div>
+      <h2 class="scene-title fade-up" id="s1t">The ROI<br><span>Calculator</span></h2>
+      <p class="scene-desc fade-up" id="s1d">See instantly how much manual work is costing your business — and what automation could save you this year.</p>
+      <ul class="scene-points">
+        <li class="fade-up" id="s1p1">Adjust sliders to match your team size</li>
+        <li class="fade-up" id="s1p2">Real-time calculation — no waiting</li>
+        <li class="fade-up" id="s1p3">See your exact annual saving in seconds</li>
+      </ul>
+    </div>
+    <!-- Right: calculator mockup -->
+    <div class="calc-card scale-in" id="calcCard">
+      <div class="calc-card-title">ROI Calculator — How Much Are You Losing?</div>
+      <!-- Slider 1 -->
+      <div class="calc-row">
+        <div class="calc-label">Hours per week on manual tasks <span class="calc-val" id="v1">20 hrs</span></div>
+        <div class="calc-slider-wrap">
+          <div class="calc-slider"><div class="calc-slider-fill" id="sf1" style="width:25%"></div><div class="calc-slider-thumb" id="st1" style="left:25%"></div></div>
+        </div>
+      </div>
+      <!-- Slider 2 -->
+      <div class="calc-row">
+        <div class="calc-label">Hourly team cost <span class="calc-val" id="v2">$40/hr</span></div>
+        <div class="calc-slider-wrap">
+          <div class="calc-slider"><div class="calc-slider-fill" id="sf2" style="width:20%"></div><div class="calc-slider-thumb" id="st2" style="left:20%"></div></div>
+        </div>
+      </div>
+      <!-- Slider 3 -->
+      <div class="calc-row">
+        <div class="calc-label">% automatable <span class="calc-val" id="v3">70%</span></div>
+        <div class="calc-slider-wrap">
+          <div class="calc-slider"><div class="calc-slider-fill" id="sf3" style="width:70%"></div><div class="calc-slider-thumb" id="st3" style="left:70%"></div></div>
+        </div>
+      </div>
+      <!-- Output -->
+      <div class="calc-output">
+        <div class="calc-output-label">Your annual saving with automation</div>
+        <div class="calc-output-val" id="calcResult">$0</div>
+        <div class="calc-output-sub">Per year · based on your inputs</div>
+        <div class="calc-output-badge" id="calcBadge" style="opacity:0">✓ Year 1 ROI pays for itself 8× over</div>
+      </div>
+    </div>
+    <!-- Animated cursor -->
+    <div class="cursor" id="cursor">
+      <svg width="20" height="20" viewBox="0 0 20 20"><path d="M4 2l12 7-7 2-2 7L4 2z" fill="white" stroke="#000" stroke-width=".5"/></svg>
+      <div class="cursor-click" id="cursorClick"></div>
+    </div>
+  </div>
+
+  <!-- SCENE 2: FREE TOOLS -->
+  <div class="scene s2" id="scene2">
+    <!-- Left: tools mockup -->
+    <div class="tools-demo scale-in" id="toolsDemo">
+      <div class="tools-demo-tabs">
+        <div class="td-tab active" id="tab0">💰 Estimator</div>
+        <div class="td-tab" id="tab1">📊 ROI</div>
+        <div class="td-tab" id="tab2">🔍 Audit</div>
+        <div class="td-tab" id="tab3">⚙️ Stack</div>
+      </div>
+      <div class="td-body">
+        <!-- Panel 0: estimator -->
+        <div class="td-panel active" id="panel0">
+          <div style="font-size:.72rem;color:var(--muted);margin-bottom:14px">Project type selected: <strong style="color:var(--lime)">Web App / SaaS</strong></div>
+          <div class="td-row"><div class="td-row-label">Features scope</div><div class="td-row-val">Medium (4–8)</div></div>
+          <div class="td-bar-wrap"><div class="td-bar" style="width:55%;background:var(--lime)"></div></div>
+          <div class="td-row"><div class="td-row-label">Design</div><div class="td-row-val">Custom UI</div></div>
+          <div class="td-bar-wrap"><div class="td-bar" style="width:80%;background:#a78bfa"></div></div>
+          <div class="td-result"><div style="font-size:.62rem;color:var(--muted);margin-bottom:4px">ESTIMATED RANGE</div><div class="td-result-val" style="color:var(--lime)">$8,000 – $18,000</div><div class="td-result-sub">Custom quote in your roadmap call</div></div>
+        </div>
+        <!-- Panel 1: ROI -->
+        <div class="td-panel" id="panel1">
+          <div class="td-row"><div class="td-row-label">Annual manual work cost</div><div class="td-row-val" style="color:#f87171">$124,800</div></div>
+          <div class="td-row"><div class="td-row-label">Automatable hours/year</div><div class="td-row-val">3,640 hrs</div></div>
+          <div class="td-row"><div class="td-row-label">Automation project cost</div><div class="td-row-val">~$8,000</div></div>
+          <div class="td-result"><div style="font-size:.62rem;color:var(--muted);margin-bottom:4px">YEAR 1 NET SAVING</div><div class="td-result-val" style="color:var(--lime)">$116,800+</div><div class="td-result-sub">Pays back 14× in year one</div></div>
+        </div>
+        <!-- Panel 2: audit -->
+        <div class="td-panel" id="panel2">
+          <div class="score-circles">
+            <div class="sc-circle"><div class="sc-donut"><svg viewBox="0 0 60 60" width="60" height="60"><circle cx="30" cy="30" r="24" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="6"/><circle cx="30" cy="30" r="24" fill="none" stroke="#4ade80" stroke-width="6" stroke-dasharray="120 151" stroke-linecap="round"/></svg><div class="sc-donut-num" style="color:#4ade80">80</div></div><div class="sc-lbl">Perf</div></div>
+            <div class="sc-circle"><div class="sc-donut"><svg viewBox="0 0 60 60" width="60" height="60"><circle cx="30" cy="30" r="24" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="6"/><circle cx="30" cy="30" r="24" fill="none" stroke="#fbbf24" stroke-width="6" stroke-dasharray="96 151" stroke-linecap="round"/></svg><div class="sc-donut-num" style="color:#fbbf24">64</div></div><div class="sc-lbl">SEO</div></div>
+            <div class="sc-circle"><div class="sc-donut"><svg viewBox="0 0 60 60" width="60" height="60"><circle cx="30" cy="30" r="24" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="6"/><circle cx="30" cy="30" r="24" fill="none" stroke="#aaff00" stroke-width="6" stroke-dasharray="137 151" stroke-linecap="round"/></svg><div class="sc-donut-num" style="color:#aaff00">91</div></div><div class="sc-lbl">A11y</div></div>
+          </div>
+          <div style="font-size:.75rem;color:var(--muted);line-height:1.6"><strong style="color:#fbbf24">⚠ 3 issues found:</strong> Slow LCP, missing meta description, unoptimised images. <span style="color:var(--lime)">We can fix all 3.</span></div>
+        </div>
+        <!-- Panel 3: stack -->
+        <div class="td-panel" id="panel3">
+          <div style="font-size:.72rem;color:var(--lime);font-weight:700;margin-bottom:12px">Recommended for your SaaS:</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px"><div style="font-size:.6rem;color:var(--muted);margin-bottom:3px">FRONTEND</div><div style="font-size:.82rem;font-weight:700">React + Next.js</div></div>
+            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px"><div style="font-size:.6rem;color:var(--muted);margin-bottom:3px">BACKEND</div><div style="font-size:.82rem;font-weight:700">Node.js + PostgreSQL</div></div>
+            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px"><div style="font-size:.6rem;color:var(--muted);margin-bottom:3px">AUTH</div><div style="font-size:.82rem;font-weight:700">Supabase Auth</div></div>
+            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px"><div style="font-size:.6rem;color:var(--muted);margin-bottom:3px">HOSTING</div><div style="font-size:.82rem;font-weight:700">Vercel + AWS RDS</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Right: copy -->
+    <div>
+      <div class="scene-label fade-up" id="s2l">Step 2 of 3</div>
+      <h2 class="scene-title fade-up" id="s2t">Free<br><span>Interactive Tools</span></h2>
+      <p class="scene-desc fade-up" id="s2d">Four powerful tools — completely free, no sign-up needed. Get real answers before you speak to anyone.</p>
+      <ul class="scene-points">
+        <li class="fade-up" id="s2p1">Switch between tools instantly</li>
+        <li class="fade-up" id="s2p2">Real-time results as you adjust inputs</li>
+        <li class="fade-up" id="s2p3">No fluff — just the numbers you need</li>
+        <li class="fade-up" id="s2p4">From estimate to site audit in 2 minutes</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SCENE 3: ESTIMATOR -->
+  <div class="scene s3" id="scene3">
+    <!-- Left: copy -->
+    <div>
+      <div class="scene-label fade-up" id="s3l">Step 3 of 3</div>
+      <h2 class="scene-title fade-up" id="s3t">Estimate<br><span>Your Project</span></h2>
+      <p class="scene-desc fade-up" id="s3d">5 quick questions. A personalised price range. No obligation. Know your budget before the first call.</p>
+      <ul class="scene-points">
+        <li class="fade-up" id="s3p1">Answer 5 simple questions</li>
+        <li class="fade-up" id="s3p2">Instant price range — no email required</li>
+        <li class="fade-up" id="s3p3">Book your free roadmap call from the result</li>
+      </ul>
+      <!-- Step indicators -->
+      <div style="display:flex;gap:8px;margin-top:24px" id="s3steps">
+        <div class="fade-up" id="s3s1" style="display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--lime);font-weight:700"><div style="width:22px;height:22px;border-radius:50%;background:var(--lime);display:flex;align-items:center;justify-content:center;color:#000;font-size:.7rem;font-weight:900">1</div>Project Type</div>
+        <div style="width:20px;height:1px;background:var(--border);margin-top:11px;flex-shrink:0"></div>
+        <div class="fade-up" id="s3s2" style="display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--muted);font-weight:700"><div style="width:22px;height:22px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:900">2</div>Scope</div>
+        <div style="width:20px;height:1px;background:var(--border);margin-top:11px;flex-shrink:0"></div>
+        <div class="fade-up" id="s3s3" style="display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--muted);font-weight:700"><div style="width:22px;height:22px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:900">3</div>Result</div>
+      </div>
+    </div>
+    <!-- Right: estimator mockup -->
+    <div class="est-demo scale-in" id="estDemo">
+      <div class="est-progress"><div class="est-fill" id="estFill" style="width:20%"></div></div>
+      <!-- Step 1 -->
+      <div id="estStep1">
+        <div class="est-step-lbl">Step 1 of 5 — Project Type</div>
+        <div class="est-q">What are you building?</div>
+        <div class="est-opts">
+          <div class="est-opt" id="eopt1"><span class="opt-icon">🌐</span><span class="opt-lbl">Website</span><span class="opt-sub">Landing page or site</span></div>
+          <div class="est-opt" id="eopt2"><span class="opt-icon">💻</span><span class="opt-lbl">Web App / SaaS</span><span class="opt-sub">Dashboard or platform</span></div>
+          <div class="est-opt" id="eopt3"><span class="opt-icon">📱</span><span class="opt-lbl">Mobile App</span><span class="opt-sub">iOS or Android</span></div>
+          <div class="est-opt" id="eopt4"><span class="opt-icon">🤖</span><span class="opt-lbl">AI Bot</span><span class="opt-sub">WhatsApp or chatbot</span></div>
+        </div>
+      </div>
+      <!-- Step 2 (hidden initially) -->
+      <div id="estStep2" style="display:none">
+        <div class="est-step-lbl">Step 3 of 5 — Features</div>
+        <div class="est-q">How complex is your project?</div>
+        <div class="est-opts">
+          <div class="est-opt" id="eopt5"><span class="opt-icon">🟢</span><span class="opt-lbl">Simple</span><span class="opt-sub">1–3 core features</span></div>
+          <div class="est-opt sel" id="eopt6"><span class="opt-icon">🟡</span><span class="opt-lbl">Medium</span><span class="opt-sub">4–8 core features</span></div>
+          <div class="est-opt" id="eopt7"><span class="opt-icon">🔴</span><span class="opt-lbl">Complex</span><span class="opt-sub">9+ features, multi-role</span></div>
+          <div class="est-opt" id="eopt8"><span class="opt-icon">❓</span><span class="opt-lbl">Not sure</span><span class="opt-sub">Help me scope this</span></div>
+        </div>
+      </div>
+      <!-- Result (hidden initially) -->
+      <div class="est-result-wrap" id="estResult">
+        <div class="est-step-lbl">Your estimate is ready</div>
+        <div class="est-result-range">$8,000 – $18,000</div>
+        <div style="font-size:.78rem;color:var(--muted);text-align:center;margin-bottom:16px">Web App / SaaS · Medium scope · Custom design</div>
+        <div class="est-result-items">
+          <div class="est-result-item">Free 30-min consultation included</div>
+          <div class="est-result-item">Full roadmap within 24 hours</div>
+          <div class="est-result-item">100% code ownership — no lock-in</div>
+          <div class="est-result-item">Milestone payments — pay as it's built</div>
+        </div>
+        <button class="est-cta">Book My Free Consultation →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 4: CLOSING -->
+  <div class="scene s4" id="scene4">
+    <div class="s0-ring r1"></div>
+    <div class="s0-ring r2"></div>
+    <div class="s4-eyebrow" id="s4ey">Ready to build?</div>
+    <h2 class="s4-headline" id="s4head">Start Your Project<br><span>Today</span></h2>
+    <p class="s4-sub" id="s4sub">Free consultation. Full roadmap in 24 hours.<br>Zero obligation — just clarity on what you're building.</p>
+    <div class="s4-btns" id="s4btns">
+      <button class="s4-btn-prime">Get Your Free Roadmap →</button>
+      <button class="s4-btn-ghost" onclick="window.location.href='index.html'">Back to Site</button>
+    </div>
+    <div class="s4-features" id="s4feat">
+      <div class="s4-feat"><div class="s4-feat-dot"></div>Free ROI Calculator</div>
+      <div class="s4-feat"><div class="s4-feat-dot"></div>Cost Estimator</div>
+      <div class="s4-feat"><div class="s4-feat-dot"></div>Site Audit Tool</div>
+      <div class="s4-feat"><div class="s4-feat-dot"></div>Tech Stack Quiz</div>
+    </div>
+    <div class="s4-url" id="s4url"><strong>mymindstudio.ai</strong> · hello@mymindstudio.ai</div>
+  </div>
+
+</div><!-- end .stage -->
+
+<!-- CONTROLS -->
+<div class="controls">
+  <button class="ctrl-btn" id="playBtn" onclick="togglePlay()">⏸</button>
+  <button class="ctrl-btn" onclick="restart()">↺</button>
+  <div class="progress-track" id="progTrack" onclick="seekTo(event)">
+    <div class="progress-fill" id="progFill" style="width:0%"></div>
+  </div>
+  <div class="time-label" id="timeLabel">0:00</div>
+  <div class="scene-dots">
+    <div class="scene-dot active" onclick="jumpScene(0)"></div>
+    <div class="scene-dot" onclick="jumpScene(1)"></div>
+    <div class="scene-dot" onclick="jumpScene(2)"></div>
+    <div class="scene-dot" onclick="jumpScene(3)"></div>
+    <div class="scene-dot" onclick="jumpScene(4)"></div>
+  </div>
+  <button class="vol-btn" title="Add background music via Loom/OBS recording">🔇</button>
+</div>
+
+<script></script><script>
+/* ── Responsive scaling ── */
+function scaleStage(){
+  const s=document.getElementById('stage');
+  const sw=window.innerWidth,sh=window.innerHeight-52;
+  const scaleX=sw/1280,scaleY=sh/720,scale=Math.min(scaleX,scaleY);
+  s.style.transform=`scale(${scale})`;
+  s.style.marginLeft=((sw-1280*scale)/2)+'px';
+  s.style.marginTop=((sh-720*scale)/2)+'px';
+}
+scaleStage();
+window.addEventListener('resize',scaleStage);
+
+/* ── Timeline definition ── */
+const TOTAL = 70; // seconds
+let elapsed = 0;
+let playing = true;
+let raf = null;
+let lastTime = null;
+
+const scenes = [
+  {start:0, end:5},
+  {start:5, end:20},
+  {start:20, end:40},
+  {start:40, end:60},
+  {start:60, end:70}
+];
+
+// Queued actions with timestamps
+const actions = [];
+function at(t, fn){ actions.push({t, fn, done:false}); }
+
+/* ── Scene 0 animations ── */
+at(0.05,()=>{ document.getElementById('s0logo').classList.add('in'); });
+at(0.15,()=>{ document.getElementById('s0head').classList.add('in'); });
+at(0.25,()=>{ document.getElementById('s0sub').classList.add('in'); });
+at(0.35,()=>{ document.getElementById('s0pill').classList.add('in'); });
+
+/* ── Scene 1 animations ── */
+at(5.05,()=>{ fadeIn('s1l',0); fadeIn('s1t',80); fadeIn('s1d',160); });
+at(5.1,()=>{ fadeIn('calcCard',0); });
+at(5.15,()=>{ fadeIn('s1p1',0); fadeIn('s1p2',100); fadeIn('s1p3',200); });
+
+// Cursor starts top-left, moves to slider 1
+at(6.5,()=>{ moveCursor(300,140); });
+at(7.5,()=>{ moveCursor(350,140); click(); animSlider(1,40,'32 hrs','sf1','st1'); calcUpdate(32,40,70); });
+at(9.0,()=>{ moveCursor(350,185); });
+at(10.0,()=>{ moveCursor(400,185); click(); animSlider(2,35,'$60/hr','sf2','st2'); calcUpdate(32,60,70); });
+at(11.5,()=>{ moveCursor(350,232); });
+at(12.5,()=>{ moveCursor(300,232); click(); animSlider(3,65,'65%','sf3','st3'); calcUpdate(32,60,65); });
+at(14.0,()=>{ countUp('calcResult',0,76272,'$'); showBadge(); });
+at(16.0,()=>{ animSlider(1,55,'48 hrs','sf1','st1'); calcUpdate(48,60,65); countUp('calcResult',76272,115440,'$'); });
+
+/* ── Scene 2 animations ── */
+at(20.05,()=>{ fadeIn('s2l',0); fadeIn('s2t',80); fadeIn('s2d',160); });
+at(20.1,()=>{ document.getElementById('toolsDemo').classList.add('in'); });
+at(20.15,()=>{ fadeIn('s2p1',0); fadeIn('s2p2',80); fadeIn('s2p3',160); fadeIn('s2p4',240); });
+at(24,()=>{ switchTab(1); }); // Switch to ROI
+at(28,()=>{ switchTab(2); }); // Switch to Audit
+at(32,()=>{ switchTab(3); }); // Switch to Stack
+at(36,()=>{ switchTab(0); }); // Back to Estimator
+
+/* ── Scene 3 animations ── */
+at(40.05,()=>{ fadeIn('s3l',0); fadeIn('s3t',80); fadeIn('s3d',160); });
+at(40.1,()=>{ document.getElementById('estDemo').classList.add('in'); });
+at(40.15,()=>{ fadeIn('s3p1',0); fadeIn('s3p2',80); fadeIn('s3p3',160); });
+at(40.2,()=>{ fadeIn('s3steps',0); });
+
+// Select "Web App / SaaS"
+at(43,()=>{
+  document.getElementById('eopt2').classList.add('sel');
+  document.getElementById('estFill').style.width='40%';
+});
+at(46,()=>{
+  // Move to step 2
+  document.getElementById('estStep1').style.display='none';
+  document.getElementById('estStep2').style.display='block';
+  document.getElementById('estFill').style.width='60%';
+  // Update step indicators
+  const s2 = document.getElementById('s3s2');
+  s2.style.color='var(--lime)';
+  s2.querySelector('div').style.background='var(--lime)';
+  s2.querySelector('div').style.color='#000';
+  s2.querySelector('div').style.border='none';
+});
+at(50,()=>{
+  // Show result
+  document.getElementById('estStep2').style.display='none';
+  document.getElementById('estResult').classList.add('show');
+  document.getElementById('estFill').style.width='100%';
+  const s3 = document.getElementById('s3s3');
+  s3.style.color='var(--lime)';
+  s3.querySelector('div').style.background='var(--lime)';
+  s3.querySelector('div').style.color='#000';
+  s3.querySelector('div').style.border='none';
+});
+
+/* ── Scene 4 animations ── */
+at(60.05,()=>{ document.getElementById('s4ey').classList.add('in'); });
+at(60.1,()=>{ document.getElementById('s4head').classList.add('in'); });
+at(60.15,()=>{ document.getElementById('s4sub').classList.add('in'); });
+at(60.2,()=>{ document.getElementById('s4btns').classList.add('in'); });
+at(60.25,()=>{ document.getElementById('s4feat').classList.add('in'); });
+at(60.3,()=>{ document.getElementById('s4url').classList.add('in'); });
+
+/* ── Helper functions ── */
+function fadeIn(id,delay){
+  setTimeout(()=>{
+    const el=document.getElementById(id);
+    if(el){ el.classList.add('in'); }
+  },delay);
+}
+
+function moveCursor(x,y){
+  const cur=document.getElementById('cursor');
+  cur.style.left=x+'px';
+  cur.style.top=y+'px';
+}
+
+function click(){
+  const cc=document.getElementById('cursorClick');
+  cc.classList.remove('pop');
+  void cc.offsetWidth;
+  cc.classList.add('pop');
+}
+
+function animSlider(n,pct,label,fillId,thumbId){
+  document.getElementById(fillId).style.width=pct+'%';
+  document.getElementById(thumbId).style.left=pct+'%';
+  document.getElementById('v'+n).textContent=label;
+}
+
+function calcUpdate(h,r,p){
+  const annual=Math.round(h*r*52*3);
+  const saving=Math.round(annual*(p/100));
+  // Animated via countUp call
+}
+
+let countIntervals={};
+function countUp(id,from,to,prefix){
+  clearInterval(countIntervals[id]);
+  const el=document.getElementById(id);
+  const dur=1200, steps=60, inc=(to-from)/steps;
+  let cur=from, step=0;
+  countIntervals[id]=setInterval(()=>{
+    cur=Math.min(cur+inc,to);
+    el.textContent=prefix+Math.round(cur).toLocaleString();
+    step++;
+    if(step>=steps){ clearInterval(countIntervals[id]); el.textContent=prefix+to.toLocaleString(); }
+  },dur/steps);
+}
+
+function showBadge(){
+  document.getElementById('calcBadge').style.opacity='1';
+  document.getElementById('calcBadge').style.transition='opacity .5s ease';
+}
+
+function switchTab(n){
+  for(let i=0;i<4;i++){
+    document.getElementById('tab'+i).classList.remove('active');
+    document.getElementById('panel'+i).classList.remove('active');
+  }
+  document.getElementById('tab'+n).classList.add('active');
+  document.getElementById('panel'+n).classList.add('active');
+}
+
+/* ── Active scene detection ── */
+function getActiveScene(t){
+  for(let i=scenes.length-1;i>=0;i--){
+    if(t>=scenes[i].start) return i;
+  }
+  return 0;
+}
+
+/* ── Main loop ── */
+function tick(ts){
+  if(!playing){ raf=null; return; }
+  if(lastTime===null) lastTime=ts;
+  const dt=(ts-lastTime)/1000 * 1.45; // 1.45× playback speed
+  lastTime=ts;
+  elapsed=Math.min(elapsed+dt,TOTAL);
+
+  // Run queued actions
+  actions.forEach(a=>{ if(!a.done && elapsed>=a.t){ a.done=true; a.fn(); } });
+
+  // Update progress bar
+  document.getElementById('progFill').style.width=(elapsed/TOTAL*100)+'%';
+
+  // Update time label
+  const s=Math.floor(elapsed);
+  document.getElementById('timeLabel').textContent=Math.floor(s/60)+':'+(s%60<10?'0':'')+s%60;
+
+  // Scene switching
+  const sc=getActiveScene(elapsed);
+  document.querySelectorAll('.scene').forEach((el,i)=>{
+    el.classList.toggle('active', i===sc);
+  });
+  document.querySelectorAll('.scene-dot').forEach((el,i)=>{
+    el.classList.toggle('active', i===sc);
+  });
+
+  if(elapsed>=TOTAL){ restart(); return; }
+  raf=requestAnimationFrame(tick);
+}
+
+function togglePlay(){
+  playing=!playing;
+  document.getElementById('playBtn').textContent=playing?'⏸':'▶';
+  if(playing){ lastTime=null; raf=requestAnimationFrame(tick); }
+}
+
+function restart(){
+  elapsed=0; playing=true; lastTime=null;
+  actions.forEach(a=>a.done=false);
+  // Reset all animated states
+  document.querySelectorAll('.fade-up,.scale-in,.s0-logo,.s0-headline,.s0-sub,.s0-pill,.s4-eyebrow,.s4-headline,.s4-sub,.s4-btns,.s4-features,.s4-url').forEach(el=>{
+    el.classList.remove('in');
+  });
+  document.getElementById('calcResult').textContent='$0';
+  document.getElementById('calcBadge').style.opacity='0';
+  document.getElementById('sf1').style.width='25%'; document.getElementById('st1').style.left='25%';
+  document.getElementById('sf2').style.width='20%'; document.getElementById('st2').style.left='20%';
+  document.getElementById('sf3').style.width='70%'; document.getElementById('st3').style.left='70%';
+  document.getElementById('v1').textContent='20 hrs';
+  document.getElementById('v2').textContent='$40/hr';
+  document.getElementById('v3').textContent='70%';
+  switchTab(0);
+  document.getElementById('estStep1').style.display='block';
+  document.getElementById('estStep2').style.display='none';
+  document.getElementById('estResult').classList.remove('show');
+  document.getElementById('estFill').style.width='20%';
+  document.querySelectorAll('.est-opt').forEach(e=>e.classList.remove('sel'));
+  document.getElementById('playBtn').textContent='⏸';
+  raf=requestAnimationFrame(tick);
+}
+
+function seekTo(e){
+  const rect=document.getElementById('progTrack').getBoundingClientRect();
+  const pct=(e.clientX-rect.left)/rect.width;
+  elapsed=Math.max(0,Math.min(pct*TOTAL,TOTAL));
+  actions.forEach(a=>{ a.done = a.t<=elapsed; });
+  lastTime=null;
+}
+
+function jumpScene(n){
+  elapsed=scenes[n].start+0.01;
+  actions.forEach(a=>{ a.done = a.t<=elapsed; });
+  lastTime=null;
+  if(!playing){ playing=true; document.getElementById('playBtn').textContent='⏸'; raf=requestAnimationFrame(tick); }
+}
+
+/* Start */
+raf=requestAnimationFrame(tick);
+</script>
+</body>
+</html>
