@@ -42,9 +42,9 @@
   --fc:'Barlow Condensed',sans-serif;
 }
 
-html{scroll-behavior:smooth}
-html{overflow-x:hidden}
-body{font-family:var(--f);background:var(--beige);color:var(--text);overflow-x:hidden;line-height:1.5}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden;max-width:100vw}
+body{font-family:var(--f);background:var(--beige);color:var(--text);overflow-x:hidden;max-width:100vw;line-height:1.5}
 a{text-decoration:none;color:inherit}
 img{display:block;max-width:100%}
 button{font-family:var(--f);cursor:pointer;border:none;background:none}
@@ -977,6 +977,25 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
   /* Why section stack properly */
   .why-diff{flex-direction:column;gap:40px}
   .why-cost-compare{width:100%;border-radius:12px}
+  /* Testimonials — force single column */
+  .testi-grid{grid-template-columns:1fr!important}
+  /* CTA section: make submit button full-width, clamp padding */
+  .cta-section{padding:50px 16px}
+  .form-submit{width:100%;align-self:stretch}
+  /* Prevent any fixed-width inputs/buttons overflowing */
+  .cta-form input,.cta-form textarea,.cta-form-row,.cselect,.cselect-trigger{max-width:100%;width:100%}
+  /* Tech section: tabs scroll, don't overflow page */
+  .tech{padding:50px 16px}
+  .tech-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;padding-bottom:2px}
+  .tech-tab{padding:16px 24px 16px 0}
+  .tech-panel.active{flex-wrap:wrap;overflow-x:visible}
+  .tech-item{flex:0 0 calc(33vw - 12px);height:140px}
+  /* Testi section: reduce side padding */
+  .testi{padding:50px 16px}
+  /* Form steps indicator: always contained */
+  .form-steps-indicator{width:100%;max-width:100%}
+  /* NEXT STEP and form nav buttons: full width on small screens */
+  .form-btn-next{width:100%;text-align:center}
 }
 
 @media(max-width:480px){
@@ -2771,7 +2790,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
     </div>
     <!-- Fill Form Button -->
     <button onclick="openContactForm()"
-       style="display:inline-flex;align-items:center;gap:10px;background:var(--lime);border:2px solid var(--lime);color:#000;font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding:14px 28px;border-radius:3px;margin-top:8px;transition:all .25s;cursor:pointer;font-family:var(--f)"
+       style="display:inline-flex;align-items:center;gap:10px;background:var(--lime);border:2px solid var(--lime);color:#000;font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding:14px 28px;border-radius:3px;margin-top:8px;transition:all .25s;cursor:pointer;font-family:var(--f);max-width:100%;box-sizing:border-box"
        onmouseover="this.style.background='#c8ff40';this.style.borderColor='#c8ff40'"
        onmouseout="this.style.background='var(--lime)';this.style.borderColor='var(--lime)'">
       Get in touch with us →
