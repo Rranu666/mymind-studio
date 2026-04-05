@@ -977,8 +977,8 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
   /* Why section stack properly */
   .why-diff{flex-direction:column;gap:40px}
   .why-cost-compare{width:100%;border-radius:12px}
-  /* Testimonials — force single column */
-  .testi-grid{grid-template-columns:1fr!important}
+  /* Testimonials — force single column (override inline grid styles too) */
+  .testi-grid{grid-template-columns:1fr!important;display:grid!important}
   /* CTA section: make submit button full-width, clamp padding */
   .cta-section{padding:50px 16px}
   .form-submit{width:100%;align-self:stretch}
@@ -996,6 +996,19 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
   .form-steps-indicator{width:100%;max-width:100%}
   /* NEXT STEP and form nav buttons: full width on small screens */
   .form-btn-next{width:100%;text-align:center}
+  /* ── CASE STUDIES: override inline grid styles ── */
+  .case-grid{grid-template-columns:1fr!important;display:grid!important}
+  .case-studies{padding:50px 16px!important}
+  /* Metrics: 2×2 on mobile (4 columns too cramped) */
+  .case-metrics{grid-template-columns:repeat(2,1fr)!important}
+  /* Case study right-side mock widget: stack below on mobile */
+  .testi-case-panel .case-grid > div:last-child{display:none}
+  /* Services scroll: add padding so first card isn't flush to edge */
+  .services-scroll{padding:0 16px 24px;gap:12px}
+  .svc-card{flex:0 0 calc(100vw - 32px)}
+  .services-header{padding:0 16px 28px}
+  /* Services section: remove large top padding */
+  .services{padding-top:50px}
 }
 
 @media(max-width:480px){
