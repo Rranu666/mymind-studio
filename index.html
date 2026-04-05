@@ -3142,6 +3142,10 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
 </footer>
 
 <script>
+/* ─── Always land on hero on refresh ─── */
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+window.addEventListener('load',function(){ window.scrollTo(0,0); });
+
 /* ─── Hero video iframe scale-to-fill ─── */
 (function(){
   const iframe = document.querySelector('.hero-video-iframe');
