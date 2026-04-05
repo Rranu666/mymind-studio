@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="https://mymindstudio.ai/og-image.jpg"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet"/>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap"/></noscript>
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -1115,7 +1115,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
 /* ═══ HERO VIDEO BACKGROUND ═══ */
 .hero{position:relative;overflow:hidden}
 .hero-video-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
-.hero-video-iframe{position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;transform-origin:top left}
+.hero-video-iframe{position:absolute;width:1280px;height:800px;top:50%;left:50%;transform:translate(-50%,-50%);border:none;pointer-events:none;}
 .hero-video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.52) 0%,rgba(0,0,0,.38) 55%,rgba(0,0,0,.58) 100%);z-index:1}
 .hero-grid-lines{z-index:2}
 .hero-inner{position:relative;z-index:3}
@@ -1500,7 +1500,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
 /* Clients strip */
 .clients{background:var(--beige2)}
 .clients-label{color:var(--text)}
-.client-item{color:rgba(255,255,255,.4)}
+.client-item{color:rgba(255,255,255,.65)}
 .client-item:hover{color:var(--text)}
 
 /* Services */
@@ -1670,6 +1670,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
 </div>
 
 <!-- ═══════════════ TICKER ═══════════════ -->
+<main id="main-content">
 <div class="ticker-wrap">
   <div class="ticker-track">
     <span class="ticker-item">Custom App Development</span>
@@ -2347,7 +2348,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
       <div class="work-laptop">
         <div class="work-laptop-lid">
           <div class="work-laptop-screen">
-            <img src="/screenshots/work-freeappmaker.jpg" alt="KCF App Builder" loading="lazy">
+            <img src="/screenshots/work-freeappmaker.jpg" alt="KCF App Builder" width="1440" height="761" loading="lazy">
           </div>
         </div>
         <div class="work-laptop-base"></div>
@@ -2367,7 +2368,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
       <div class="work-laptop">
         <div class="work-laptop-lid">
           <div class="work-laptop-screen">
-            <img src="/screenshots/work-cryptosignals.jpg" alt="CryptoTradeSignals.ai" loading="lazy">
+            <img src="/screenshots/work-cryptosignals.jpg" alt="CryptoTradeSignals.ai" width="1400" height="860" loading="lazy">
           </div>
         </div>
         <div class="work-laptop-base"></div>
@@ -2387,7 +2388,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
       <div class="work-laptop">
         <div class="work-laptop-lid">
           <div class="work-laptop-screen">
-            <img src="/screenshots/work-kindnesscommunity.jpg" alt="Kindness Community AI" loading="lazy">
+            <img src="/screenshots/work-kindnesscommunity.jpg" alt="Kindness Community AI" width="1440" height="761" loading="lazy">
           </div>
         </div>
         <div class="work-laptop-base"></div>
@@ -2407,7 +2408,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
       <div class="work-laptop">
         <div class="work-laptop-lid">
           <div class="work-laptop-screen">
-            <img src="/screenshots/work-kindwave.jpg" alt="KindWave" loading="lazy">
+            <img src="/screenshots/work-kindwave.jpg" alt="KindWave" width="1400" height="780" loading="lazy">
           </div>
         </div>
         <div class="work-laptop-base"></div>
@@ -2427,7 +2428,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
       <div class="work-laptop">
         <div class="work-laptop-lid">
           <div class="work-laptop-screen">
-            <img src="/screenshots/work-kindcalmunity.jpg" alt="KindCalmUnity" loading="lazy">
+            <img src="/screenshots/work-kindcalmunity.jpg" alt="KindCalmUnity" width="1440" height="761" loading="lazy">
           </div>
         </div>
         <div class="work-laptop-base"></div>
@@ -2447,7 +2448,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
       <div class="work-laptop">
         <div class="work-laptop-lid">
           <div class="work-laptop-screen">
-            <img src="/screenshots/work-kindlearn.jpg" alt="KindLearn" loading="lazy">
+            <img src="/screenshots/work-kindlearn.jpg" alt="KindLearn" width="1440" height="761" loading="lazy">
           </div>
         </div>
         <div class="work-laptop-base"></div>
@@ -2827,9 +2828,9 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
     <table class="pricing-table">
       <thead>
         <tr>
-          <th></th>
-          <th>Fixed Bid</th>
-          <th>Dedicated Team</th>
+          <th scope="col"></th>
+          <th scope="col">Fixed Bid</th>
+          <th scope="col">Dedicated Team</th>
         </tr>
       </thead>
       <tbody>
@@ -3044,7 +3045,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
   </div>
   <div class="ai-input-row">
     <input type="text" class="ai-input" id="aiInput" placeholder="Ask anything about MyMind Studio…"/>
-    <button class="ai-send" id="aiSend">
+    <button class="ai-send" id="aiSend" aria-label="Send message">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
     </button>
   </div>
@@ -3083,6 +3084,8 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
   </div>
 </div>
 
+</main><!-- /#main-content -->
+
 <!-- ═══════════════ FOOTER ═══════════════ -->
 <footer class="footer">
   <div class="footer-top">
@@ -3095,9 +3098,9 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
         Custom app and website development agency. We listen, plan, and deliver exactly what your business needs — without the frustration of DIY platforms.
       </p>
       <div class="footer-socials">
-        <a href="#" class="footer-social" aria-label="LinkedIn">in</a>
-        <a href="#" class="footer-social" aria-label="Twitter">𝕏</a>
-        <a href="#" class="footer-social" aria-label="Instagram">⬡</a>
+        <a href="#" class="footer-social" aria-label="LinkedIn"><span aria-hidden="true">in</span></a>
+        <a href="#" class="footer-social" aria-label="X (Twitter)"><span aria-hidden="true">𝕏</span></a>
+        <a href="#" class="footer-social" aria-label="Instagram"><span aria-hidden="true">⬡</span></a>
       </div>
     </div>
     <div>
@@ -3177,17 +3180,10 @@ window.addEventListener('load',function(){ window.scrollTo(0,0); });
     const hero = iframe.closest('.hero-video-bg');
     if(!hero) return;
     const hw = hero.offsetWidth, hh = hero.offsetHeight;
-    const iw = 1280, ih = 800; // explainer-video natural size
-    const scaleX = hw / iw, scaleY = hh / ih;
-    const scale = Math.max(scaleX, scaleY);
-    iframe.style.width = iw + 'px';
-    iframe.style.height = ih + 'px';
-    iframe.style.transform = `scale(${scale})`;
-    iframe.style.transformOrigin = 'top left';
-    iframe.style.left = ((hw - iw * scale) / 2) + 'px';
-    iframe.style.top = ((hh - ih * scale) / 2) + 'px';
+    const scale = Math.max(hw/1280, hh/800);
+    /* Only change transform — no layout-shifting properties (width/height/left/top) */
+    iframe.style.transform = `translate(-50%,-50%) scale(${scale})`;
   }
-  iframe.onload = scaleIframe;
   window.addEventListener('resize', scaleIframe);
   scaleIframe();
 })();
