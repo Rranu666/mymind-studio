@@ -2754,6 +2754,9 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
   <div class="cta-form-wrap reveal-right" id="cta-form-anchor">
     <form class="cta-form" id="ctaForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
       <input type="hidden" name="form-name" value="contact"/>
+      <input type="hidden" name="_subject" value="New Project Inquiry — MyMind Studio"/>
+      <input type="hidden" name="_captcha" value="false"/>
+      <input type="hidden" name="_template" value="table"/>
       <input type="hidden" name="bot-field" style="display:none"/>
       <input type="hidden" name="_template" value="table"/>
 
@@ -3275,12 +3278,13 @@ if(ctaForm){
     try{
       const fd=new FormData(ctaForm);
       const emailVal=ctaForm.querySelector('[name="email"]')?.value||'';
-      const res=await fetch('/',{
+      const res=await fetch('https://formsubmit.co/ajax/hello@mymindstudio.ai',{
         method:'POST',
-        headers:{'Content-Type':'application/x-www-form-urlencoded'},
-        body:new URLSearchParams(fd).toString()
+        body:fd,
+        headers:{'Accept':'application/json'}
       });
-      if(res.ok){
+      const data=await res.json().catch(()=>({}));
+      if(res.ok&&(data.success==='true'||data.success===true||res.status===200)){
         showThankYou(emailVal);
         ctaForm.reset();
         // Reset multi-step form back to step 1
