@@ -24,7 +24,7 @@
 <meta name="twitter:image" content="https://mymindstudio.ai/og-image.jpg"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap"/></noscript>
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap"/></noscript>
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -899,6 +899,46 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
 .footer-bottom-links a:hover{color:var(--lime)}
 .footer-flag{font-size:1rem}
 
+/* ─── Replaced inline-handler styles (CSP cleanup) ─────────────── */
+/* CTA "Get in Touch" button */
+.cta-open-form-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--lime);border:2px solid var(--lime);color:#000;
+  font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  padding:14px 28px;border-radius:3px;margin-top:8px;
+  transition:all .25s;cursor:pointer;font-family:var(--f);
+  max-width:100%;box-sizing:border-box;
+}
+.cta-open-form-btn:hover{background:#c8ff40;border-color:#c8ff40}
+
+/* Footer discover link */
+.footer-discover-link{
+  color:var(--lime);text-decoration:none;
+  border-bottom:1px solid rgba(170,255,0,.35);padding-bottom:1px;
+  transition:opacity .2s;
+}
+.footer-discover-link:hover{opacity:.7}
+
+/* Thank You modal — X close button */
+.ty-close-x{
+  position:absolute;top:18px;right:18px;
+  background:rgba(255,255,255,.07);border:none;
+  color:rgba(255,255,255,.45);width:34px;height:34px;border-radius:50%;
+  font-size:.9rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.ty-close-x:hover{background:rgba(255,255,255,.14);color:#fff}
+
+/* Thank You modal — bottom confirm button */
+.ty-close-bottom{
+  background:#aaff00;color:#000;border:none;border-radius:8px;
+  padding:15px 32px;
+  font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;
+  cursor:pointer;transition:all .25s;width:100%;
+}
+.ty-close-bottom:hover{background:#fff;transform:translateY(-1px)}
+
 /* ═══════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════════ */
@@ -1114,9 +1154,9 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
 
 /* ═══ HERO VIDEO BACKGROUND ═══ */
 .hero{position:relative;overflow:hidden}
-.hero-video-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.hero-video-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;opacity:0.45}
 .hero-video-iframe{position:absolute;width:1280px;height:800px;top:50%;left:50%;transform:translate(-50%,-50%);border:none;pointer-events:none;}
-.hero-video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.52) 0%,rgba(0,0,0,.38) 55%,rgba(0,0,0,.58) 100%);z-index:1}
+.hero-video-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.80) 0%,rgba(0,0,0,.72) 55%,rgba(0,0,0,.85) 100%);z-index:1}
 .hero-grid-lines{z-index:2}
 .hero-inner{position:relative;z-index:3}
 /* Text overrides for dark video overlay */
@@ -1665,7 +1705,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
   <a href="#contact" class="mob-link">Contact</a>
   <a href="blog.html" class="mob-link">Blog</a>
   <div class="mob-menu-sub">
-    <a href="mailto:hello@mymindstudio.ai">Email us</a>
+    <a href="mailto:hello@mymindstudio.ai">hello@mymindstudio.ai</a>
   </div>
 </div>
 
@@ -1714,7 +1754,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
     </div>
     <div class="hero-bottom">
       <p class="hero-sub">
-        Stop wasting time on DIY builders. We listen first, plan together, then build exactly what your business needs — on time, within budget, no lock-in.
+        We turn your ideas into a digital reality — listening first, planning together, then building exactly what your business needs — on time, within budget, no lock-in.
       </p>
       <div class="hero-bottom-right">
         <a href="#tools" class="hero-cta">{ Estimate Your Project }</a>
@@ -2542,7 +2582,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
           <div class="work-laptop-lid">
             <div class="rwork-laptop-screen">
               <video id="rvid1" src="/videos/project-1.mp4" poster="/videos/poster-1.jpg" muted playsinline loop preload="none"></video>
-              <div class="rwork-play-overlay" onclick="toggleRvid(this)">
+              <div class="rwork-play-overlay" role="button" aria-label="Play video">
                 <div class="rwork-play-arrow"></div>
               </div>
             </div>
@@ -2565,7 +2605,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
           <div class="work-laptop-lid">
             <div class="rwork-laptop-screen">
               <video id="rvid2" src="/videos/project-2.mp4" poster="/videos/poster-2.jpg" muted playsinline loop preload="none"></video>
-              <div class="rwork-play-overlay" onclick="toggleRvid(this)">
+              <div class="rwork-play-overlay" role="button" aria-label="Play video">
                 <div class="rwork-play-arrow"></div>
               </div>
             </div>
@@ -2588,7 +2628,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
           <div class="work-laptop-lid">
             <div class="rwork-laptop-screen">
               <video id="rvid3" src="/videos/project-3.mp4" poster="/videos/poster-3.jpg" muted playsinline loop preload="none"></video>
-              <div class="rwork-play-overlay" onclick="toggleRvid(this)">
+              <div class="rwork-play-overlay" role="button" aria-label="Play video">
                 <div class="rwork-play-arrow"></div>
               </div>
             </div>
@@ -2904,16 +2944,13 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
       Book a free 30-minute consultation. No commitment, no pitch — just a real conversation about what you're building.
     </p>
     <div class="cta-contact-info">
-      <div class="cta-info-item">Email: <a href="mailto:hello@mymindstudio.ai">Email us</a></div>
+      <div class="cta-info-item">Email: <a href="mailto:hello@mymindstudio.ai">hello@mymindstudio.ai</a></div>
       <div class="cta-info-item">Discover more: <a href="https://mymindstudio.ai" target="_blank" rel="noopener noreferrer">mymindstudio.ai</a></div>
       <div class="cta-info-item">Response time: Within 24 hours</div>
       <div class="cta-info-item" style="align-items:flex-start;line-height:1.6;margin-top:4px">Proudly operating on a global scale — offices in <strong style="color:#fff">California &amp; Florida</strong> (USA), <strong style="color:#fff">India</strong> and <strong style="color:#fff">China</strong>. Middle East locations coming soon.</div>
     </div>
     <!-- Fill Form Button -->
-    <button onclick="openContactForm()"
-       style="display:inline-flex;align-items:center;gap:10px;background:var(--lime);border:2px solid var(--lime);color:#000;font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding:14px 28px;border-radius:3px;margin-top:8px;transition:all .25s;cursor:pointer;font-family:var(--f);max-width:100%;box-sizing:border-box"
-       onmouseover="this.style.background='#c8ff40';this.style.borderColor='#c8ff40'"
-       onmouseout="this.style.background='var(--lime)';this.style.borderColor='var(--lime)'">
+    <button id="ctaOpenFormBtn" class="cta-open-form-btn">
       Get in touch with us →
     </button>
   </div>
@@ -2940,22 +2977,22 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
         <div class="form-step-label">Step 1 — Your Project</div>
         <!-- Custom service select -->
         <div class="cselect" id="cSelectService">
-          <div class="cselect-trigger" onclick="toggleCselect('cSelectService')">
+          <div class="cselect-trigger">
             <span class="cselect-val">What are you building? *</span>
             <svg class="cselect-arrow" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2 5L7 10L12 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <ul class="cselect-list" id="cSelectServiceList">
-            <li onclick="pickCselect('cSelectService','Web App / SaaS')">Web App / SaaS</li>
-            <li onclick="pickCselect('cSelectService','Mobile App (iOS / Android)')">Mobile App (iOS / Android)</li>
-            <li onclick="pickCselect('cSelectService','Website / Landing Page')">Website / Landing Page</li>
-            <li onclick="pickCselect('cSelectService','Marketplace or Platform')">Marketplace or Platform</li>
-            <li onclick="pickCselect('cSelectService','AI Integration / Chatbot')">AI Integration / Chatbot</li>
-            <li onclick="pickCselect('cSelectService','eCommerce Store')">eCommerce Store</li>
-            <li onclick="pickCselect('cSelectService','Business Automation')">Business Automation</li>
-            <li onclick="pickCselect('cSelectService','Consulting / Strategy')">Consulting / Strategy</li>
-            <li onclick="pickCselect('cSelectService','Something else')">Something else</li>
+            <li>Web App / SaaS</li>
+            <li>Mobile App (iOS / Android)</li>
+            <li>Website / Landing Page</li>
+            <li>Marketplace or Platform</li>
+            <li>AI Integration / Chatbot</li>
+            <li>eCommerce Store</li>
+            <li>Business Automation</li>
+            <li>Consulting / Strategy</li>
+            <li>Something else</li>
           </ul>
           <!-- Hidden native select for form submission -->
           <select name="service" required style="display:none" id="cSelectServiceNative">
@@ -3117,11 +3154,11 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
     <div>
       <div class="footer-col-title">Company</div>
       <ul class="footer-links">
-        <li><a href="#why">Why Us</a></li>
+        <li><a href="#why">Why Choose Us</a></li>
         <li><a href="#process">Our Process</a></li>
         <li><a href="#industries">Industries</a></li>
         <li><a href="#testimonials">Case Studies</a></li>
-        <li><a href="blog.html">Blog</a></li>
+        <li><a href="blog.html">Blog Articles</a></li>
       </ul>
     </div>
     <div>
@@ -3129,9 +3166,8 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
       <ul class="footer-links">
         <li><a href="#contact">Free Consultation</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#pricing">Pricing Plans</a></li>
         <li><a href="#tools">Free Tools</a></li>
-        <li><a href="blog.html">Blog</a></li>
       </ul>
       <div class="footer-col-title" style="margin-top:24px">Legal</div>
       <ul class="footer-links">
@@ -3148,7 +3184,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
       With an expanding presence, our <span style="color:var(--lime)">Middle East locations will be coming soon</span> as we continue our commitment to innovation, creativity, and excellence worldwide.
     </p>
     <p style="font-size:.75rem;color:rgba(255,255,255,.3);margin-top:10px">
-      Discover more at <a href="https://mymindstudio.ai" target="_blank" rel="noopener noreferrer" style="color:var(--lime);text-decoration:none;border-bottom:1px solid rgba(170,255,0,.35);padding-bottom:1px;transition:opacity .2s" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">mymindstudio.ai</a>
+      Discover more at <a href="https://mymindstudio.ai" target="_blank" rel="noopener noreferrer" class="footer-discover-link">mymindstudio.ai</a>
     </p>
   </div>
   <div class="footer-bottom">
@@ -3160,590 +3196,17 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
       <span class="footer-flag" title="Middle East — Coming Soon" style="opacity:.4;filter:grayscale(1)" >🌙</span>
     </div>
     <div class="footer-bottom-links">
-      <a href="privacy-policy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="#contact">Contact</a>
+      <a href="mailto:hello@mymindstudio.ai">hello@mymindstudio.ai</a>
     </div>
   </div>
 </footer>
 
-<script>
-/* ─── Always land on hero on refresh ─── */
-if('scrollRestoration' in history) history.scrollRestoration='manual';
-window.addEventListener('load',function(){ window.scrollTo(0,0); });
-
-/* ─── Hero video iframe scale-to-fill ─── */
-(function(){
-  const iframe = document.querySelector('.hero-video-iframe');
-  if(!iframe) return;
-  function scaleIframe(){
-    const hero = iframe.closest('.hero-video-bg');
-    if(!hero) return;
-    const hw = hero.offsetWidth, hh = hero.offsetHeight;
-    const scale = Math.max(hw/1280, hh/800);
-    /* Only change transform — no layout-shifting properties (width/height/left/top) */
-    iframe.style.transform = `translate(-50%,-50%) scale(${scale})`;
-  }
-  window.addEventListener('resize', scaleIframe);
-  scaleIframe();
-})();
-
-/* ─── Nav scroll effect ─── */
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>{
-  nav.style.background=window.scrollY>50?'rgba(13,15,20,0.98)':'rgba(13,15,20,0.88)';
-},{ passive:true });
-
-/* ─── Selected Work — horizontal scroll strip ─── */
-(function(){
-  var workEl=document.querySelector('.work');
-  var track=document.querySelector('.work-grid');
-  var dots=document.querySelectorAll('.work-progress-dot');
-  var cards=document.querySelectorAll('.work-card');
-  var maxX=0;
-  var cardCount=cards.length;
-
-  function calcMax(){
-    if(window.innerWidth<=768){workEl.style.height='';return;}
-    maxX=Math.max(0,track.scrollWidth-window.innerWidth);
-    /* Set exact scroll height so no dead gap at end */
-    workEl.style.height=(window.innerHeight+maxX+80)+'px';
-  }
-
-  function onScroll(){
-    if(window.innerWidth<=768){track.style.transform='';return;}
-    var rect=workEl.getBoundingClientRect();
-    var sectionH=workEl.offsetHeight;
-    var vp=window.innerHeight;
-    var progress=Math.max(0,Math.min(1,-rect.top/(sectionH-vp)));
-    track.style.transform='translateX('+(-progress*maxX)+'px)';
-    /* update progress dots */
-    if(dots.length&&cardCount>0){
-      var activeIdx=Math.min(cardCount-1,Math.floor(progress*cardCount));
-      dots.forEach(function(d,i){
-        d.classList.toggle('active',i===activeIdx);
-      });
-    }
-  }
-
-  calcMax();
-  window.addEventListener('scroll',onScroll,{passive:true});
-  window.addEventListener('resize',function(){calcMax();onScroll();});
-  onScroll();
-})();
-
-/* ─── Mobile menu ─── */
-const menuBtn=document.getElementById('menuBtn');
-const mobMenu=document.getElementById('mobMenu');
-const mobCloseBtn=document.getElementById('mobCloseBtn');
-function closeMobMenu(){
-  menuBtn.classList.remove('open');
-  mobMenu.classList.remove('open');
-  document.body.style.overflow='';
-}
-menuBtn.addEventListener('click',()=>{
-  menuBtn.classList.toggle('open');
-  mobMenu.classList.toggle('open');
-  document.body.style.overflow=mobMenu.classList.contains('open')?'hidden':'';
-});
-if(mobCloseBtn) mobCloseBtn.addEventListener('click', closeMobMenu);
-mobMenu.querySelectorAll('a').forEach(a=>{
-  a.addEventListener('click', closeMobMenu);
-});
-
-/* ─── Scroll reveal ─── */
-document.body.classList.add('anim-ready');
-const revealEls=document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
-const io=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});
-},{threshold:.05,rootMargin:'0px 0px 0px 0px'});
-revealEls.forEach(el=>io.observe(el));
-
-/* ─── Custom select helpers ─── */
-function toggleCselect(id){
-  const el = document.getElementById(id);
-  if(!el) return;
-  const isOpen = el.classList.contains('open');
-  // close all others first
-  document.querySelectorAll('.cselect.open').forEach(c=>c.classList.remove('open'));
-  if(!isOpen) el.classList.add('open');
-}
-function pickCselect(id, val){
-  const el = document.getElementById(id);
-  if(!el) return;
-  // Update visible label
-  el.querySelector('.cselect-val').textContent = val;
-  // Update hidden native select
-  const native = el.querySelector('select');
-  if(native){
-    for(let opt of native.options){ if(opt.value===val||opt.text===val){ opt.selected=true; break; } }
-  }
-  // Mark chosen item
-  el.querySelectorAll('.cselect-list li').forEach(li=>li.classList.toggle('chosen', li.textContent===val));
-  el.classList.add('selected');
-  el.classList.remove('open');
-}
-// Close custom selects when clicking outside
-document.addEventListener('click', e=>{
-  if(!e.target.closest('.cselect')) document.querySelectorAll('.cselect.open').forEach(c=>c.classList.remove('open'));
-});
-
-/* ─── Get in touch — scroll to form + open dropdown ─── */
-/* ─── Thank You Modal ─── */
-function showThankYou(email){
-  const overlay=document.getElementById('thankYouOverlay');
-  const box=document.getElementById('thankYouBox');
-  const emailEl=document.getElementById('tyEmail');
-  const circle=document.getElementById('tyCircle');
-  const tick=document.getElementById('tyTick');
-  if(emailEl&&email)emailEl.textContent=email;
-  overlay.style.display='flex';
-  document.body.style.overflow='hidden';
-  // Trigger animations after paint
-  requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{
-      box.style.transform='scale(1)';
-      if(circle)circle.style.strokeDashoffset='0';
-      if(tick)tick.style.opacity='1';
-    });
-  });
-}
-function closeThankYou(){
-  const overlay=document.getElementById('thankYouOverlay');
-  const box=document.getElementById('thankYouBox');
-  box.style.transform='scale(.92)';
-  setTimeout(()=>{
-    overlay.style.display='none';
-    document.body.style.overflow='';
-  },300);
-}
-document.getElementById('thankYouOverlay')?.addEventListener('click',function(e){
-  if(e.target===this)closeThankYou();
-});
-
-function openContactForm(){
-  const anchor = document.getElementById('cta-form-anchor');
-  const csel   = document.getElementById('cSelectService');
-  if(!anchor) return;
-  anchor.scrollIntoView({behavior:'smooth', block:'center'});
-  // After scroll lands open the dropdown + pulse the form
-  setTimeout(()=>{
-    anchor.classList.remove('form-highlight');
-    void anchor.offsetWidth;
-    anchor.classList.add('form-highlight');
-    if(csel){
-      document.querySelectorAll('.cselect.open').forEach(c=>c.classList.remove('open'));
-      csel.classList.add('open');
-    }
-  }, 700);
-}
-
-/* ─── Real Results video scroll + play/pause ─── */
-function toggleRvid(playEl){
-  const card = playEl.closest('.rwork-card,.rwork-phone-card');
-  const vid  = playEl.closest('.rwork-laptop-screen,.rwork-phone-inner') ?
-               playEl.closest('.rwork-laptop-screen,.rwork-phone-inner').querySelector('video') : null;
-  if(!vid || !card) return;
-  if(card.classList.contains('rplaying')){
-    vid.pause(); card.classList.remove('rplaying');
-  } else {
-    document.querySelectorAll('.rwork-card.rplaying,.rwork-phone-card.rplaying').forEach(c=>{
-      c.classList.remove('rplaying');
-      const v=c.querySelector('video'); if(v) v.pause();
-    });
-    vid.play(); card.classList.add('rplaying');
-  }
-}
-(function(){
-  var rSection = document.querySelector('.rwork');
-  var rTrack   = document.getElementById('rworkGrid');
-  var rDots    = document.querySelectorAll('.rwork-progress-dot');
-  var rCards   = document.querySelectorAll('#rworkGrid > [data-rcard]');
-  if(!rSection || !rTrack) return;
-  function getRworkMaxX(){
-    var cards = rTrack.querySelectorAll('.rwork-card');
-    var total = 0;
-    cards.forEach(c=>{ total += c.offsetWidth + 30; }); // gap=30px (matches CSS)
-    total -= 30; // last card: no trailing gap
-    return Math.max(0, total + 120 - window.innerWidth); // 60px padding each side
-  }
-  function setRworkHeight(){
-    if(window.innerWidth<=768){rSection.style.height='';return;}
-    var maxX = getRworkMaxX();
-    rSection.style.height = (window.innerHeight + maxX + 80) + 'px';
-  }
-  function onRworkScroll(){
-    if(window.innerWidth<=768){rTrack.style.transform='';return;}
-    var rect   = rSection.getBoundingClientRect();
-    var sH     = rSection.offsetHeight - window.innerHeight;
-    var prog   = Math.max(0, Math.min(1, -rect.top / sH));
-    var maxX   = getRworkMaxX();
-    var tx     = prog * maxX;
-    rTrack.style.transform = 'translateX(-'+tx+'px)';
-    // update dots
-    if(rCards.length){
-      var idx = Math.min(rCards.length-1, Math.floor(prog * rCards.length));
-      rDots.forEach((d,i)=>d.classList.toggle('active',i===idx));
-    }
-  }
-  setRworkHeight();
-  window.addEventListener('scroll', onRworkScroll, {passive:true});
-  window.addEventListener('resize', function(){ setRworkHeight(); onRworkScroll(); });
-  onRworkScroll();
-})();
-
-/* ─── Tech tabs ─── */
-document.querySelectorAll('.tech-tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    document.querySelectorAll('.tech-tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.tech-panel').forEach(p=>p.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
-  });
-});
-
-/* ─── FAQ accordion ─── */
-document.querySelectorAll('.faq-item').forEach(item=>{
-  item.querySelector('.faq-q').addEventListener('click',()=>{
-    const isOpen=item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
-    if(!isOpen)item.classList.add('open');
-  });
-});
-
-/* ─── Smooth scroll for anchor links ─── */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const id=a.getAttribute('href');
-    if(id.length>1){
-      const target=document.querySelector(id);
-      if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}
-    }
-  });
-});
-
-/* ─── Form submit (multi-step) ─── */
-const ctaForm=document.getElementById('ctaForm');
-if(ctaForm){
-  // Multi-step logic
-  function goFormStep(from,to){
-    document.getElementById('fstep'+from).classList.remove('active');
-    document.getElementById('fstep'+to).classList.add('active');
-    // Update dots
-    for(let i=1;i<=3;i++){
-      const dot=document.getElementById('fsd'+i);
-      const line=document.getElementById('fsl'+i);
-      if(i<to){dot.classList.add('done');dot.classList.remove('active');if(line)line.classList.add('done');}
-      else if(i===to){dot.classList.remove('done');dot.classList.add('active');}
-      else{dot.classList.remove('done','active');}
-    }
-  }
-  function validateStep(stepEl){
-    let ok=true;
-    stepEl.querySelectorAll('[required]').forEach(el=>{
-      if(!el.value.trim()){ok=false;el.style.borderColor='rgba(255,80,80,.7)';}
-      else{el.style.borderColor='';}
-    });
-    return ok;
-  }
-  document.getElementById('fNext1')?.addEventListener('click',()=>{
-    if(validateStep(document.getElementById('fstep1')))goFormStep(1,2);
-  });
-  document.getElementById('fBack2')?.addEventListener('click',()=>goFormStep(2,1));
-  document.getElementById('fNext2')?.addEventListener('click',()=>goFormStep(2,3));
-  document.getElementById('fBack3')?.addEventListener('click',()=>goFormStep(3,2));
-  ctaForm.addEventListener('submit',async(e)=>{
-    e.preventDefault();
-    if(!validateStep(document.getElementById('fstep3')))return;
-    const btn=ctaForm.querySelector('[type="submit"]');
-    const origText=btn.textContent;
-    btn.textContent='Sending…';btn.disabled=true;
-    try{
-      const fd=new FormData(ctaForm);
-      const emailVal=ctaForm.querySelector('[name="email"]')?.value||'';
-      const res=await fetch('https://formsubmit.co/ajax/hello@mymindstudio.ai',{
-        method:'POST',
-        body:fd,
-        headers:{'Accept':'application/json'}
-      });
-      const data=await res.json().catch(()=>({}));
-      if(res.ok&&(data.success==='true'||data.success===true||res.status===200)){
-        showThankYou(emailVal);
-        ctaForm.reset();
-        // Reset multi-step form back to step 1
-        goFormStep(3,1);
-        document.getElementById('cSelectService')?.classList.remove('open','selected');
-        const valEl=document.querySelector('.cselect-val');
-        if(valEl)valEl.textContent='What are you building? *';
-        const nativeSel=document.getElementById('cSelectServiceNative');
-        if(nativeSel)nativeSel.selectedIndex=0;
-        document.querySelectorAll('.cselect-list li').forEach(li=>li.classList.remove('chosen'));
-      } else {
-        btn.textContent=origText;btn.disabled=false;
-        alert('Something went wrong. Please email us at hello@mymindstudio.ai');
-      }
-    }catch(err){
-      btn.textContent=origText;btn.disabled=false;
-      alert('Network error. Please email us at hello@mymindstudio.ai');
-    }
-  });
-}
-
-/* ─── Video modal ─── */
-const vidOverlay=document.getElementById('vidModalOverlay');
-const vidIframe=document.getElementById('vidIframe');
-const heroPlayBtn=document.getElementById('heroPlayBtn');
-const vidClose=document.getElementById('vidModalClose');
-const EXPLAINER_URL='/explainer-video/';
-function openVidModal(){
-  if(vidIframe)vidIframe.src=EXPLAINER_URL;
-  if(vidOverlay)vidOverlay.classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeVidModal(){
-  if(vidIframe)vidIframe.src='about:blank';
-  if(vidOverlay)vidOverlay.classList.remove('open');
-  document.body.style.overflow='';
-}
-heroPlayBtn?.addEventListener('click',openVidModal);
-vidClose?.addEventListener('click',closeVidModal);
-vidOverlay?.addEventListener('click',e=>{if(e.target===vidOverlay)closeVidModal();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeVidModal();closeAiModal();}});
-
-/* ─── AI Modal ─── */
-const aiModal=document.getElementById('aiModal');
-const askAiBtn=document.getElementById('askAiBtn');
-const aiModalClose=document.getElementById('aiModalClose');
-const aiMessages=document.getElementById('aiMessages');
-const aiInput=document.getElementById('aiInput');
-const aiSend=document.getElementById('aiSend');
-
-const aiAnswers={
-  'what services do you offer':'We offer Custom App & Website Development, Mobile Apps (iOS/Android), AI Integration & Chatbots, eCommerce Solutions, UI/UX Design, Business Automation, and SEO & Digital Marketing. Every project is built from scratch — no templates. 🚀',
-  'app cost':'Custom apps typically cost $3,000–$15,000 depending on complexity. Use our free Cost Estimator tool on this page for a personalised estimate, or book a free consultation for an exact quote!',
-  'fixed bid':'Fixed Bid is best for defined projects — you know exactly what you\'re building and want clear scope, timeline, and cost upfront. Dedicated Team is best for ongoing work — starting from $4,000/month with flexible scaling. Not sure? Book a free call and we\'ll advise!',
-  'how long':'Websites typically go live in 2–4 weeks. Custom apps take 6–16 weeks. The exact timeline is agreed before we start — and we stick to it. We also offer an on-time guarantee or money back.',
-  'process':'4 steps: (1) Discovery Call — we listen, no sales pitch. (2) Strategy & Blueprint — full roadmap, cost, and timeline within 24hrs. (3) Build & Launch — weekly check-ins, milestone sign-offs. (4) Support & Grow — go-to-market guidance included. 🎯',
-  'default':'Great question! I\'d recommend booking a free 30-minute consultation — we\'ll answer everything about your specific project and send you a full roadmap within 24 hours. 👉 <a href="#contact" style="color:#aaff00;text-decoration:none;font-weight:700" onclick="closeAiModal()">Contact us here</a>'
-};
-
-function addAiMsg(text,type){
-  const div=document.createElement('div');
-  div.className='ai-msg '+type;
-  div.innerHTML=text;
-  aiMessages?.appendChild(div);
-  aiMessages?.scrollTo(0,aiMessages.scrollHeight);
-}
-function showTyping(){
-  const t=document.createElement('div');
-  t.className='ai-typing';t.id='aiTyping';
-  t.innerHTML='<span></span><span></span><span></span>';
-  aiMessages?.appendChild(t);
-  aiMessages?.scrollTo(0,aiMessages.scrollHeight);
-}
-function removeTyping(){document.getElementById('aiTyping')?.remove();}
-
-function handleAiQ(q){
-  if(!q.trim())return;
-  addAiMsg(q,'user');
-  if(aiInput)aiInput.value='';
-  showTyping();
-  const lower=q.toLowerCase();
-  let ans=aiAnswers.default;
-  Object.keys(aiAnswers).forEach(k=>{if(lower.includes(k))ans=aiAnswers[k];});
-  setTimeout(()=>{removeTyping();addAiMsg(ans,'bot');},900+Math.random()*400);
-}
-
-function openAiModal(){aiModal?.classList.add('open');}
-function closeAiModal(){aiModal?.classList.remove('open');}
-askAiBtn?.addEventListener('click',openAiModal);
-aiModalClose?.addEventListener('click',closeAiModal);
-aiSend?.addEventListener('click',()=>handleAiQ(aiInput?.value||''));
-aiInput?.addEventListener('keydown',e=>{if(e.key==='Enter')handleAiQ(aiInput.value);});
-document.querySelectorAll('.ai-sug').forEach(btn=>{
-  btn.addEventListener('click',()=>handleAiQ(btn.dataset.q||btn.textContent));
-});
-
-/* ─── Exit Intent Modal ─── */
-const exitOverlay=document.getElementById('exitOverlay');
-const exitClose=document.getElementById('exitClose');
-const exitSubmit=document.getElementById('exitSubmit');
-let exitShown=false;
-document.addEventListener('mouseleave',e=>{
-  if(e.clientY<10&&!exitShown&&!sessionStorage.getItem('exitShown')){
-    exitShown=true;
-    sessionStorage.setItem('exitShown','1');
-    exitOverlay?.classList.add('open');
-  }
-});
-// Also show after 45s
-setTimeout(()=>{
-  if(!exitShown&&!sessionStorage.getItem('exitShown')){
-    exitShown=true;sessionStorage.setItem('exitShown','1');
-    exitOverlay?.classList.add('open');
-  }
-},45000);
-exitClose?.addEventListener('click',()=>exitOverlay?.classList.remove('open'));
-exitOverlay?.addEventListener('click',e=>{if(e.target===exitOverlay)exitOverlay.classList.remove('open');});
-exitSubmit?.addEventListener('click',()=>{
-  const email=document.getElementById('exitEmail')?.value;
-  if(!email||!email.includes('@'))return;
-  document.getElementById('exitSuccess').style.display='block';
-  document.getElementById('exitEmail').style.display='none';
-  exitSubmit.style.display='none';
-  setTimeout(()=>exitOverlay?.classList.remove('open'),3000);
-});
-
-/* ─── Sticky CTA ─── */
-const stickyCta=document.getElementById('stickyCta');
-const stickyDismiss=document.getElementById('stickyDismiss');
-let stickyDismissed=sessionStorage.getItem('stickyDismissed');
-window.addEventListener('scroll',()=>{
-  if(!stickyDismissed&&window.scrollY>600){stickyCta?.classList.add('show');}
-},{passive:true});
-stickyDismiss?.addEventListener('click',()=>{
-  stickyCta?.classList.remove('show');
-  stickyDismissed=true;
-  sessionStorage.setItem('stickyDismissed','1');
-});
-
-/* ─── Stats counter animation ─── */
-const statNums=document.querySelectorAll('.stat-num[data-count]');
-const statObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const el=e.target;
-      const target=+el.dataset.count;
-      const suffix=el.dataset.suffix||'';
-      let current=0;
-      const step=Math.ceil(target/60);
-      const timer=setInterval(()=>{
-        current=Math.min(current+step,target);
-        el.textContent=current+suffix;
-        if(current>=target)clearInterval(timer);
-      },20);
-      statObs.unobserve(el);
-    }
-  });
-},{threshold:.5});
-statNums.forEach(el=>statObs.observe(el));
-
-/* ─── Cost Estimator ─── */
-const estData={type:'',complexity:'',design:'',timeline:'',extras:[]};
-const ranges={
-  website:{simple:'$800 – $2,500',medium:'$2,500 – $5,000',complex:'$5,000 – $10,000',notsure:'$1,000 – $5,000'},
-  webapp:{simple:'$3,000 – $6,000',medium:'$6,000 – $14,000',complex:'$14,000 – $30,000',notsure:'$5,000 – $15,000'},
-  mobile:{simple:'$5,000 – $10,000',medium:'$10,000 – $20,000',complex:'$20,000 – $40,000',notsure:'$8,000 – $20,000'},
-  ai:{simple:'$2,000 – $5,000',medium:'$5,000 – $12,000',complex:'$12,000 – $25,000',notsure:'$3,000 – $12,000'}
-};
-
-function estGoStep(from,to){
-  const fromEl=document.getElementById('est-step-'+from);
-  const toEl=document.getElementById('est-step-'+to);
-  if(fromEl)fromEl.classList.remove('active');
-  if(toEl)toEl.classList.add('active');
-  // Update progress
-  for(let i=1;i<=5;i++){
-    const dot=document.getElementById('ep'+i);
-    if(dot){if(i<to)dot.classList.add('done');else dot.classList.remove('done');}
-  }
-}
-
-document.querySelectorAll('.est-opt:not(.est-opt-check)').forEach(opt=>{
-  opt.addEventListener('click',()=>{
-    const step=opt.closest('.est-step');
-    step?.querySelectorAll('.est-opt').forEach(o=>o.classList.remove('selected'));
-    opt.classList.add('selected');
-    const key=opt.closest('#est-step-1')?'type':opt.closest('#est-step-2')?'complexity':opt.closest('#est-step-3')?'design':'timeline';
-    estData[key]=opt.dataset.val;
-  });
-});
-document.querySelectorAll('.est-opt-check').forEach(opt=>{
-  opt.addEventListener('click',()=>{
-    opt.classList.toggle('selected');
-    const val=opt.dataset.val;
-    const idx=estData.extras.indexOf(val);
-    if(idx>-1)estData.extras.splice(idx,1);else estData.extras.push(val);
-  });
-});
-document.querySelectorAll('.est-btn-next[data-next]').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const from=btn.closest('.est-step')?.id.replace('est-step-','');
-    estGoStep(from,btn.dataset.next);
-  });
-});
-document.querySelectorAll('.est-btn-back[data-back]').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const from=btn.closest('.est-step')?.id.replace('est-step-','');
-    estGoStep(from,btn.dataset.back);
-  });
-});
-document.getElementById('showEstResult')?.addEventListener('click',()=>{
-  const t=estData.type||'webapp';
-  const c=estData.complexity||'medium';
-  const range=ranges[t]?.[c]||'$3,000 – $12,000';
-  const rangeEl=document.getElementById('estRange');
-  if(rangeEl)rangeEl.textContent=range;
-  estGoStep(5,'result');
-});
-
-/* ─── Tools tabs ─── */
-document.querySelectorAll('.tool-tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    document.querySelectorAll('.tool-tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.tool-panel').forEach(p=>p.classList.remove('active'));
-    tab.classList.add('active');
-    const panel=document.getElementById('tool-'+tab.dataset.tool);
-    if(panel)panel.classList.add('active');
-  });
-});
-
-/* ─── ROI Calculator ─── */
-function calcROI(){
-  const h=+document.getElementById('rs1')?.value||20;
-  const r=+document.getElementById('rs2')?.value||35;
-  const p=+document.getElementById('rs3')?.value||60;
-  const m=+document.getElementById('rs4')?.value||3;
-  document.getElementById('rv1').textContent=h;
-  document.getElementById('rv2').textContent='$'+r;
-  document.getElementById('rv3').textContent=p+'%';
-  document.getElementById('rv4').textContent=m;
-  const annual=Math.round(h*(p/100)*52*r*m);
-  document.getElementById('roiSaving').textContent='$'+annual.toLocaleString();
-}
-['rs1','rs2','rs3','rs4'].forEach(id=>{
-  document.getElementById(id)?.addEventListener('input',calcROI);
-});
-calcROI();
-
-/* ─── Stack quiz ─── */
-document.querySelectorAll('.stack-opt').forEach(opt=>{
-  opt.addEventListener('click',()=>{
-    document.querySelectorAll('.stack-opt').forEach(o=>o.classList.remove('selected'));
-    opt.classList.add('selected');
-    const result=document.getElementById('stackResult');
-    const val=document.getElementById('stackVal');
-    if(val)val.textContent=opt.dataset.stack;
-    if(result)result.style.display='block';
-  });
-});
-
-/* ─── Case study tabs ─── */
-document.querySelectorAll('.testi-case-tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    document.querySelectorAll('.testi-case-tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.testi-case-panel').forEach(p=>p.classList.remove('active'));
-    tab.classList.add('active');
-    const panel=document.getElementById('case-'+tab.dataset.case);
-    if(panel)panel.classList.add('active');
-  });
-});
-</script>
+<script src="/js/main.js" defer></script>
 
 <!-- ═══════════════ THANK YOU MODAL ═══════════════ -->
 <div id="thankYouOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:20px">
   <div id="thankYouBox" style="background:linear-gradient(160deg,#1a1c26 0%,#0f1118 100%);border-radius:28px;padding:52px 44px 44px;max-width:500px;width:100%;text-align:center;position:relative;border:1px solid rgba(170,255,0,.3);box-shadow:0 0 0 1px rgba(170,255,0,.06),0 40px 100px rgba(0,0,0,.7);transform:scale(.92);transition:transform .4s cubic-bezier(.34,1.56,.64,1)">
-    <button onclick="closeThankYou()" style="position:absolute;top:18px;right:18px;background:rgba(255,255,255,.07);border:none;color:rgba(255,255,255,.45);width:34px;height:34px;border-radius:50%;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.14)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.07)';this.style.color='rgba(255,255,255,.45)'">✕</button>
+    <button id="tyCloseX" class="ty-close-x" aria-label="Close">✕</button>
 
     <!-- Animated tick -->
     <div style="width:88px;height:88px;margin:0 auto 28px;position:relative">
@@ -3791,7 +3254,7 @@ document.querySelectorAll('.testi-case-tab').forEach(tab=>{
       <span style="font-size:.75rem;color:rgba(255,255,255,.4)">Sent to <span id="tyEmail" style="color:rgba(255,255,255,.7);font-weight:600">your email</span></span>
     </div>
 
-    <button onclick="closeThankYou()" style="background:#aaff00;color:#000;border:none;border-radius:8px;padding:15px 32px;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:all .25s;width:100%" onmouseover="this.style.background='#fff';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#aaff00';this.style.transform='none'">Sounds great — I'll wait for your reply</button>
+    <button id="tyCloseBottom" class="ty-close-bottom">Sounds great — I'll wait for your reply</button>
     <div style="margin-top:12px;font-size:.7rem;color:rgba(255,255,255,.2);letter-spacing:.06em">Zero obligation · 100% confidential · No spam ever</div>
   </div>
 </div>
