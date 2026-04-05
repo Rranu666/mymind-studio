@@ -3113,8 +3113,10 @@ window.addEventListener('scroll',()=>{
   var cardCount=cards.length;
 
   function calcMax(){
-    if(window.innerWidth<=768)return;
+    if(window.innerWidth<=768){workEl.style.height='';return;}
     maxX=Math.max(0,track.scrollWidth-window.innerWidth);
+    /* Set exact scroll height so no dead gap at end */
+    workEl.style.height=(window.innerHeight+maxX+80)+'px';
   }
 
   function onScroll(){
@@ -3267,20 +3269,25 @@ function toggleRvid(playEl){
   var rDots    = document.querySelectorAll('.rwork-progress-dot');
   var rCards   = document.querySelectorAll('#rworkGrid > [data-rcard]');
   if(!rSection || !rTrack) return;
-  function getRworkTotalWidth(){
+  function getRworkMaxX(){
     var cards = rTrack.querySelectorAll('.rwork-card');
     var total = 0;
-    cards.forEach(c=>{ total += c.offsetWidth + 32; }); // gap=32
-    total -= 32; // last card no trailing gap
-    return total;
+    cards.forEach(c=>{ total += c.offsetWidth + 30; }); // gap=30px (matches CSS)
+    total -= 30; // last card: no trailing gap
+    return Math.max(0, total + 120 - window.innerWidth); // 60px padding each side
+  }
+  function setRworkHeight(){
+    if(window.innerWidth<=768){rSection.style.height='';return;}
+    var maxX = getRworkMaxX();
+    rSection.style.height = (window.innerHeight + maxX + 80) + 'px';
   }
   function onRworkScroll(){
     if(window.innerWidth<=768){rTrack.style.transform='';return;}
     var rect   = rSection.getBoundingClientRect();
     var sH     = rSection.offsetHeight - window.innerHeight;
     var prog   = Math.max(0, Math.min(1, -rect.top / sH));
-    var maxX   = getRworkTotalWidth() - window.innerWidth + 120; // 60px padding each side
-    var tx     = prog * Math.max(0, maxX);
+    var maxX   = getRworkMaxX();
+    var tx     = prog * maxX;
     rTrack.style.transform = 'translateX(-'+tx+'px)';
     // update dots
     if(rCards.length){
@@ -3288,7 +3295,9 @@ function toggleRvid(playEl){
       rDots.forEach((d,i)=>d.classList.toggle('active',i===idx));
     }
   }
+  setRworkHeight();
   window.addEventListener('scroll', onRworkScroll, {passive:true});
+  window.addEventListener('resize', function(){ setRworkHeight(); onRworkScroll(); });
   onRworkScroll();
 })();
 
