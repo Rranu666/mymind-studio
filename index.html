@@ -2752,7 +2752,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
     </button>
   </div>
   <div class="cta-form-wrap reveal-right" id="cta-form-anchor">
-    <form class="cta-form" id="ctaForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <form class="cta-form" id="ctaForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
       <input type="hidden" name="form-name" value="contact"/>
       <input type="hidden" name="_subject" value="New Project Inquiry — MyMind Studio"/>
       <input type="hidden" name="_captcha" value="false"/>
@@ -3266,12 +3266,23 @@ if(ctaForm){
       else{dot.classList.remove('done','active');}
     }
   }
-  document.getElementById('fNext1')?.addEventListener('click',()=>goFormStep(1,2));
+  function validateStep(stepEl){
+    let ok=true;
+    stepEl.querySelectorAll('[required]').forEach(el=>{
+      if(!el.value.trim()){ok=false;el.style.borderColor='rgba(255,80,80,.7)';}
+      else{el.style.borderColor='';}
+    });
+    return ok;
+  }
+  document.getElementById('fNext1')?.addEventListener('click',()=>{
+    if(validateStep(document.getElementById('fstep1')))goFormStep(1,2);
+  });
   document.getElementById('fBack2')?.addEventListener('click',()=>goFormStep(2,1));
   document.getElementById('fNext2')?.addEventListener('click',()=>goFormStep(2,3));
   document.getElementById('fBack3')?.addEventListener('click',()=>goFormStep(3,2));
   ctaForm.addEventListener('submit',async(e)=>{
     e.preventDefault();
+    if(!validateStep(document.getElementById('fstep3')))return;
     const btn=ctaForm.querySelector('[type="submit"]');
     const origText=btn.textContent;
     btn.textContent='Sending…';btn.disabled=true;
