@@ -699,27 +699,37 @@ document.getElementById('tyCloseBottom')?.addEventListener('click', closeThankYo
     setTimeout(function(){input.focus();},50);
   }
   function closeChat(){isOpen=false;wrap.classList.remove('open');panel.style.display='none';}
-  btn.addEventListener('click',function(){isOpen?closeChat():openChat();});
-  sendBtn.addEventListener('click',function(){handleQuery(input.value);});
-  input.addEventListener('keydown',function(e){if(e.key==='Enter')handleQuery(input.value);});
-  var dragging=false,startX,startLeft;
-  dragHandle.addEventListener('mousedown',startDrag);
-  dragHandle.addEventListener('touchstart',startDrag,{passive:true});
+  // Drag the whole button — click if moved <8px, drag if more
+  var dragging=false,didDrag=false,startX,startY;
+  btn.addEventListener('mousedown',startDrag);
+  btn.addEventListener('touchstart',startDrag,{passive:true});
   function startDrag(e){
-    dragging=true;var p=e.touches?e.touches[0]:e;startX=p.clientX;
-    startLeft=wrap.getBoundingClientRect().left;wrap.style.transition='none';
-    document.addEventListener('mousemove',onDrag);document.addEventListener('touchmove',onDrag,{passive:false});
-    document.addEventListener('mouseup',stopDrag);document.addEventListener('touchend',stopDrag);
+    didDrag=false;var p=e.touches?e.touches[0]:e;
+    startX=p.clientX;startY=p.clientY;
+    wrap.style.transition='none';
+    document.addEventListener('mousemove',onDrag);
+    document.addEventListener('touchmove',onDrag,{passive:false});
+    document.addEventListener('mouseup',stopDrag);
+    document.addEventListener('touchend',stopDrag);
   }
   function onDrag(e){
-    if(!dragging)return;if(e.cancelable)e.preventDefault();
-    var p=e.touches?e.touches[0]:e,mid=window.innerWidth/2;
+    var p=e.touches?e.touches[0]:e;
+    var dx=p.clientX-startX,dy=p.clientY-startY;
+    if(!didDrag&&Math.sqrt(dx*dx+dy*dy)<8)return;
+    if(e.cancelable)e.preventDefault();
+    didDrag=true;
+    var mid=window.innerWidth/2;
     if(p.clientX<mid){wrap.style.left='24px';wrap.style.right='auto';wrap.classList.add('left-side');}
     else{wrap.style.right='24px';wrap.style.left='auto';wrap.classList.remove('left-side');}
   }
-  function stopDrag(){
-    dragging=false;wrap.style.transition='';
-    document.removeEventListener('mousemove',onDrag);document.removeEventListener('touchmove',onDrag);
-    document.removeEventListener('mouseup',stopDrag);document.removeEventListener('touchend',stopDrag);
+  function stopDrag(e){
+    wrap.style.transition='';
+    document.removeEventListener('mousemove',onDrag);
+    document.removeEventListener('touchmove',onDrag);
+    document.removeEventListener('mouseup',stopDrag);
+    document.removeEventListener('touchend',stopDrag);
+    if(!didDrag){isOpen?closeChat():openChat();}
   }
+  sendBtn.addEventListener('click',function(){handleQuery(input.value);});
+  input.addEventListener('keydown',function(e){if(e.key==='Enter')handleQuery(input.value);});
 })();
