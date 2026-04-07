@@ -3261,5 +3261,288 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
 </div>
   </div>
 </div>
+
+<!-- ═══════════════ CHAT BOT ═══════════════ -->
+<style>
+#mms-bot-wrap{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:12px;user-select:none}
+#mms-bot-wrap.left-side{align-items:flex-start;right:auto;left:24px}
+
+/* Toggle button */
+#mms-bot-btn{width:56px;height:56px;border-radius:50%;background:var(--lime);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(170,255,0,.35);transition:transform .2s,box-shadow .2s;flex-shrink:0;position:relative}
+#mms-bot-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(170,255,0,.5)}
+#mms-bot-btn svg{width:26px;height:26px;fill:#000;transition:opacity .2s,transform .2s}
+#mms-bot-btn .icon-close{position:absolute;opacity:0;transform:rotate(-90deg)}
+#mms-bot-wrap.open #mms-bot-btn .icon-chat{opacity:0;transform:rotate(90deg)}
+#mms-bot-wrap.open #mms-bot-btn .icon-close{opacity:1;transform:rotate(0)}
+
+/* Drag handle strip */
+#mms-drag-handle{width:56px;height:14px;display:flex;align-items:center;justify-content:center;cursor:grab;margin-top:-4px}
+#mms-drag-handle:active{cursor:grabbing}
+#mms-drag-handle span{display:block;width:24px;height:3px;background:rgba(255,255,255,.2);border-radius:2px}
+
+/* Chat panel */
+#mms-panel{width:340px;max-height:500px;background:#161820;border:1px solid rgba(255,255,255,.1);border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 16px 60px rgba(0,0,0,.6);transform-origin:bottom right;animation:mmsPop .22s cubic-bezier(.22,1,.36,1)}
+#mms-bot-wrap.left-side #mms-panel{transform-origin:bottom left}
+@keyframes mmsPop{from{opacity:0;transform:scale(.9) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+/* Header */
+#mms-header{background:#0d0f14;padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.mms-avatar{width:36px;height:36px;background:var(--lime);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.75rem;color:#000;letter-spacing:-.02em;flex-shrink:0}
+.mms-hinfo{flex:1;min-width:0}
+.mms-hname{font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.02em}
+.mms-hstatus{font-size:.68rem;color:#aaff00;display:flex;align-items:center;gap:5px}
+.mms-hstatus::before{content:'';width:6px;height:6px;background:#aaff00;border-radius:50%;flex-shrink:0}
+
+/* Messages */
+#mms-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+#mms-messages::-webkit-scrollbar{width:3px}
+#mms-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+.mms-msg{max-width:88%;display:flex;flex-direction:column;gap:3px}
+.mms-msg.bot{align-self:flex-start}
+.mms-msg.user{align-self:flex-end;align-items:flex-end}
+.mms-bubble{padding:10px 13px;border-radius:14px;font-size:.82rem;line-height:1.55;color:#f0ede7}
+.mms-msg.bot .mms-bubble{background:#1a1c24;border-bottom-left-radius:4px}
+.mms-msg.user .mms-bubble{background:var(--lime);color:#000;font-weight:600;border-bottom-right-radius:4px}
+.mms-time{font-size:.62rem;color:rgba(255,255,255,.25);padding:0 4px}
+
+/* Typing indicator */
+.mms-typing .mms-bubble{background:#1a1c24;display:flex;align-items:center;gap:5px;padding:12px 14px}
+.mms-dot{width:6px;height:6px;background:rgba(255,255,255,.3);border-radius:50%;animation:mmsDot 1.2s infinite}
+.mms-dot:nth-child(2){animation-delay:.2s}
+.mms-dot:nth-child(3){animation-delay:.4s}
+@keyframes mmsDot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+/* Chips */
+#mms-chips{padding:10px 14px;display:flex;flex-wrap:wrap;gap:7px;border-top:1px solid rgba(255,255,255,.06);flex-shrink:0}
+.mms-chip{background:#1a1c24;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:6px 13px;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.75);cursor:pointer;transition:all .18s;white-space:nowrap;font-family:var(--f)}
+.mms-chip:hover{background:var(--lime);color:#000;border-color:var(--lime)}
+
+/* Input row */
+#mms-input-row{padding:10px 12px;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:8px;align-items:center;flex-shrink:0;background:#0d0f14}
+#mms-input{flex:1;background:#1a1c24;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:9px 13px;font-size:.8rem;color:#fff;font-family:var(--f);outline:none;transition:border-color .2s}
+#mms-input:focus{border-color:rgba(170,255,0,.4)}
+#mms-input::placeholder{color:rgba(255,255,255,.3)}
+#mms-send{width:36px;height:36px;background:var(--lime);border:none;border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+#mms-send:hover{background:#88cc00}
+#mms-send svg{width:16px;height:16px;fill:#000}
+
+@media(max-width:400px){#mms-panel{width:calc(100vw - 32px)}}
+</style>
+
+<div id="mms-bot-wrap">
+  <div id="mms-panel" style="display:none">
+    <div id="mms-header">
+      <div class="mms-avatar">MS</div>
+      <div class="mms-hinfo">
+        <div class="mms-hname">MyMind Studio</div>
+        <div class="mms-hstatus">Online — reply in seconds</div>
+      </div>
+    </div>
+    <div id="mms-messages"></div>
+    <div id="mms-chips"></div>
+    <div id="mms-input-row">
+      <input id="mms-input" type="text" placeholder="Ask anything…" autocomplete="off" maxlength="200"/>
+      <button id="mms-send" aria-label="Send">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mms-drag-handle"><span></span></div>
+  <button id="mms-bot-btn" aria-label="Open chat">
+    <svg class="icon-chat" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+    <svg class="icon-close" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+  </button>
+</div>
+
+<script>
+(function(){
+  const wrap = document.getElementById('mms-bot-wrap');
+  const panel = document.getElementById('mms-panel');
+  const btn = document.getElementById('mms-bot-btn');
+  const msgs = document.getElementById('mms-messages');
+  const chips = document.getElementById('mms-chips');
+  const input = document.getElementById('mms-input');
+  const sendBtn = document.getElementById('mms-send');
+  const dragHandle = document.getElementById('mms-drag-handle');
+
+  /* ── Q&A knowledge base ── */
+  const KB = [
+    {k:['hello','hi','hey','start','help'],a:"Hi there! I'm the MyMind Studio assistant. Ask me anything about our services, pricing, timelines, or how we work. What can I help you with?"},
+    {k:['service','what do you do','offer','build','make'],a:"We offer 6 core services:\n\n• <b>Web Development</b> — custom websites you fully own\n• <b>Mobile App Development</b> — iOS & Android (React Native / Swift / Kotlin)\n• <b>AI Integration</b> — chatbots, automation, GPT-powered features\n• <b>E-Commerce</b> — custom storefronts with seamless checkout\n• <b>UI/UX Design</b> — pixel-perfect, conversion-focused design\n• <b>Business Automation</b> — save your team 20+ hours/week\n\nWant details on any of these?"},
+    {k:['web','website','webpage'],a:"We build beautiful, fast, fully custom websites — you own every line of code. No Wix, no Webflow lock-in. Websites typically launch in <b>2–4 weeks</b>. Pricing is quoted based on your scope after a free consultation."},
+    {k:['mobile','app','ios','android','react native'],a:"We build native-quality iOS & Android apps using React Native, Swift, or Kotlin — tailored to your users. Custom apps typically take <b>6–16 weeks</b> depending on complexity, all agreed upfront before we start."},
+    {k:['ai','artificial intelligence','chatbot','automation','gpt','machine learning'],a:"We embed intelligence into products — chatbots, recommendation engines, automation pipelines, and GPT-powered features. If you want to stop doing repetitive tasks manually, we can automate workflows and integrate your systems too."},
+    {k:['ecommerce','e-commerce','shop','store','shopify'],a:"We build high-performance e-commerce platforms with seamless checkout, inventory management, and analytics — custom, not a template. Works with Shopify, custom builds, or whatever fits your needs."},
+    {k:['price','pricing','cost','how much','rate','charge','fee'],a:"We have two plans:\n\n<b>Fixed Bid</b> — Custom quote scoped to your exact project. Phased milestone payments, no hidden extras.\n\n<b>Dedicated Team</b> — From <b>$4,000/month</b>. Hire 1–5+ dedicated experts. Monthly or yearly contracts, scale up/down anytime.\n\nBoth plans include 100% code ownership. Not sure which fits? Book a free consultation and we'll recommend the right model."},
+    {k:['fixed bid','fixed price','project based'],a:"The Fixed Bid plan is ideal if you have a specific project with a clear scope. We agree on the roadmap, timeline, and cost <b>before</b> any work starts. Payments are milestone-based — you only pay when a phase is delivered and you're happy. Includes 30 days free post-launch support."},
+    {k:['dedicated team','monthly','ongoing'],a:"The Dedicated Team plan starts from <b>$4,000/month</b>. Our team works as an extension of yours — using your tools and processes. Monthly or yearly contracts, transparent communication, and you can scale the team up or down anytime. No long-term lock-in."},
+    {k:['timeline','how long','time','weeks','duration'],a:"Timelines are always agreed upfront:\n\n• <b>Websites:</b> 2–4 weeks\n• <b>Custom apps:</b> 6–16 weeks (depends on complexity)\n\nYou'll always know exactly when your product ships — it's in the roadmap before we start."},
+    {k:['consultation','free call','discovery','book','meeting'],a:"The free consultation is a <b>30-minute call</b> — no sales pitch, just listening. You share your vision, what you've tried, what's not working. Within 24 hours we send a complete roadmap: what we'll build, the tech, timeline, and exact cost. Zero obligation to proceed."},
+    {k:['process','how does it work','steps','workflow'],a:"Our process:\n\n1. <b>Free consultation</b> — we listen, no pitch\n2. <b>Roadmap sent in 24h</b> — full scope, timeline, cost\n3. <b>Build in milestones</b> — you review and approve each phase\n4. <b>Launch + support</b> — deployment, SEO setup, first users\n\nYou own the code from the very first milestone."},
+    {k:['own','ownership','code','source','mine'],a:"100% yours — always. You receive the full source code, complete documentation, and can host it anywhere. No platform lock-in, no ongoing fees to keep your product alive. Even if we close down (we won't!), your product lives on."},
+    {k:['different','wix','webflow','bubble','platform','compare'],a:"Those platforms are built to keep you subscribed — their incentive is retention, not your success. We build custom solutions you <b>fully own</b>. No monthly platform fee, no \"almost works,\" no lock-in. And we start every project by listening to understand what you actually need."},
+    {k:['guarantee','refund','money back','happy','satisfied'],a:"We build in milestone sign-offs throughout every project — you review and approve each phase before we move to the next. We also offer an <b>on-time delivery guarantee or your money back</b>. If something doesn't match your vision, we iterate until it does."},
+    {k:['payment','pay','invoice','deposit','milestone'],a:"For Fixed Bid projects, payments are <b>milestone-based</b> — you only pay for each phase once it's delivered and you're happy. For Dedicated Team, it's a predictable monthly or yearly fee. No surprises, no hidden extras."},
+    {k:['disappear','trust','reliable','legit','scam'],a:"We use phased milestone payments — you only pay when a phase is delivered. Plus, you own 100% of the code from the very first milestone. Your product never depends on us, so you're always protected."},
+    {k:['timezone','country','usa','uk','australia','canada','india','location','where','offshore'],a:"Most of our clients are in the <b>USA, UK, Australia, and Canada</b>. We have offices in California, Florida, India, and China. We're available during your business hours and use async tools (Slack, Notion, Loom) — timezone has never been an issue."},
+    {k:['not sure','unclear','idea','no plan','help me figure'],a:"That's exactly what the free consultation is for! Many of our best clients come with just an idea and no technical clarity. We'll help you scope it, refine it, and create a clear plan. No pressure, no obligation."},
+    {k:['technology','tech','stack','react','next','vue','typescript','python','node'],a:"Our stack covers:\n\n<b>Web:</b> React, Next.js, Vue.js, TypeScript, Tailwind, Shopify, WordPress\n<b>Mobile:</b> React Native, Swift, Kotlin, Flutter\n<b>AI/Automation:</b> Python, OpenAI, LangChain, TensorFlow\n<b>Backend:</b> Node.js, Django, PostgreSQL, Firebase, AWS"},
+    {k:['support','maintenance','after','post launch','bug'],a:"All projects include <b>30 days free post-launch support</b>. We also help with deployment, hosting setup, SEO foundations, and getting your first users. We stay with you through launch and beyond."},
+    {k:['contact','email','reach','talk','speak'],a:"Reach us at <b>hello@mymindstudio.ai</b> — we respond within 24 hours. Or book a free consultation directly on this page. Offices in California, Florida, India, and China."},
+    {k:['response','reply','fast','quick','when'],a:"We respond to all inquiries within <b>24 hours</b>. For consultations, we're available during your business hours regardless of timezone."},
+    {k:['go to market','marketing','launch','seo','first users'],a:"We don't just hand over files. We help with deployment, hosting setup, SEO foundations, initial marketing strategy, and getting your first users. We stay with you through launch."},
+  ];
+
+  const QUICK = [
+    {label:'Services',q:'What services do you offer?'},
+    {label:'Pricing',q:'What does it cost?'},
+    {label:'Timeline',q:'How long does it take?'},
+    {label:'Free call',q:'What happens in the free consultation?'},
+    {label:'Own the code?',q:'Do I own the code?'},
+    {label:'Contact',q:'How do I contact you?'},
+  ];
+
+  function getTime(){
+    return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  }
+
+  function addMsg(text, who, showTime){
+    const m = document.createElement('div');
+    m.className = 'mms-msg ' + who;
+    const b = document.createElement('div');
+    b.className = 'mms-bubble';
+    b.innerHTML = text.replace(/\n/g,'<br>');
+    m.appendChild(b);
+    if(showTime){
+      const t = document.createElement('div');
+      t.className = 'mms-time';
+      t.textContent = getTime();
+      m.appendChild(t);
+    }
+    msgs.appendChild(m);
+    msgs.scrollTop = msgs.scrollHeight;
+    return m;
+  }
+
+  function showTyping(){
+    const m = document.createElement('div');
+    m.className = 'mms-msg bot mms-typing';
+    m.innerHTML = '<div class="mms-bubble"><div class="mms-dot"></div><div class="mms-dot"></div><div class="mms-dot"></div></div>';
+    msgs.appendChild(m);
+    msgs.scrollTop = msgs.scrollHeight;
+    return m;
+  }
+
+  function renderChips(list){
+    chips.innerHTML = '';
+    list.forEach(function(c){
+      const el = document.createElement('button');
+      el.className = 'mms-chip';
+      el.textContent = c.label;
+      el.addEventListener('click', function(){
+        handleQuery(c.q);
+      });
+      chips.appendChild(el);
+    });
+  }
+
+  function findAnswer(text){
+    const q = text.toLowerCase();
+    for(let i=0;i<KB.length;i++){
+      if(KB[i].k.some(function(k){return q.includes(k)})){
+        return KB[i].a;
+      }
+    }
+    return "I'm not sure about that specific question, but I can help with services, pricing, timelines, or how to get started. Feel free to reach out directly at <b>hello@mymindstudio.ai</b> and we'll reply within 24 hours.";
+  }
+
+  var isTyping = false;
+  function handleQuery(text){
+    if(isTyping || !text.trim()) return;
+    addMsg(text, 'user', false);
+    input.value = '';
+    chips.innerHTML = '';
+    isTyping = true;
+    const t = showTyping();
+    setTimeout(function(){
+      t.remove();
+      addMsg(findAnswer(text), 'bot', true);
+      isTyping = false;
+      renderChips(QUICK.slice(0,4));
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 700 + Math.random()*400);
+  }
+
+  /* ── Open / close ── */
+  var isOpen = false;
+  function openChat(){
+    isOpen = true;
+    wrap.classList.add('open');
+    panel.style.display = 'flex';
+    if(!msgs.children.length){
+      addMsg("Hi! I'm the MyMind Studio assistant. How can I help you today?", 'bot', true);
+      renderChips(QUICK);
+    }
+    setTimeout(function(){input.focus()}, 50);
+  }
+  function closeChat(){
+    isOpen = false;
+    wrap.classList.remove('open');
+    panel.style.display = 'none';
+  }
+  btn.addEventListener('click', function(){isOpen ? closeChat() : openChat()});
+
+  sendBtn.addEventListener('click', function(){handleQuery(input.value)});
+  input.addEventListener('keydown', function(e){if(e.key==='Enter') handleQuery(input.value)});
+
+  /* ── Drag to snap left / right ── */
+  var dragging = false, startX, startY, startLeft, startBottom;
+  dragHandle.addEventListener('mousedown', startDrag);
+  dragHandle.addEventListener('touchstart', startDrag, {passive:true});
+
+  function startDrag(e){
+    dragging = true;
+    var p = e.touches ? e.touches[0] : e;
+    startX = p.clientX;
+    startY = p.clientY;
+    var r = wrap.getBoundingClientRect();
+    startLeft = r.left;
+    startBottom = window.innerHeight - r.bottom;
+    wrap.style.transition = 'none';
+    document.addEventListener('mousemove', onDrag);
+    document.addEventListener('touchmove', onDrag, {passive:false});
+    document.addEventListener('mouseup', stopDrag);
+    document.addEventListener('touchend', stopDrag);
+  }
+
+  function onDrag(e){
+    if(!dragging) return;
+    if(e.cancelable) e.preventDefault();
+    var p = e.touches ? e.touches[0] : e;
+    var dx = p.clientX - startX;
+    var newLeft = startLeft + dx;
+    var mid = window.innerWidth / 2;
+    // Snap live
+    if(newLeft + 28 < mid){
+      wrap.style.left = '24px';
+      wrap.style.right = 'auto';
+      wrap.classList.add('left-side');
+    } else {
+      wrap.style.right = '24px';
+      wrap.style.left = 'auto';
+      wrap.classList.remove('left-side');
+    }
+  }
+
+  function stopDrag(){
+    dragging = false;
+    wrap.style.transition = '';
+    document.removeEventListener('mousemove', onDrag);
+    document.removeEventListener('touchmove', onDrag);
+    document.removeEventListener('mouseup', stopDrag);
+    document.removeEventListener('touchend', stopDrag);
+  }
+})();
+</script>
 </body>
 </html>
