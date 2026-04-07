@@ -732,4 +732,37 @@ document.getElementById('tyCloseBottom')?.addEventListener('click', closeThankYo
   }
   sendBtn.addEventListener('click',function(){handleQuery(input.value);});
   input.addEventListener('keydown',function(e){if(e.key==='Enter')handleQuery(input.value);});
+
+  /* ── Mic / Speech Recognition ── */
+  var micBtn=document.getElementById('mms-mic');
+  var SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SpeechRecognition){
+    // Browser doesn't support — hide mic button gracefully
+    if(micBtn) micBtn.style.display='none';
+  } else {
+    var recog=new SpeechRecognition();
+    recog.lang='en-US';recog.interimResults=false;recog.maxAlternatives=1;
+    var micListening=false;
+    micBtn.addEventListener('click',function(){
+      if(micListening){recog.stop();return;}
+      recog.start();
+    });
+    recog.addEventListener('start',function(){
+      micListening=true;micBtn.classList.add('listening');
+      input.value='';input.placeholder='Listening…';
+    });
+    recog.addEventListener('result',function(e){
+      var transcript=e.results[0][0].transcript;
+      input.value=transcript;
+    });
+    recog.addEventListener('end',function(){
+      micListening=false;micBtn.classList.remove('listening');
+      input.placeholder='Ask anything…';
+      if(input.value.trim())handleQuery(input.value);
+    });
+    recog.addEventListener('error',function(){
+      micListening=false;micBtn.classList.remove('listening');
+      input.placeholder='Ask anything…';
+    });
+  }
 })();
