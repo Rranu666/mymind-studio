@@ -713,8 +713,8 @@ document.getElementById('tyCloseBottom')?.addEventListener('click', closeThankYo
   }
   function onDrag(e){
     if(!dragging)return;if(e.cancelable)e.preventDefault();
-    var p=e.touches?e.touches[0]:e,dx=p.clientX-startX,newLeft=startLeft+dx,mid=window.innerWidth/2;
-    if(newLeft+28<mid){wrap.style.left='24px';wrap.style.right='auto';wrap.classList.add('left-side');}
+    var p=e.touches?e.touches[0]:e,mid=window.innerWidth/2;
+    if(p.clientX<mid){wrap.style.left='24px';wrap.style.right='auto';wrap.classList.add('left-side');}
     else{wrap.style.right='24px';wrap.style.left='auto';wrap.classList.remove('left-side');}
   }
   function stopDrag(){
