@@ -3290,6 +3290,8 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
 
 /* Header */
 #mms-header{background:#0d0f14;padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0}
+#mms-close{margin-left:auto;width:32px;height:32px;background:rgba(255,255,255,.06);border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .18s;color:rgba(255,255,255,.5);font-size:1.1rem;line-height:1}
+#mms-close:hover{background:rgba(255,255,255,.12);color:#fff}
 .mms-avatar{width:36px;height:36px;background:var(--lime);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.75rem;color:#000;letter-spacing:-.02em;flex-shrink:0}
 .mms-hinfo{flex:1;min-width:0}
 .mms-hname{font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.02em}
@@ -3346,6 +3348,7 @@ body.anim-ready .reveal-right.visible{opacity:1;transform:none}
         <div class="mms-hname">MyMind Studio</div>
         <div class="mms-hstatus">Online — reply in seconds</div>
       </div>
+      <button id="mms-close" aria-label="Close chat">✕</button>
     </div>
     <div id="mms-messages"></div>
     <div id="mms-chips"></div>

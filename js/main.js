@@ -699,6 +699,8 @@ document.getElementById('tyCloseBottom')?.addEventListener('click', closeThankYo
     setTimeout(function(){input.focus();},50);
   }
   function closeChat(){isOpen=false;wrap.classList.remove('open');panel.style.display='none';}
+  var closeBtn=document.getElementById('mms-close');
+  if(closeBtn)closeBtn.addEventListener('click',closeChat);
   // Drag the whole button — click if moved <8px, drag if more
   var dragging=false,didDrag=false,startX,startY;
   btn.addEventListener('mousedown',startDrag);
